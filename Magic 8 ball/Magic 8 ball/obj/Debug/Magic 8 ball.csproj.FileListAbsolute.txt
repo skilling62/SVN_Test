@@ -1,0 +1,6 @@
+C:\git_hub_project\trunk\Magic 8 ball\Magic 8 ball\bin\Debug\Magic 8 ball.exe.config
+C:\git_hub_project\trunk\Magic 8 ball\Magic 8 ball\bin\Debug\Magic 8 ball.exe
+C:\git_hub_project\trunk\Magic 8 ball\Magic 8 ball\bin\Debug\Magic 8 ball.pdb
+C:\git_hub_project\trunk\Magic 8 ball\Magic 8 ball\obj\Debug\Magic 8 ball.csprojResolveAssemblyReference.cache
+C:\git_hub_project\trunk\Magic 8 ball\Magic 8 ball\obj\Debug\Magic 8 ball.exe
+C:\git_hub_project\trunk\Magic 8 ball\Magic 8 ball\obj\Debug\Magic 8 ball.pdb
