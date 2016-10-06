@@ -4,3 +4,9 @@ H:\CourseworkTest_Git\trunk\TestApp1\bin\Debug\TestApp1.pdb
 H:\CourseworkTest_Git\trunk\TestApp1\obj\Debug\TestApp1.csprojResolveAssemblyReference.cache
 H:\CourseworkTest_Git\trunk\TestApp1\obj\Debug\TestApp1.exe
 H:\CourseworkTest_Git\trunk\TestApp1\obj\Debug\TestApp1.pdb
+C:\git_hub_project\trunk\TestApp1\bin\Debug\TestApp1.exe.config
+C:\git_hub_project\trunk\TestApp1\obj\Debug\TestApp1.exe
+C:\git_hub_project\trunk\TestApp1\obj\Debug\TestApp1.pdb
+C:\git_hub_project\trunk\TestApp1\bin\Debug\TestApp1.exe
+C:\git_hub_project\trunk\TestApp1\bin\Debug\TestApp1.pdb
+C:\git_hub_project\trunk\TestApp1\obj\Debug\TestApp1.csprojResolveAssemblyReference.cache
