@@ -1,1 +1,7 @@
 C:\git_hub_project\trunk\New folder\Jarvis\bin\Debug\Jarvis.exe.config
+C:\git_hub_project\trunk\Jarvis\bin\Debug\Jarvis.exe.config
+C:\git_hub_project\trunk\Jarvis\bin\Debug\Jarvis.exe
+C:\git_hub_project\trunk\Jarvis\bin\Debug\Jarvis.pdb
+C:\git_hub_project\trunk\Jarvis\obj\Debug\Jarvis.csprojResolveAssemblyReference.cache
+C:\git_hub_project\trunk\Jarvis\obj\Debug\Jarvis.exe
+C:\git_hub_project\trunk\Jarvis\obj\Debug\Jarvis.pdb
