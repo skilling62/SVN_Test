@@ -19,7 +19,13 @@ namespace Jarvis
 
         static void Main(string[] args)
         {
-            synth.Speak("Welcome to Jarvis version 1.0");
+            //Create a List of string objects
+            List<string> cpumaxedoutmessages = new List<string>();
+            cpumaxedoutmessages.Add("Warning your CPU is getting in a bizzle m8");
+
+
+        
+            Speak("Welcome to Jarvis version 1.0");
 
             #region My Performance Counters
 
@@ -51,7 +57,10 @@ namespace Jarvis
                 );
 
             //Tell the user what the system uptime is
-            synth.Speak(systemuptimemessage);
+            Speak(systemuptimemessage);
+
+            //Create a variable called speechspeed
+            int speechspeed = 1;
 
             //Infinite while loop
             while (true)
@@ -69,14 +78,20 @@ namespace Jarvis
                 {
                     if (currentCpuPercentage == 100)
                     {
-                        string cpuLoadVocalMessage = String.Format("Warning your CPU is getting is a bizzle m8");
-                        synth.Speak(cpuLoadVocalMessage);
+                        string cpuLoadVocalMessage = String.Format("Warning your CPU is getting in a bizzle m8");
+
+                        if (speechspeed <=5)
+                        {
+                            speechspeed++;
+                        }
+                        //Calling the Speak funciton with message and incremented speechspeed, if apllicable
+                        Speak(cpuLoadVocalMessage, speechspeed);
                     }
                     else
                     {
                         //Note cpuLoadVocalMessage is created twice, but since it is locally scoped inside each if/else statement it is not ambiguous
                         string cpuLoadVocalMessage = String.Format("The current CPU load is {0} percent", (int)currentCpuPercentage);
-                        synth.Speak(cpuLoadVocalMessage);
+                        Speak(cpuLoadVocalMessage);
                     }
 
                 }
@@ -85,7 +100,7 @@ namespace Jarvis
                 if (currentAvailableMemory < 1024)
                 {
                     string memAvailableMessage = String.Format("You currently have {0} Mega Bytes of memory available", (int)currentAvailableMemory);
-                    synth.Speak(memAvailableMessage);
+                    Speak(memAvailableMessage);
                 }
                 
                 //Wait for one second
@@ -93,11 +108,29 @@ namespace Jarvis
             }        
         }
 
-        public static void Speak(string message)
+        /// <summary>
+        /// Function called speak that speaks the string that is passed into it
+        /// </summary>
+        /// <param name="message"></param>
+         public static void Speak(string message)
         {
             synth.Speak(message);
-
         }
+
+        /// <summary>
+        /// Speak with selected voice at selected speed. This is an overloaded function (funciton in a function)
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="rate"></param>
+        public static void Speak(string message, int rate)
+        {
+            synth.Rate = rate;
+            Speak(message);
+        }
+
+        
+
+
     }
 
 }
