@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Media;
 
 
 //Key topics - System.Windows.Form namespace and assembly and threads
@@ -24,6 +25,7 @@ namespace Drunk_PC
         {
             Console.WriteLine("Drunk PC prank application by me");
 
+            #region create and run threads
             //Create threads that pass in the thread functions
             //Use threads as "seperate programs" that are able to run side by side
             Thread drunkmousethread = new Thread(new ThreadStart(DrunkMouseThread));
@@ -45,8 +47,7 @@ namespace Drunk_PC
             drunkkeyboardthread.Abort();
             drunksoundthread.Abort();
             drunkpopupthread.Abort();
-
-
+            #endregion
 
         }
 
@@ -56,12 +57,25 @@ namespace Drunk_PC
         /// </summary> This thread will randomly effect the mouse movemets apparently 
         public static void DrunkMouseThread()
         {
+
+            //create move x and move y variables. Make variables outside the loop!!
+
+            int moveX = 0;
+            int moveY = 0;
+
             Console.WriteLine("DrunkMouseThread started");
             while(true)
             {
-                Console.WriteLine(Cursor.Position.ToString());
+                //Console.WriteLine(Cursor.Position.ToString());
 
-                Cursor.Position = new Point(Cursor.Position.X - 10, Cursor.Position.Y - 10);
+                //Assign move x and y a random number 0-19 and subtract 10 from that
+                moveX = _random.Next(20)-10;
+                moveY = _random.Next(20)-10;
+
+                //Cursor.position is in System.Windows.Forms namespace;
+                Cursor.Position = new Point(
+                    Cursor.Position.X + moveX, 
+                    Cursor.Position.Y + moveY);
                  
                 Thread.Sleep(500);
             }
@@ -75,7 +89,17 @@ namespace Drunk_PC
             Console.WriteLine("DrunkKeyboardThread started");
             while (true)
             {
-                Thread.Sleep(500);
+                //Converting a random number (between 0-24 then add 65) to a character. ASCII table
+                char key = (char)(_random.Next(25)+65);
+
+                if (_random.Next(2)==1)
+                {
+                    key = char.ToLower(key);
+                }
+
+                //Sendkeys.Sendwait is in System.Windows.Forms namespace
+                SendKeys.SendWait(key.ToString());
+                Thread.Sleep(_random.Next(800));
             }
         }
 
