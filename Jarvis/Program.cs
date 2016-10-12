@@ -14,11 +14,11 @@ namespace Jarvis
 {
     class Program
     {
+        //Create a new instance (object) of the SpeechSynthesizer class, called synth. Make it static so new instances don't have to be created elsewhere
+       private static SpeechSynthesizer synth = new SpeechSynthesizer();
+
         static void Main(string[] args)
         {
-
-            //Create a new instance (object) of the SpeechSynthesizer class, called synth
-            SpeechSynthesizer synth = new SpeechSynthesizer();
             synth.Speak("Welcome to Jarvis version 1.0");
 
             #region My Performance Counters
@@ -26,13 +26,32 @@ namespace Jarvis
             // Create a new instance of the PerformanceCounter class. Use the % Processor Time counter within the Processor Information Object
             PerformanceCounter perfcpucount = new PerformanceCounter("Processor Information", "% Processor Time", "_Total");
 
+            //Initialise perfcpucount
+            perfcpucount.NextValue();
+
             // Create a new instance of PerformanceCounter. Use the Available MBytes counter within the Memory Object
             PerformanceCounter perfmemcount = new PerformanceCounter("Memory", "Available MBytes");
+            perfmemcount.NextValue();
 
             // Create a new instance of PerformanceCounter. Use the System Up Time counter within the system object (seconds)
             PerformanceCounter perfuptimecount = new PerformanceCounter("System", "System Up Time");
+            perfuptimecount.NextValue();
+                
             #endregion
 
+            // Call for the next value - returns the number of seconds of System Up Time. Convert to timespan object, which allows conversion to days, hours etc
+            TimeSpan uptimespan = TimeSpan.FromSeconds(perfuptimecount.NextValue());
+
+            //Create a new instance of string called systemuptimemessage 
+            string systemuptimemessage = string.Format("The current system up time is {0} days {1} hours {2} minutes {3} seconds",
+                (int)uptimespan.TotalDays,
+                (int)uptimespan.Hours,
+                (int)uptimespan.Minutes,
+                (int)uptimespan.Seconds
+                );
+
+            //Tell the user what the system uptime is
+            synth.Speak(systemuptimemessage);
 
             //Infinite while loop
             while (true)
@@ -45,24 +64,40 @@ namespace Jarvis
                 Console.WriteLine("CPU Load: {0}%", (int)currentCpuPercentage);
                 Console.WriteLine("Available Memory: {0}MB", (int)currentAvailableMemory);
 
-                //Store the messageas to be spoken to the user as strings
-                string cpuLoadVocalMessage = String.Format("The current CPU load is {0} percent", (int) currentCpuPercentage);
-                string memAvailableMessage = String.Format("You currently have {0} Mega Bytes of memory available", (int)currentAvailableMemory);
+                //Alert the user with speech if cpu percentage is greater than 80%, and warn if it reaches 100%
+                if (currentCpuPercentage > 80)
+                {
+                    if (currentCpuPercentage == 100)
+                    {
+                        string cpuLoadVocalMessage = String.Format("Warning your CPU is getting is a bizzle m8");
+                        synth.Speak(cpuLoadVocalMessage);
+                    }
+                    else
+                    {
+                        //Note cpuLoadVocalMessage is created twice, but since it is locally scoped inside each if/else statement it is not ambiguous
+                        string cpuLoadVocalMessage = String.Format("The current CPU load is {0} percent", (int)currentCpuPercentage);
+                        synth.Speak(cpuLoadVocalMessage);
+                    }
 
-                //Speak the messages with synth.speak
-                synth.Speak(cpuLoadVocalMessage);
-                synth.Speak(memAvailableMessage);
+                }
 
+                //Alert the user with speech if the memory is less than 1GB
+                if (currentAvailableMemory < 1024)
+                {
+                    string memAvailableMessage = String.Format("You currently have {0} Mega Bytes of memory available", (int)currentAvailableMemory);
+                    synth.Speak(memAvailableMessage);
+                }
+                
                 //Wait for one second
                 Thread.Sleep(1000);
-            }
+            }        
+        }
 
+        public static void Speak(string message)
+        {
+            synth.Speak(message);
 
-
-                 
         }
     }
-
-    
 
 }
