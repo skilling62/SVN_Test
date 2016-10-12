@@ -1,0 +1,6 @@
+C:\git_hub_project\trunk\Drunk PC\bin\Debug\Drunk PC.exe.config
+C:\git_hub_project\trunk\Drunk PC\bin\Debug\Drunk PC.exe
+C:\git_hub_project\trunk\Drunk PC\bin\Debug\Drunk PC.pdb
+C:\git_hub_project\trunk\Drunk PC\obj\Debug\Drunk PC.csprojResolveAssemblyReference.cache
+C:\git_hub_project\trunk\Drunk PC\obj\Debug\Drunk PC.exe
+C:\git_hub_project\trunk\Drunk PC\obj\Debug\Drunk PC.pdb
