@@ -99,7 +99,7 @@ namespace Drunk_PC
 
                 //Sendkeys.Sendwait is in System.Windows.Forms namespace
                 SendKeys.SendWait(key.ToString());
-                Thread.Sleep(_random.Next(800));
+                Thread.Sleep(500);
             }
         }
 
@@ -111,6 +111,31 @@ namespace Drunk_PC
             Console.WriteLine("DrunkSoundThreadStarted started");
             while (true)
             {
+                if (_random.Next(101) > 50)
+                {
+                    switch (_random.Next(4))
+                    {
+                        case 0:
+                            SystemSounds.Asterisk.Play();
+                            break;
+                        case 1:
+                            SystemSounds.Beep.Play();
+                            break;
+                        case 2:
+                            SystemSounds.Exclamation.Play();
+                            break;
+                        case 3:
+                            SystemSounds.Hand.Play();
+                            break;
+                        case 4:
+                            SystemSounds.Question.Play();
+                            break;
+                    }
+
+
+
+                    }
+
                 Thread.Sleep(500);
             }
         }
