@@ -14,7 +14,7 @@ namespace Jarvis
 {
     class Program
     {
-        //Create a new instance (object) of the SpeechSynthesizer class, called synth. Make it static so new instances don't have to be created elsewhere
+       //Create a new instance (object) of the SpeechSynthesizer class, called synth. Make it static so new instances don't have to be created elsewhere
        private static SpeechSynthesizer synth = new SpeechSynthesizer();
 
         static void Main(string[] args)
@@ -22,9 +22,12 @@ namespace Jarvis
             //Create a List of string objects
             List<string> cpumaxedoutmessages = new List<string>();
             cpumaxedoutmessages.Add("Warning your CPU is getting in a bizzle m8");
+            cpumaxedoutmessages.Add("ello chum ");
+
+            //Create a random number and assign it to the object rondo
+            Random rondo = new Random();
 
 
-        
             Speak("Welcome to Jarvis version 1.0");
 
             #region My Performance Counters
@@ -65,6 +68,9 @@ namespace Jarvis
             //Infinite while loop
             while (true)
             {
+
+                OpenWebsite("https://www.youtube.com");
+
                 // Get the current CPU Percentage and available memory
                 float currentCpuPercentage = perfcpucount.NextValue();
                 float currentAvailableMemory = perfmemcount.NextValue();
@@ -73,13 +79,16 @@ namespace Jarvis
                 Console.WriteLine("CPU Load: {0}%", (int)currentCpuPercentage);
                 Console.WriteLine("Available Memory: {0}MB", (int)currentAvailableMemory);
 
+                #region logic
                 //Alert the user with speech if cpu percentage is greater than 80%, and warn if it reaches 100%
                 if (currentCpuPercentage > 80)
                 {
                     if (currentCpuPercentage == 100)
                     {
-                        string cpuLoadVocalMessage = String.Format("Warning your CPU is getting in a bizzle m8");
+                        //Get a random number between 0 and 1 and select that message. Square brackets for indexing purposes
+                        string cpuLoadVocalMessage = cpumaxedoutmessages[rondo.Next(1)];
 
+                        //Set an upper limit to the speech speed
                         if (speechspeed <=5)
                         {
                             speechspeed++;
@@ -102,17 +111,20 @@ namespace Jarvis
                     string memAvailableMessage = String.Format("You currently have {0} Mega Bytes of memory available", (int)currentAvailableMemory);
                     Speak(memAvailableMessage);
                 }
-                
+                #endregion
+
                 //Wait for one second
                 Thread.Sleep(1000);
             }        
         }
 
+        #region new functions
         /// <summary>
         /// Function called speak that speaks the string that is passed into it
         /// </summary>
         /// <param name="message"></param>
-         public static void Speak(string message)
+        //this function will accept a string as an input argument
+        public static void Speak(string message)
         {
             synth.Speak(message);
         }
@@ -128,9 +140,23 @@ namespace Jarvis
             Speak(message);
         }
 
-        
+        /// <summary>
+        /// Function to open a website
+        /// </summary>
+        /// <param name="url"></param>
+        public static void OpenWebsite(string URL)
+        {
+            //Create a process object
+            Process p1 = new Process();
 
+            //start chrome
+            p1.StartInfo.FileName = "chrome.exe";
+            //Go to URL
+            p1.StartInfo.Arguments = URL;
+            p1.Start();
 
+        }
+        #endregion
     }
 
 }
