@@ -111,7 +111,7 @@ namespace Drunk_PC
             Console.WriteLine("DrunkSoundThreadStarted started");
             while (true)
             {
-                if (_random.Next(101) > 50)
+                if (_random.Next(101) > 70)
                 {
                     switch (_random.Next(4))
                     {
@@ -148,30 +148,27 @@ namespace Drunk_PC
             {
                 if (_random.Next(101) > 75)
                 {
-                    switch (_random.Next(5))
+                    //Deterimine which message to show
+                    switch (_random.Next(2))
                     {
                         case 0:
+                            MessageBox.Show(
+                                "Internet explorer has gone off one one",
+                                "Internet Explorer",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
                             break;
-
                         case 1:
+                            MessageBox.Show(
+                              "hahahaha",
+                              "Microsoft Windows",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Warning);
                             break;
 
-                        case 2:
-                            break;
-
-                        case 3:
-                            break;
-
-                        case 4:
-                            break;
                     }
                 }
 
-                MessageBox.Show(
-                    "Internet explorer has gone off one one",
-                    "Internet Explorer",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
 
                 Thread.Sleep(10000);
             }
