@@ -17,6 +17,10 @@ namespace Drunk_PC
     {
         //Make this object available throughout the Program Class. Need static aswell to do this. GLOBAL SCOPE
         public static Random _random = new Random();
+
+        //Initialise the delay and application finishing time variables
+        public static int _startupdelayseconds = 10;
+        public static int _totaldurationseconds = 10;
         /// <summary>
         /// Entry point for prank application
         /// </summary>
@@ -24,6 +28,13 @@ namespace Drunk_PC
         static void Main(string[] args)
         {
             Console.WriteLine("Drunk PC prank application by me");
+
+            //Logic based on an input from the command line. Located in bin\debug. Shouldn't have put any spaces in the name!
+            if (args.Length >= 2)
+            {
+                _startupdelayseconds = Convert.ToInt32(args[0]);
+                _totaldurationseconds = Convert.ToInt32(args[1]);
+            }
 
             #region create and run threads
             //Create threads that pass in the thread functions
@@ -33,15 +44,28 @@ namespace Drunk_PC
             Thread drunksoundthread = new Thread(new ThreadStart(DrunkSoundThread));
             Thread drunkpopupthread = new Thread(new ThreadStart(DrunkPopUpThread));
 
+            //Wait 10 seconds before starting the threads
+            DateTime Future = DateTime.Now.AddSeconds(_startupdelayseconds);
+            Console.WriteLine("Waiting 10 seconds before starting threads");
+            while (Future > DateTime.Now)
+            {
+                Thread.Sleep(1000);
+            }
+
             //start the threads
             drunkmousethread.Start();
             drunkkeyboardthread.Start();
             drunksoundthread.Start();
             drunkpopupthread.Start();
 
-            //Wait for user input
-            Console.Read();
+            //Terminate the app after 10 seconds
+            Future = DateTime.Now.AddSeconds(_totaldurationseconds);
+            while (Future>DateTime.Now)
+            {
+                Thread.Sleep(1000);
+            }
 
+            Console.WriteLine("Terminating all threads");
             //Abort the threads
             drunkmousethread.Abort();
             drunkkeyboardthread.Abort();
@@ -146,7 +170,7 @@ namespace Drunk_PC
             Console.WriteLine("DrunkPopUpThread started");
             while (true)
             {
-                if (_random.Next(101) > 75)
+                if (_random.Next(101) > 50)
                 {
                     //Deterimine which message to show
                     switch (_random.Next(2))
