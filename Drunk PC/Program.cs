@@ -132,9 +132,7 @@ namespace Drunk_PC
                             break;
                     }
 
-
-
-                    }
+                 }
 
                 Thread.Sleep(500);
             }
@@ -148,7 +146,34 @@ namespace Drunk_PC
             Console.WriteLine("DrunkPopUpThread started");
             while (true)
             {
-                Thread.Sleep(500);
+                if (_random.Next(101) > 75)
+                {
+                    switch (_random.Next(5))
+                    {
+                        case 0:
+                            break;
+
+                        case 1:
+                            break;
+
+                        case 2:
+                            break;
+
+                        case 3:
+                            break;
+
+                        case 4:
+                            break;
+                    }
+                }
+
+                MessageBox.Show(
+                    "Internet explorer has gone off one one",
+                    "Internet Explorer",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                Thread.Sleep(10000);
             }
         }
 
