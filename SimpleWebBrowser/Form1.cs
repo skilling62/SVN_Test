@@ -17,35 +17,62 @@ namespace SimpleWebBrowser
             InitializeComponent();
         }
 
-        /// <summary>
-        /// When the button is clicked, this will be executed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //richtextbox means you can put in better text. remember richTextBox1 is an instance of richtextBox 
-            richTextBox1.AppendText("A button was clicked\r\n");
+
+        }
+
+        private void fIleToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+
         }
 
         /// <summary>
-        /// This function will run when the mouse enters the vicinity of button1 (event)
+        /// This function is called when the about menu is clicked
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button1_MouseEnter(object sender, EventArgs e)
+        private void aToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            richTextBox1.AppendText("The mouse has entered the button area\r\n");
+            //Messagebox is a way of "accessing" forms (object oriented)
+            MessageBox.Show("This program was made by me","Who made this",MessageBoxButtons.OKCancel);
         }
 
         /// <summary>
-        /// When the mouse leaves button 1, enter text into the text box
+        /// This function is called when the exit menu is clicked
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button1_MouseLeave(object sender, EventArgs e)
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            richTextBox1.AppendText("The mouse has left the button area\r\n");
+            //this exit function acts on the instance of Form1
+            this.Close();
+        }
+
+        /// <summary>
+        /// This function is called when the Go button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GO_Click(object sender, EventArgs e)
+        {
+            //Object Oriented stuff - WebBrowser 1 is an instance of Webbrowser object. We can interface with this 
+            //object through the navigate function
+            webBrowser1.Navigate(searchbar1.Text);
+        }
+
+        /// <summary>
+        /// This function will execute every time a key is pressed and released
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void searchbar1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //console keys data type is enum, but we need to convert it to a character
+            if (e.KeyChar == (char)ConsoleKey.Enter)
+            {
+                webBrowser1.Navigate(searchbar1.Text);
+            }
         }
     }
 }
