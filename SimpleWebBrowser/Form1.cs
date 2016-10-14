@@ -24,7 +24,28 @@ namespace SimpleWebBrowser
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            richTextBox1.AppendText("A button was clicked\n");
+            //richtextbox means you can put in better text. remember richTextBox1 is an instance of richtextBox 
+            richTextBox1.AppendText("A button was clicked\r\n");
+        }
+
+        /// <summary>
+        /// This function will run when the mouse enters the vicinity of button1 (event)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_MouseEnter(object sender, EventArgs e)
+        {
+            richTextBox1.AppendText("The mouse has entered the button area\r\n");
+        }
+
+        /// <summary>
+        /// When the mouse leaves button 1, enter text into the text box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_MouseLeave(object sender, EventArgs e)
+        {
+            richTextBox1.AppendText("The mouse has left the button area\r\n");
         }
     }
 }
