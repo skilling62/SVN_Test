@@ -1,0 +1,9 @@
+C:\git_hub_project\trunk\SimpleWebBrowser\bin\Debug\SimpleWebBrowser.exe.config
+C:\git_hub_project\trunk\SimpleWebBrowser\bin\Debug\SimpleWebBrowser.exe
+C:\git_hub_project\trunk\SimpleWebBrowser\bin\Debug\SimpleWebBrowser.pdb
+C:\git_hub_project\trunk\SimpleWebBrowser\obj\Debug\SimpleWebBrowser.csprojResolveAssemblyReference.cache
+C:\git_hub_project\trunk\SimpleWebBrowser\obj\Debug\SimpleWebBrowser.Properties.Resources.resources
+C:\git_hub_project\trunk\SimpleWebBrowser\obj\Debug\SimpleWebBrowser.csproj.GenerateResource.Cache
+C:\git_hub_project\trunk\SimpleWebBrowser\obj\Debug\SimpleWebBrowser.exe
+C:\git_hub_project\trunk\SimpleWebBrowser\obj\Debug\SimpleWebBrowser.pdb
+C:\git_hub_project\trunk\SimpleWebBrowser\obj\Debug\SimpleWebBrowser.Form1.resources
