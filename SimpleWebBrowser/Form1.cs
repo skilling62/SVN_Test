@@ -65,9 +65,15 @@ namespace SimpleWebBrowser
         /// </summary>
         private void NavigateToPage()
         {
+
+            //disable the go button and search bar when navigating
+            GO.Enabled = false;
+            searchbar1.Enabled = false;
+
             //Object Oriented stuff - WebBrowser 1 is an instance of Webbrowser object. We can interface with this 
             //object through the navigate function
             webBrowser1.Navigate(searchbar1.Text);
+
         }
 
         /// <summary>
@@ -81,6 +87,27 @@ namespace SimpleWebBrowser
             if (e.KeyChar == (char)ConsoleKey.Enter)
             {
                 NavigateToPage();
+            }
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            GO.Enabled = true;
+            searchbar1.Enabled = true;
+        }
+
+        /// <summary>
+        /// Function to display the current progress of the webbrowser1 as a %
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void webBrowser1_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
+        {
+            //Avoid a divide by 0 error
+            if (e.CurrentProgress > 0 & e.MaximumProgress > 0)
+            {
+                //toolstripprogressbar object value must be an integer. Event argument, e, has a number of characteristics, ie max progress
+                toolStripProgressBar1.ProgressBar.Value = (int)(e.CurrentProgress * 100 / e.MaximumProgress);
             }
         }
     }
