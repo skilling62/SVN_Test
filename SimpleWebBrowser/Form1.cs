@@ -56,6 +56,15 @@ namespace SimpleWebBrowser
         /// <param name="e"></param>
         private void GO_Click(object sender, EventArgs e)
         {
+
+            NavigateToPage();
+        }
+
+        /// <summary>
+        /// This is our new navigation function
+        /// </summary>
+        private void NavigateToPage()
+        {
             //Object Oriented stuff - WebBrowser 1 is an instance of Webbrowser object. We can interface with this 
             //object through the navigate function
             webBrowser1.Navigate(searchbar1.Text);
@@ -71,7 +80,7 @@ namespace SimpleWebBrowser
             //console keys data type is enum, but we need to convert it to a character
             if (e.KeyChar == (char)ConsoleKey.Enter)
             {
-                webBrowser1.Navigate(searchbar1.Text);
+                NavigateToPage();
             }
         }
     }
