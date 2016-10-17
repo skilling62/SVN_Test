@@ -65,7 +65,7 @@ namespace SimpleWebBrowser
         /// </summary>
         private void NavigateToPage()
         {
-
+            statusStrip1.Text = ("Navigation has started");
             //disable the go button and search bar when navigating
             GO.Enabled = false;
             searchbar1.Enabled = false;
@@ -94,6 +94,9 @@ namespace SimpleWebBrowser
         {
             GO.Enabled = true;
             searchbar1.Enabled = true;
+            statusStrip1.Text = ("Navigation has started");
+
+
         }
 
         /// <summary>
@@ -109,6 +112,11 @@ namespace SimpleWebBrowser
                 //toolstripprogressbar object value must be an integer. Event argument, e, has a number of characteristics, ie max progress
                 toolStripProgressBar1.ProgressBar.Value = (int)(e.CurrentProgress * 100 / e.MaximumProgress);
             }
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
