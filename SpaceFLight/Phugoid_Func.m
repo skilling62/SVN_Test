@@ -1,12 +1,6 @@
 function [Z_u, X_u] = Phugoid_Func()
 
-clc
-close all
-clear all
-
-global testrho Rho
-
-testroh = Rho
+global Rho
 
 data = xlsread('Phugoid_GpA.xls');
 
@@ -45,9 +39,9 @@ u_0 = data(1,4) * kts2ms;
 
 g = 9.81;
 
-Rho = 1.225; % Need to look at 
+% Rho = 1.225; % Need to look at 
 
-Q = 0.5 * Rho * (u_0^2);
+Q = 0.5 * Rho * (u_0^2)
 
 m = 6348; %kg, Mass will be used as a constant, as the fuel consumption throughout a manouveour there will be <~3% fuel consumption
 
@@ -61,3 +55,6 @@ CX_u = (m * u_0 * X_u) / (Q * S);
 CL_0 = -(CZ_u) / 2
 CD_0 = -(CX_u) / 3
 
+disp(['This is the value of rho',num2str(Rho)])
+
+end

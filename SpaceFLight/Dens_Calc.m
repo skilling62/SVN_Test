@@ -1,6 +1,9 @@
-function [testrho] = Dens_Calc(airfieldalt_ft,testalt_ft,airfieldtemp_deg,airfieldpress_mb )
+function Dens_Calc(airfieldalt_ft,testalt_ft,airfieldtemp_deg,airfieldpress_mb )
 
-clc
+
+
+global Rho
+
 %% Declare Variables
 
 % Acceleration due to Gravity in ms^-2
@@ -56,8 +59,9 @@ plot(t,v_testalt_m)
 
 
 %% Calculate the pressure and density at the test altitude
+
 testpress_nm = (testtemp_k/airfieldtemp_k)^(-g0/(a*R)) * airfieldpress_nm;
-testrho = (testtemp_k/airfieldtemp_k)^(-1*((g0/(a*R))+1)) * airfieldrho;
+Rho = (testtemp_k/airfieldtemp_k)^(-1*((g0/(a*R))+1)) * airfieldrho;
 
 
 end
