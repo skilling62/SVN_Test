@@ -4,7 +4,9 @@ clc
 close all
 clear all
 
+global testrho Rho
 
+testroh = Rho
 
 data = xlsread('Phugoid_GpA.xls');
 
