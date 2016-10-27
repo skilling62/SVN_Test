@@ -37,8 +37,10 @@ r5 = pk(3,:);
 r6 = troughs(3,:);
 
 %% Calculations
-
+% Using the logarithmic decrement method provided in Flight Dynamics Notes
+% Calculate the Damped Natural Frequency
 Omeg_d = 2*(pi)/ (t3 - t1);
+
 lil_delta = -log((abs(r3 - r1))/ (abs(r2 - r3)));
 Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
 Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)));

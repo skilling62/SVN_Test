@@ -1,11 +1,14 @@
 function SPeriod_Func()
 
+clc
 %%global U_0 Q m S Rho CD_0 I_y
 
 addpath .\Cranfield_Flight_Test_Data;
 
 %% Import data
-SpData = xlsread('SPPO_GpB.xls');
+SpData = xlsread('SPPO_GpA.xls');
+
+% Density Calculation
 
 % Assign variables to columns
 time = SpData(:,1);
@@ -18,16 +21,35 @@ Pitch = SpData(:,4);
 PitchRate = SpData(:,5);
 
 %% Plot angle of attack vs speed to determine response
-plot(time, Alpha)
+plot(time, PitchRate)
 grid minor
-[pk,lc] = findpeaks(Alpha,time,'MinPeakDistance',5.0);
-[troughs, lc1] = findpeaks(-Alpha,time,'MinPeakDistance',2.0);
+[pk,lc] = findpeaks(PitchRate,time,'MinPeakDistance',1.8);
+[troughs, lc1] = findpeaks(-PitchRate,time,'MinPeakDistance',2.0);
 troughs = -troughs;
-plot(time,Alpha, 'g',lc, pk, 'mo', lc1, troughs, 'ko');
+plot(time,PitchRate, 'g',lc, pk, 'mo', lc1, troughs, 'ko');
 ax.XTickLabelMode = 'auto';
 grid minor;
- 
- %% Calculations
+
+%% Analyse the plot
+
+% Damped natural frequency calculation (Inspection of troughs 3 and 4)
+
+% Omit the trough at t = 0 in the group A plot
+if lc1(1) < 0.5
+   t1 = lc1(4);
+   t2 = lc1(5);
+else
+    t1 = lc1(3);
+    t2 = lc1(4);
+end
+
+% Calculate the time period
+TPeriod = t2-t1;
+
+% Calculate the damped natural frequency
+Omeg_d = (2*pi/TPeriod)
+
+%% Calculations
  
 % Pg_data = xlsread('Phugoid_GpA.xls');
 %  
