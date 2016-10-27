@@ -12,7 +12,7 @@ Fuel_Used = In_Fuel - End_Fuel;
 
 Burn_Rate = Fuel_Used / (40 * 60); % kg/s
 
-Fuel_Con = (In_Fuel./ time)  - Burn_Rate; Fuel_Con_A = 5.643; Fuel_Con_Mo = Fuel_Con * Fuel_Con_A; 
+Fuel_Con = (In_Fuel./ time) - Burn_Rate; Fuel_Con_A = 5.643; Fuel_Con_Mo = Fuel_Con * Fuel_Con_A; 
 
 AC_W = 4949; AC_A = 5.569; AC_Mo = AC_W * AC_A;
 StRow3_W = 60; StRow3_A = 5.400; StRow3_Mo = StRow3_W * StRow3_A;

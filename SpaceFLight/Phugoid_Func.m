@@ -1,18 +1,19 @@
 %% Phugoid Function
 
 
-function [Z_u, X_u] = Phugoid_Func()
+function Phugoid_Func()
 
-global U_0 Q m S g
+global U_0 Q m S_w g Rho CD_0 CL_0 Mach CL_u
 
 addpath .\Cranfield_Flight_Test_Data;
-%% Creating 
-data = xlsread('Phugoid_GpA.xls');
+%% Creating Data to use in calulations
+
+Pg_data = xlsread('Phugoid_GpA.xls');
 
 kts2ms = 0.51444; % kts to m/s 1 = 0.51444
 
-time = data(:,1);
-speed = data(:,4) * kts2ms; 
+time = Pg_data(:,1);
+speed = Pg_data(:,4) * kts2ms; 
 
 [pk,lc] = findpeaks(speed,time);
 [troughs, lc1] = findpeaks(-speed,time);
@@ -42,13 +43,18 @@ lil_delta = -log((abs(r3 - r1))/ (abs(r2 - r3)));
 Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
 Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)));
 
-Z_u = -(U_0 * (Omeg_n^2)) / g
-CZ_u = (m * U_0 * Z_u) / (Q * S);
+Dens_Calc(358,Pg_data(1,5),18,1012)
+
+Q = 0.5 * Rho * (U_0)^2;
+
+
+Z_u = - ( U_0 * (Omeg_n^2)) / g
+CZ_u = (m * U_0 * Z_u) / (Q * S_w);
 X_u = 2 * Zeta * Omeg_n
-CX_u = (m * U_0 * X_u) / (Q * S);
+CX_u = (m * U_0 * X_u) / (Q * S_w);
 
 CL_0 = -(CZ_u) / 2
 CD_0 = -(CX_u) / 3
-
+CL_u = ((Mach)^2 / (1 - (Mach)^2)) * CL_0
 
 end
