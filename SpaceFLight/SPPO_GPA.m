@@ -31,3 +31,5 @@ cbar = 1.717;
  
  Omeg_nsp = sqrt((Zalpha*Mq/U0)-Malpha);
  Zeta_sp = -((Mq+Malphadot+(Zalpha/U0))/(2*Omeg_nsp));
+ 
+ hello ben
