@@ -2,12 +2,12 @@ function Dens_Calc(airfieldalt_ft,testalt_ft,airfieldtemp_deg,airfieldpress_mb )
 
 
 
-global Rho
+global Rho g
 
 %% Declare Variables
 
 % Acceleration due to Gravity in ms^-2
-g0 = 9.81;
+g = 9.81;
 % Lapse rate Km^-1
 a = -0.0065;
 % Gas Constant(J/kgk)
@@ -60,8 +60,8 @@ plot(t,v_testalt_m)
 
 %% Calculate the pressure and density at the test altitude
 
-testpress_nm = (testtemp_k/airfieldtemp_k)^(-g0/(a*R)) * airfieldpress_nm;
-Rho = (testtemp_k/airfieldtemp_k)^(-1*((g0/(a*R))+1)) * airfieldrho;
+testpress_nm = (testtemp_k/airfieldtemp_k)^(-g/(a*R)) * airfieldpress_nm;
+Rho = (testtemp_k/airfieldtemp_k)^(-1*((g/(a*R))+1)) * airfieldrho;
 
 
 end
