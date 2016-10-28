@@ -49,6 +49,21 @@ TPeriod = t2-t1;
 % Calculate the damped natural frequency
 Omeg_d = (2*pi/TPeriod)
 
+%
+Omeg_n = 3;
+
+%% Use the properties of the underdamped 0-100% rise time
+
+%% Determine steady state
+YSs = linspace(pk(5),pk(5),length(time));
+%%plot(time,YSs)
+
+P_SS = PitchRate == pk(5)
+
+
+%% Can use the logarithmic decrement to get Damping ratio
+
+
 %% Calculations
  
 % Pg_data = xlsread('Phugoid_GpA.xls');
