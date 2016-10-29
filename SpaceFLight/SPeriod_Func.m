@@ -6,7 +6,7 @@ clc
 addpath .\Cranfield_Flight_Test_Data;
 
 %% Import data
-SpData = xlsread('SPPO_GpA.xls');
+SpData = xlsread('SPPO_GpB.xls');
 
 % Density Calculation
 
@@ -49,11 +49,11 @@ end
 TPeriod = t2-t1;
 
 % Calculate the damped natural frequency
-Omeg_d = (2*pi/TPeriod);
+Omeg_d = (2*pi/TPeriod)
 
 %% Fuckery
 
-time_ = time(time>=t1)-t1
+time_ = time(time>=t1)-t1;
 
 
 disp(length(time_));
@@ -67,16 +67,19 @@ PitchRate_ = PitchRate((index):length(PitchRate))+abs(y1);
 
 disp(length(PitchRate_));
 
+% Determine the steady state value of the rescaled PitchRate vector 
+y_ss = PitchRate_(length(PitchRate_));
+
+%% Plot the rescaled response
 plot(time_,PitchRate_)
 hold on
 grid minor
 
 %%
-OmegaN = 2;
-OmegaD = sqrt(3);
+OmegaN = 3;
 for zeta = 0:0.1:1
-y = 10*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/OmegaD) * sin(OmegaD.*time_)) + cos(OmegaD.*time_)));
-%%plot(time_,y)
+y = y_ss*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
+plot(time_,y)
 hold on
 end
 
