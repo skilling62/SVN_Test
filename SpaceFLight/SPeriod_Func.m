@@ -36,30 +36,49 @@ grid minor;
 
 % Omit the trough at t = 0 in the group A plot
 if lc1(1) < 0.5
-   t1 = lc1(4);
-   t2 = lc1(5);
+   t1 = lc1(6);
+   t2 = lc1(7);
+   y1 = troughs(6);
 else
-    t1 = lc1(3);
-    t2 = lc1(4);
+    t1 = lc1(5);
+    t2 = lc1(6);
+    y1 = troughs(5);
 end
 
 % Calculate the time period
 TPeriod = t2-t1;
 
 % Calculate the damped natural frequency
-Omeg_d = (2*pi/TPeriod)
+Omeg_d = (2*pi/TPeriod);
 
-%
-Omeg_n = 3;
+%% Fuckery
 
-%% Use the properties of the underdamped 0-100% rise time
+time_ = time(time>=t1)-t1
 
-%% Determine steady state
-YSs = linspace(pk(5),pk(5),length(time));
-%%plot(time,YSs)
 
-P_SS = PitchRate == pk(5)
+disp(length(time_));
 
+index = length(time) - length(time_) + 1;
+
+time(index);
+PitchRate(index);
+
+PitchRate_ = PitchRate((index):length(PitchRate))+abs(y1);
+
+disp(length(PitchRate_));
+
+plot(time_,PitchRate_)
+hold on
+grid minor
+
+%%
+OmegaN = 2;
+OmegaD = sqrt(3);
+for zeta = 0:0.1:1
+y = 10*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/OmegaD) * sin(OmegaD.*time_)) + cos(OmegaD.*time_)));
+%%plot(time_,y)
+hold on
+end
 
 %% Can use the logarithmic decrement to get Damping ratio
 
