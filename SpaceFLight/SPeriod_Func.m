@@ -21,18 +21,18 @@ Pitch = SpData(:,4);
 PitchRate = SpData(:,5);
 
 %% Plot angle of attack vs speed to determine response
-plot(time, PitchRate)
+%plot(time, PitchRate)
 grid minor
 [pk,lc] = findpeaks(PitchRate,time,'MinPeakDistance',1.8);
-[troughs, lc1] = findpeaks(-PitchRate,time,'MinPeakDistance',2.0);
+[troughs, lc1] = findpeaks(-PitchRate,time,'MinPeakDistance',1.8);
 troughs = -troughs;
-plot(time,PitchRate, 'g',lc, pk, 'mo', lc1, troughs, 'ko');
+%plot(time,PitchRate, 'g',lc, pk, 'mo', lc1, troughs, 'ko');
 ax.XTickLabelMode = 'auto';
 grid minor;
 
 %% Analyse the plot
 
-% Damped natural frequency calculation (Inspection of troughs 3 and 4)
+% Damped natural frequency calculation
 
 % Omit the trough at t = 0 in the group A plot
 if lc1(1) < 0.5
@@ -71,17 +71,18 @@ disp(length(PitchRate_));
 y_ss = PitchRate_(length(PitchRate_));
 
 %% Plot the rescaled response
-plot(time_,PitchRate_)
+%plot(time_,PitchRate_)
 hold on
 grid minor
 
 %%
-OmegaN = 3;
+OmegaN = 4;
+hold all
 for zeta = 0:0.1:1
 y = y_ss*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
-plot(time_,y)
-hold on
+plot(time_,y, 'DisplayName',num2str(zeta));
 end
+legend(gca,'show')
 
 %% Can use the logarithmic decrement to get Damping ratio
 
