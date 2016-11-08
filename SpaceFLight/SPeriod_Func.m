@@ -21,15 +21,17 @@ Pitch = SpData(:,4);
 PitchRate = SpData(:,5);
 
 %% Plot angle of attack vs speed to determine response
-%plot(time, PitchRate)
-grid minor
 [pk,lc] = findpeaks(PitchRate,time,'MinPeakDistance',1.8);
 [troughs, lc1] = findpeaks(-PitchRate,time,'MinPeakDistance',1.8);
 troughs = -troughs;
-%plot(time,PitchRate, 'g',lc, pk, 'mo', lc1, troughs, 'ko');
+plot(time,ElvAngle, 'b', 'DisplayName', 'Elevator Angle (Degrees)')
+grid on
+hold on
+plot(time,PitchRate, 'g',lc, pk, 'mo', lc1, troughs, 'ko', 'DisplayName', 'Pitch Rate (Degrees/s)');
 ax.XTickLabelMode = 'auto';
-grid minor;
-
+legend(gca,'show')
+hold off
+xlabel ('Time (Seconds)')
 %% Analyse the plot
 
 % Damped natural frequency calculation
@@ -51,7 +53,7 @@ TPeriod = t2-t1;
 % Calculate the damped natural frequency
 Omeg_d = (2*pi/TPeriod)
 
-%% Fuckery
+%% Rescale the plot
 
 time_ = time(time>=t1)-t1;
 
@@ -71,8 +73,7 @@ disp(length(PitchRate_));
 y_ss = PitchRate_(length(PitchRate_));
 
 %% Plot the rescaled response
-%plot(time_,PitchRate_)
-hold on
+%plot(time_,PitchRate_, 'LineWidth',1.5) 
 grid minor
 
 %%
@@ -80,9 +81,10 @@ OmegaN = 4;
 hold all
 for zeta = 0:0.1:1
 y = y_ss*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
-plot(time_,y, 'DisplayName',num2str(zeta));
+%plot(time_,y, 'DisplayName',num2str(zeta));
 end
 legend(gca,'show')
+%ylabel('PitchRate')
 
 %% Can use the logarithmic decrement to get Damping ratio
 
