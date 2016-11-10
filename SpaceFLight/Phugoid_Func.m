@@ -50,7 +50,7 @@ Dens_Calc(358,Pg_data(1,5),18,1012)
 Q = 0.5 * Rho * (U_0)^2;
 
 
-Z_u = - ( U_0 * (Omeg_n^2)) / g
+Z_u = - (U_0 * (Omeg_n^2)) / g
 CZ_u = (m * U_0 * Z_u) / (Q * S_w);
 X_u = 2 * Zeta * Omeg_n
 CX_u = (m * U_0 * X_u) / (Q * S_w);

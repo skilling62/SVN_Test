@@ -40,11 +40,13 @@ global EffFac_W CL_AlphaV dSigmaBYdBeta C_nBeta_wt EffFac_V
     d_w = 14.351;   % m, Main Wing Length
     e_w = (b_w + d_w) / 2; % m
 	AR_w = (b_w^2) / S_w; % Aspect Ratio for Main Wing
-    MAC = 1.71704;  % m, Mean Aerodynamic Chord
+    Cbar = 1.71704;  % m, Mean Aerodynamic Chord
+   
+    
     
 	Y1 = (b_w / 2) - ((b_w / 2) * 0.3); % Spanwise Distance from Centreline to the inboard edge of the aileron control percentage taken estimate 
 	EffFac_W = Y1 / (b_w / 2); % Efficiency factor of the main wing
-    K = -0.12;      % Value found using graph from Nelson, R Flight Stability and Automatic Control CH 3 pg 122 fig 3.12
+    K = -0.12;      % Empirical factor for Cn_lilDelta_Aileron Nelson, R -  CH 3 pg 122 fig 3.12
     
     
     
@@ -53,16 +55,18 @@ global EffFac_W CL_AlphaV dSigmaBYdBeta C_nBeta_wt EffFac_V
 	b_v = 3.0861;   % m, Height of Verticial Stabiliser
     AR_v = (b_v^2) / S_v; %  Aspect Ratio for Verticial Stabiliser
     l_v = 0;		% Distance from CG to vertical Stabiliser MAC
-	V_v = 0;		% Vertical Stabiliser volume ratio
+	V_v = (l_v * S_v) / (S_w * Cbar);		% Vertical Stabiliser volume ratio
     Y2 = (b_v / 2) - ((b_v / 2) * 0.95); % Spanwise Distance from Centreline to the inboard edge of the rudder percentage taken estimate 
     EffFac_V = Y2 / (b_v / 2); % Efficiency factor of the Veritical Stabiliser
-    
+    CM_alphT = -(EffFac_V) * V_v * CL_AlphaV * (1 - dSigmaBYdBeta); 
     
     
     % Horizontal Stabilisers Specification
     S_h = 7.80386;  % m^2, Horizontal Stabiliser area 
     b_h = 6.64464;  % m, Span of Horizontal Stabiliser 
     AW_h = (b_h^2) / S_h   %  Aspect Ratio for Horizontial Stabiliser
+    
+    
     
     % Weights of Aircraft
     m = 6348; 		% kg, Weight of the Aircraft
@@ -77,20 +81,26 @@ global EffFac_W CL_AlphaV dSigmaBYdBeta C_nBeta_wt EffFac_V
     CL_0w = 0.368;
     CD_0w = 0.01852;
     CM_Ow = -0.059;      % 25% MAC
-	
+	CL_Aw = 0.0788;
+    CD_Aw = 0.008956;
+    CM_Aw = -0.0014;
+      
     % Horizontal Stabilisers
     CL_0h = 0.00;
     CD_0h = 0.01217;
     CM_0h = -0.00;        % 25% MAC
     
-    
-    
-    
+    % Fuselage data
+    K_n = 1;    % Empirical wing-body interference factor tha is a function of the fuselage geometry
+    K_RL = 1;   % Empirical correction factor that is a function of the fuselage Reynolds Number
+    S_fs = 1;   % The projected side area of the fuselage
+    L_f = 1;    % Length of the fuselage
+    C_nBeta_wt = -K_n * K_RL * ((S_fs * L_f)/(S_w * b_w));
     
     
     CL_AlphaV = 1;
     dSigmaBYdBeta = 1;
-    C_nBeta_wt = 1;
+    
     
         
 	
