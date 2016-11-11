@@ -43,10 +43,12 @@ ylabel('State Variable','FontSize',14)
 if lc1(1) < 0.5
    t1 = lc1(4);
    t2 = lc1(5);
+   t3 = lc1(6) - 0.5;
    y1 = troughs(4);
 else
     t1 = lc1(3);
     t2 = lc1(4);
+    t3 = lc1(5) - 0.5;
     y1 = troughs(3);
 end
 
@@ -58,22 +60,31 @@ Omeg_d = (2*pi/TPeriod);
 
 %% Rescale the plot
 
-time_ = time(time>=t1)-t1;
+time_ = time(time>=t1 & time<t3)-t1;
+
+length(time_)
 
 
 %disp(length(time_));
 
-index = length(time) - length(time_) + 1;
+index = length(time) - length(time(time>=t1)) + 1;
+
+% Final Pitch Value
 
 time(index);
 PitchRate(index);
 
-PitchRate_ = PitchRate((index):length(PitchRate))+abs(y1);
+% Find the end position in the original pitch vector
+Pfindex = (index + length(time_)) -1 ;
+
+PitchRate_ = PitchRate(index:Pfindex) + abs(y1);
+
+length(PitchRate_)
 
 %disp(length(PitchRate_));
 
 % Determine the steady state value of the rescaled PitchRate vector 
-y_ss = PitchRate_(length(PitchRate_));
+%y_ss = PitchRate_(length(PitchRate_));
 
 %% Plot the rescaled response
 plot(time_,PitchRate_, 'LineWidth',1.5) 
