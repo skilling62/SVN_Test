@@ -24,41 +24,44 @@ PitchRate = SpData(:,5);
 [pk,lc] = findpeaks(PitchRate,time,'MinPeakDistance',1.8);
 [troughs, lc1] = findpeaks(-PitchRate,time,'MinPeakDistance',1.8);
 troughs = -troughs;
-plot(time,ElvAngle, 'b', 'DisplayName', 'Elevator Angle (Degrees)')
+plot(time,ElvAngle, 'b', 'DisplayName', 'Elevator Deflection Angle (Degrees)')
 grid on
 hold on
-plot(time,PitchRate, 'g',lc, pk, 'mo', lc1, troughs, 'ko', 'DisplayName', 'Pitch Rate (Degrees/s)');
+plot(lc, pk, 'mo', lc1, troughs, 'ko','HandleVisibility','off');
+plot(time,PitchRate, 'g','DisplayName', 'Pitch Rate')
 ax.XTickLabelMode = 'auto';
-legend(gca,'show')
 hold off
-xlabel ('Time (Seconds)')
+legend(gca,'show')
+set(legend,'FontSize',14)
+xlabel ('Time (Seconds)','FontSize', 14)
+ylabel('State Variable','FontSize',14)
 %% Analyse the plot
 
 % Damped natural frequency calculation
 
 % Omit the trough at t = 0 in the group A plot
 if lc1(1) < 0.5
-   t1 = lc1(6);
-   t2 = lc1(7);
-   y1 = troughs(6);
+   t1 = lc1(4);
+   t2 = lc1(5);
+   y1 = troughs(4);
 else
-    t1 = lc1(5);
-    t2 = lc1(6);
-    y1 = troughs(5);
+    t1 = lc1(3);
+    t2 = lc1(4);
+    y1 = troughs(3);
 end
 
 % Calculate the time period
 TPeriod = t2-t1;
 
 % Calculate the damped natural frequency
-Omeg_d = (2*pi/TPeriod)
+Omeg_d = (2*pi/TPeriod);
 
 %% Rescale the plot
 
 time_ = time(time>=t1)-t1;
 
 
-disp(length(time_));
+%disp(length(time_));
 
 index = length(time) - length(time_) + 1;
 
@@ -67,21 +70,21 @@ PitchRate(index);
 
 PitchRate_ = PitchRate((index):length(PitchRate))+abs(y1);
 
-disp(length(PitchRate_));
+%disp(length(PitchRate_));
 
 % Determine the steady state value of the rescaled PitchRate vector 
 y_ss = PitchRate_(length(PitchRate_));
 
 %% Plot the rescaled response
-%plot(time_,PitchRate_, 'LineWidth',1.5) 
+plot(time_,PitchRate_, 'LineWidth',1.5) 
 grid minor
 
 %%
-OmegaN = 4;
 hold all
 for zeta = 0:0.1:1
-y = y_ss*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
-%plot(time_,y, 'DisplayName',num2str(zeta));
+    OmegaN = (Omeg_d/sqrt(1 - zeta^2));
+    y = 5*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
+    plot(time_,y, 'DisplayName',num2str(zeta));
 end
 legend(gca,'show')
 %ylabel('PitchRate')
