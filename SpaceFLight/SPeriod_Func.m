@@ -6,7 +6,7 @@ clc
 addpath .\Cranfield_Flight_Test_Data;
 
 %% Import data
-SpData = xlsread('SPPO_GpB.xls');
+SpData = xlsread('SPPO_GpA.xls');
 
 % Density Calculation
 
@@ -35,10 +35,16 @@ legend(gca,'show')
 set(legend,'FontSize',14)
 xlabel ('Time (Seconds)','FontSize', 14)
 ylabel('State Variable','FontSize',14)
+
+
 %% Analyse the plot
+disp(' (1) Enter a value for damping ratio')
+disp(' (2) Use logarithmic decrement')
+option = input(' ');
 
-% Damped natural frequency calculation
-
+switch option
+    case 1
+%% Determine the Damping Ratio and Natural Frequency By Inspection
 % Omit the trough at t = 0 in the group A plot
 if lc1(1) < 0.5
    t1 = lc1(4);
@@ -60,45 +66,46 @@ Omeg_d = (2*pi/TPeriod);
 
 %% Rescale the plot
 
+% New time Vector whose domain is scaled down
 time_ = time(time>=t1 & time<t3)-t1;
 
-length(time_)
-
-
-%disp(length(time_));
-
+% Determine the index of the starting point in the original time vector
 index = length(time) - length(time(time>=t1)) + 1;
-
-% Final Pitch Value
-
-time(index);
-PitchRate(index);
 
 % Find the end position in the original pitch vector
 Pfindex = (index + length(time_)) -1 ;
 
+% New Pitch Rate vector
 PitchRate_ = PitchRate(index:Pfindex) + abs(y1);
 
-length(PitchRate_)
-
-%disp(length(PitchRate_));
-
 % Determine the steady state value of the rescaled PitchRate vector 
-%y_ss = PitchRate_(length(PitchRate_));
+y_ss = PitchRate_(length(PitchRate_));
 
-%% Plot the rescaled response
-plot(time_,PitchRate_, 'LineWidth',1.5) 
+%% Plot the rescaled response and Standard Second Order Responses
+%plot(time_,PitchRate_,'k', 'LineWidth',1.5,'DisplayName','System Response') 
 grid minor
 
-%%
 hold all
 for zeta = 0:0.1:1
+    % Use a range of Natural frequencies
     OmegaN = (Omeg_d/sqrt(1 - zeta^2));
-    y = 5*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
-    plot(time_,y, 'DisplayName',num2str(zeta));
+    y = y_ss*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
+    %plot(time_,y, 'DisplayName',num2str(zeta));
 end
 legend(gca,'show')
-%ylabel('PitchRate')
+ylabel('PitchRate')
+xlabel('Time')
+
+zeta_ = input('Input the damping ratio: ');
+OmegaN_ = (Omeg_d/sqrt(1-zeta_^2))
+
+%% Use the logarithmic decrement
+    case 2
+if lc1(1) < 0.5
+   r1 = troughs(4);
+   r2 = pk(4);
+   r3 = troughs(5);
+end
 
 %% Can use the logarithmic decrement to get Damping ratio
 
