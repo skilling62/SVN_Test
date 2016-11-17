@@ -6,9 +6,7 @@ clc
 addpath .\Cranfield_Flight_Test_Data;
 
 %% Import data
-SpData = xlsread('SPPO_GpA.xls');
-
-% Density Calculation
+SpData = xlsread('SPPO_GpB.xls');
 
 % Assign variables to columns
 time = SpData(:,1);
@@ -19,6 +17,10 @@ Alpha = SpData(:,3);
 Pitch = SpData(:,4);
 % Pitch rate = q. A principal value for short period
 PitchRate = SpData(:,5);
+% Initial Velocity
+u0 = SpData(1,7);
+% Initial Altitude
+alt0 = SpData(1,8);
 
 %% Plot angle of attack vs speed to determine response
 [pk,lc] = findpeaks(PitchRate,time,'MinPeakDistance',1.8);
@@ -94,8 +96,8 @@ ylabel('PitchRate (degrees/s)')
 xlabel('Time (s)')
 
 % Manually input a value of zeta 
-zeta_ = 0.5
-OmegaN_ = (Omeg_d/sqrt(1-zeta_^2))
+zeta_ = 0.5;
+OmegaN_ = (Omeg_d/sqrt(1-zeta_^2));
 
     case 1
 %% Use the logarithmic decrement Method
@@ -128,21 +130,29 @@ end
 %% Calculations
 % From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
 
-ac_data = matfile('JetStream.mat');
+filename = 'JetStream.mat';
 
-hi = who(ac_data)
+m = matfile(filename);
 
-dave = ac_data(2,:)
+I_x = m.I_x;
 
-% Dens_Calc(358,Pg_data(1,5),18,1012)
-% 
-% Q = 0.5 * Rho * (U_0)^2;
-% 
-% 
+% Import Cl Alpha for the wing
+CL_Aw = m.CL_Aw;
+
+% Calculate the density at test conditions
+Rho = Dens_Calc(358,alt0,18,1012)
+
+% Import Wing Planform Area
+S_w = m.S_w
+
+% Import CD0
+CD_0w = m.CD_0w
+
+% Aircraft Mass
+m = m.m
+ 
 % cbar = 1.717;
-% 
-% Cmalpha = 1; %!!!!!!CHANGE!!!!!!!!!!!!
-% 
+
 % Clalpha = -0.1715; %!!!!!!CHANGE!!!!!!!!!!!!
 % 
 % Cm_q = 1; %!!!!!!CHANGE!!!!!!!!!!!!
