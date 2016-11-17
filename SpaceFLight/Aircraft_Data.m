@@ -16,62 +16,6 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V
     % Name of the MAT-file that will be generated
     cfgmatfile = 'JetStream';
 
-   	    %% CG Calculations
-    
-    M_W = 6348; 
-    M_A = 5.643; 
-    M_M = M_W * M_A;
-    
-    AC_W = 4949; 
-    AC_A = 5.569; 
-    AC_Mo = AC_W * AC_A;
-    
-    StRow3_W = 60; 
-    StRow3_A = 5.400; 
-    StRow3_Mo = StRow3_W * StRow3_A;
-    
-    StRow4_W = 207; 
-    StRow4_A = 6.370; 
-    StRow4_Mo = StRow4_W * StRow4_A;
-    
-    StRow5_W = 149; 
-    StRow5_A = 7.130; 
-    StRow5_Mo = StRow5_W * StRow5_A;
-    
-    StRow6_W = 239; 
-    StRow6_A = 7.890; 
-    StRow6_Mo = StRow6_W * StRow6_A;
-    
-    CO_W = 85; 
-    CO_A = 8.550; 
-    CO_Mo = CO_W * CO_A;
-
-    SUM_Mass = sum([AC_W M_W StRow3_W StRow4_W StRow5_W StRow6_W CO_W]);
-    SUM_Mom = sum([AC_Mo M_M StRow3_Mo StRow4_Mo StRow5_Mo StRow6_Mo CO_Mo]);
-
-    CG = (((SUM_Mom / SUM_Mass) - 5.149)) * (100/1.717);
-    
-    %% U_0 Calculations
-    
-    kts2ms = 0.51444; % kts to m/s 1 = 0.51444
-	
-    addpath .\Cranfield_Flight_Test_Data;
-    
-    data1 = xlsread('Phugoid_GpA.xls');
-	data2 = xlsread('Phugoid_GpB.xls');
-	data3 = xlsread('Phugoid_GpC.xls');
-
-    U1_0 = data1(1,4);
-	U2_0 = data2(1,4);
-	U3_0 = data3(1,4);
-
-    U_0 = (((U1_0 + U2_0 + U3_0) / 3) * kts2ms);	% m/s, U_0 is the average speed of the phugoid
-    
-    Kts2Mach = 0.0015; % Knots to Mach Number convertion 1 = 0.0015
-    
-    Mach = U_0 * Kts2Mach;
-    
-    %   Ref: http://www.airlines-inform.com/commercial-aircraft/Jetstream-31.html
     %% Aircraft Specifications
     
     % Weights of Aircraft
@@ -174,7 +118,8 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V
     C_nBeta_wt = -(K_n) * K_RL * ((S_fs * L_f)/(S_w * b_w));
     
     dEpsBYdAlpha = (2 * CL_Aw) / (pi * AR_w);
-    dSigmaBYdBeta = 1;  
+    Sweep_25Chord = 1
+    dSigmaBYdBeta = (S_v / S_w) / (1 + (cos(Sweep_25Chord)));  
     
     
 		
