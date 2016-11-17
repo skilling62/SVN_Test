@@ -119,13 +119,13 @@ else
     t1 = lc(4)
 end
 
-r3-r2
-r2-r1
+% r3-r2;
+% r2-r1;
 % Calculation of the logarithmic decrement
-lil_delta = -log((r3 - r2)/(r2 - r1));
+lil_delta = -log(abs((r3 - r2))/(abs(r2 - r1)));
 
 % Calculation of damping ratio
-zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)))
+zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
 
 % % Calculation of Damped natural frequency
 % Omeg_d = 2*(pi)/ (t3 - t1)
