@@ -8,7 +8,7 @@ addpath .\Cranfield_Flight_Test_Data;
 kts2ms = 0.51444; % kts to m/s 1 = 0.51444
 
 %% Import data
-SpData = xlsread('SPPO_GpB.xls');
+SpData = xlsread('SPPO_GpA.xls');
 
 % Assign variables to columns
 time = SpData(:,1);
@@ -100,7 +100,7 @@ xlabel('Time (s)')
 hold off
 % Manually input a value of zeta 
 zeta_ = 0.5;
-OmegaN_ = (Omeg_d/sqrt(1-zeta_^2));
+Omeg_n = (Omeg_d/sqrt(1-zeta_^2));
 
     case 1
 %% Use the logarithmic decrement Method
@@ -113,8 +113,10 @@ if lc1(1) < 0.5
    t1 = lc1(4);
 else 
     r1 = troughs(3);
-    
+    r2 = pk(4);
     r3 = troughs(4);
+    t3 = lc1(4);
+    t1 = lc1(3);
 end
 
 % Calculation of the logarithmic decrement
@@ -127,19 +129,35 @@ zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
 zeta_ = 2*(pi)/ (t3 - t1);
 
 % Calculation of Natural Frequency
-Omeg_n = zeta_ / (sqrt(1 - (zeta_^2)));
+Omeg_n = zeta_ / (sqrt(1 - (zeta_^2)))
 end
+
+disp(Omeg_n)
 
 %% Calculations
 % From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
 
-load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y')
+load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CM_Aw')
 
 % Calculate the density at test conditions
-Rho = Dens_Calc(358,alt0,18,1012)
+Rho = Dens_Calc(358,alt0,18,1012);
 
 % Calculate Dynamic Pressure
-Q = 0.5*Rho*(u0^2)
+Q = 0.5*Rho*(u0^2);
+
+% Calculate Zw and Zalpha
+
+Zw = -(CL_Aw + CD_0w)*Q*S_w/(u0*m);
+Zalpha = u0*Zw;
+
+% Calculate Mw and Malpha
+
+Mw = (CM_Aw * Q * S_w * Cbar)/(u0 * I_y);
+Malpha = u0*Mw;
+
+% Calculate Mq
+
+%Mq = (u0*(Omeg_n^2 * Malpha))/zalpha
 
 % 
 % Cm_q = 1; %!!!!!!CHANGE!!!!!!!!!!!!
