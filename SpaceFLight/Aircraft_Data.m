@@ -10,16 +10,19 @@
 
 function Aircraft_Data ()
 
-global U_0 m S_w S_v b_w b_v I_z I_x I_y Mach AR_w AR_v l_v V_v 
-global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V
+global m S_w S_v b_w b_v I_z I_x I_y AR_w AR_v l_v V_v 
+global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V dSigmaBYdBeta
 
     % Name of the MAT-file that will be generated
     cfgmatfile = 'JetStream';
 
+    g = 9.81; % Gravity accelartional constant m/s^-2
+    
     %% Aircraft Specifications
     
     % Weights of Aircraft
-    m = 6348; 		% kg, Weight of the Aircraft
+    m = 6348; % kg, Mass of the Aircraft
+    W = m * g; % N, Weight of the Aircraft
 	MTOW = 7350;	% kg, Max Take-off Weight of the Aircraft
 	MLW = 7080;		% kg, Max Landing Weight of the Aircraft
 	OEW = 4720;		% kg, Operating Empty Weight of the Aircraft
@@ -143,10 +146,16 @@ K_Rl = 1.2; % Empirical correction factor that is a function of the fuselage Rey
     C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
     
     dEpsBYdAlpha = (2 * CL_Aw) / (pi * AR_w);
-    Sweep_25Chord = 1
-    dSigmaBYdBeta = (S_v / S_w) / (1 + (cos(Sweep_25Chord)));  
+    Swept_Chord = 3.9761; %Swept angle of the main wing
+    dSigmaBYdBeta = (S_v / S_w) / (1 + (cos(Swept_Chord))); % Change in Sidewash angle with a change in sideslip angle
     
-    
+%     Pg_data = xlsread('Phugoid_GpA.xls');
+% 
+%     Rho = Dens_Calc(358,Pg_data(1,5),18,1012);
+% 
+%     U_0 = Initial_Speed();
+%     
+%     Time_Constant = 2 *(W * S_w)/ (CL_Aw * Rho * U_0 * g)
 		
     %%  Moments of Inertia Calulations
     

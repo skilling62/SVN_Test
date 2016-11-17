@@ -1,9 +1,10 @@
 %% Phugoid Function
 
 
-function Phugoid_Func()
+function [Z_u X_u] = Phugoid_Func()
 
-global U_0 Q m S_w g Rho CD_0 CL_0 Mach CL_u
+global m S_w g 
+% global CD_0 CL_0 Mach CL_u
 
 addpath .\Cranfield_Flight_Test_Data;
 %% Creating Data to use in calulations
@@ -45,18 +46,19 @@ lil_delta = -log((abs(r3 - r1))/ (abs(r2 - r3)));
 Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
 Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)));
 
-Dens_Calc(358,Pg_data(1,5),18,1012)
+Rho = Dens_Calc(358,Pg_data(1,5),18,1012)
+
+U_0 = Initial_Speed();
 
 Q = 0.5 * Rho * (U_0)^2;
 
-
-Z_u = - (U_0 * (Omeg_n^2)) / g
+Z_u = - (U_0 * (Omeg_n^2)) / g;
 CZ_u = (m * U_0 * Z_u) / (Q * S_w);
-X_u = 2 * Zeta * Omeg_n
+X_u = 2 * Zeta * Omeg_n;
 CX_u = (m * U_0 * X_u) / (Q * S_w);
 
-CL_0 = -(CZ_u) / 2
-CD_0 = -(CX_u) / 3
-CL_u = ((Mach)^2 / (1 - (Mach)^2)) * CL_0
+% CL_0 = -(CZ_u) / 2;
+% CD_0 = -(CX_u) / 3;
+% CL_u = ((Mach)^2 / (1 - (Mach)^2)) * CL_0;
 
 end
