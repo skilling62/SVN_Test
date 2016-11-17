@@ -5,6 +5,8 @@ clc
 
 addpath .\Cranfield_Flight_Test_Data;
 
+kts2ms = 0.51444; % kts to m/s 1 = 0.51444
+
 %% Import data
 SpData = xlsread('SPPO_GpB.xls');
 
@@ -18,7 +20,7 @@ Pitch = SpData(:,4);
 % Pitch rate = q. A principal value for short period
 PitchRate = SpData(:,5);
 % Initial Velocity
-u0 = SpData(1,7);
+u0 = SpData(1,7) * kts2ms;
 % Initial Altitude
 alt0 = SpData(1,8);
 
@@ -95,6 +97,7 @@ legend(gca,'show')
 ylabel('PitchRate (degrees/s)')
 xlabel('Time (s)')
 
+hold off
 % Manually input a value of zeta 
 zeta_ = 0.5;
 OmegaN_ = (Omeg_d/sqrt(1-zeta_^2));
@@ -130,30 +133,14 @@ end
 %% Calculations
 % From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
 
-filename = 'JetStream.mat';
-
-m = matfile(filename);
-
-I_x = m.I_x;
-
-% Import Cl Alpha for the wing
-CL_Aw = m.CL_Aw;
+load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y')
 
 % Calculate the density at test conditions
 Rho = Dens_Calc(358,alt0,18,1012)
 
-% Import Wing Planform Area
-S_w = m.S_w
+% Calculate Dynamic Pressure
+Q = 0.5*Rho*(u0^2)
 
-% Import CD0
-CD_0w = m.CD_0w
-
-% Aircraft Mass
-m = m.m
- 
-% cbar = 1.717;
-
-% Clalpha = -0.1715; %!!!!!!CHANGE!!!!!!!!!!!!
 % 
 % Cm_q = 1; %!!!!!!CHANGE!!!!!!!!!!!!
 % 

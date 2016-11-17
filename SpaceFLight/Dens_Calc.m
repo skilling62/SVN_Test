@@ -35,18 +35,18 @@ ISA = seatemp_k - 288.16;
 %disp(['The ISA COndition is + ',num2str(ISA),' celsius']);
 
 %% Plot the temperature altitude relationship for ISA and conditions and ISA + 3.7
-h = linspace(0,10000,100);
-t0 = 288.15;
-t = t0+(a.*h);
-plot(t,h)
-grid on
-xlabel('Temperature(k)')
-ylabel('Altitude(m)')
-hold on
-tmy = seatemp_k+(a.*h);
-plot(tmy,h)
-v_testalt_m = linspace(testalt_m,testalt_m,length(t));
-plot(t,v_testalt_m)
+% h = linspace(0,10000,100);
+% t0 = 288.15;
+% t = t0+(a.*h);
+% plot(t,h)
+% grid on
+% xlabel('Temperature(k)')
+% ylabel('Altitude(m)')
+% hold on
+% tmy = seatemp_k+(a.*h);
+% plot(tmy,h)
+% v_testalt_m = linspace(testalt_m,testalt_m,length(t));
+% plot(t,v_testalt_m)
 
 %% Display some values to check calculation
 % Display temperature at test altitude
