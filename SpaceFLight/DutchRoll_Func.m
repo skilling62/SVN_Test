@@ -1,6 +1,6 @@
 function DutchRoll_Func ()
 
-global S_v S_w b_w b_v V_v l_v m U_0 I_z Rho
+global S_v S_w b_w b_v V_v l_v m I_z 
 global CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V
 
 addpath .\Cranfield_Flight_Test_Data;
@@ -20,7 +20,10 @@ C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dEpsBYdAlpha));
 %% Calculations
 
 Pg_data = xlsread('Phugoid_GpA.xls');
-Dens_Calc(358,Pg_data(1,5),18,1012)
+
+Rho = Dens_Calc(358,Pg_data(1,5),18,1012);
+
+U_0 = Initial_Speed();
 
 Q = 0.5 * Rho * (U_0)^2;
 

@@ -101,7 +101,7 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V
     S_v = 5.639215; % m^2, Vertical Stabiliser area 
 	b_v = 3.0861;   % m, Height of Verticial Stabiliser
     AR_v = (b_v^2) / S_v; %  Aspect Ratio for Verticial Stabiliser
-    l_v = 0;		% Distance from CG to vertical Stabiliser MAC
+    l_v = 7.12;		% Distance from CG to vertical Stabiliser MAC
 	V_v = (l_v * S_v) / (S_w * Cbar);		% Vertical Stabiliser volume ratio
     Y2 = (b_v / 2) - ((b_v / 2) * 0.95); % Spanwise Distance from Centreline to the inboard edge of the rudder percentage taken estimate 
     EffFac_V = Y2 / (b_v / 2); % Efficiency factor of the Veritical Stabiliser
@@ -112,10 +112,35 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V
     S_h = 7.80386;  % m^2, Horizontal Stabiliser area 
     b_h = 6.64464;  % m, Span of Horizontal Stabiliser 
     AW_h = (b_h^2) / S_h;   %  Aspect Ratio for Horizontial Stabiliser
-      
-    %% Other Parametres
     
-    C_nBeta_wt = -(K_n) * K_RL * ((S_fs * L_f)/(S_w * b_w));
+    %% Empirical Factors
+    
+xm = 4.67; % Distances from the datum to the CG m
+lf = 13.446; % length of the fuselage m
+h1f = 1.992; % height of the fuselage at 1/4 length m
+h2f = h1f/2; % height of the fuselage at 3/4 length m
+wf = 1.981;  % max body width m
+Sf = 18.51;  % The Projected Side Area of the fuselage m^2
+vis = 1.694; % N.s/m^2, Assumed constant at 3000m Ref: http://www.engineeringtoolbox.com/standard-atmosphere-d_604.html
+
+% Using results from KN_factors, graph used to find the K_n Empirical factor, Found in Nelson pg 75
+KN_Factor1 = xm / lf;
+KN_Factor2 = (lf^2) / Sf;
+KN_Factor3 = sqrt(h1f / h2f);
+KN_Factor4 = h1f / wf;
+
+K_n = 0.0015; % Empirical Wing-bodyinterference factore that is a function of the fuselage geometry 
+
+% Using results from V_lf, graph used to find the K_Rl Empirical factor, Found in Nelson pg 75
+V_lf = (Sf * lf) / (S_w * b_w);
+
+R_lf = (V_lf * vis)*10^-6;
+
+K_Rl = 1.2; % Empirical correction factor that is a function of the fuselage Reynolds number
+    
+    %% Other Parametres
+           
+    C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
     
     dEpsBYdAlpha = (2 * CL_Aw) / (pi * AR_w);
     Sweep_25Chord = 1

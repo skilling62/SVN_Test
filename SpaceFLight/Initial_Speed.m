@@ -16,9 +16,9 @@
 %
 
 
-function Initial_Speed ()
+function [U_0] = Initial_Speed ()
 
-global U_0 Mach 
+global Mach
 
     kts2ms = 0.51444; % kts to m/s 1 = 0.51444
 	
