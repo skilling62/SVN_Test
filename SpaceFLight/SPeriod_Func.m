@@ -38,12 +38,8 @@ ylabel('State Variable','FontSize',14)
 
 
 %% Analyse the plot
-disp(' (1) Enter a value for damping ratio')
-disp(' (2) Use logarithmic decrement')
-option = input(' ');
 
-switch option
-    case 1
+
 %% Determine the Damping Ratio and Natural Frequency By Inspection
 % Omit the trough at t = 0 in the group A plot
 if lc1(1) < 0.5
@@ -96,18 +92,35 @@ legend(gca,'show')
 ylabel('PitchRate')
 xlabel('Time')
 
-zeta_ = input('Input the damping ratio: ');
-OmegaN_ = (Omeg_d/sqrt(1-zeta_^2))
+% Manually input a value of zeta 
+zeta_ = 0.5;
+OmegaN_ = (Omeg_d/sqrt(1-zeta_^2));
 
-%% Use the logarithmic decrement
-    case 2
+%% Use the logarithmic decrement Method
+   
 if lc1(1) < 0.5
-   r1 = troughs(4);
+   r1 = troughs(4)
    r2 = pk(4);
-   r3 = troughs(5);
+   r3 = troughs(5)
+   t3 = lc1(5);
+   t1 = lc1(4);
+else 
+    r1 = troughs(3);
+    
+    r3 = troughs(4);
 end
 
-%% Can use the logarithmic decrement to get Damping ratio
+% Calculation of the logarithmic decrement
+lil_delta = -log((abs(r3 - r2))/ (abs(r2 - r1)));
+
+% Calculation of damping ratio
+zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)))
+
+% Calculation of Damped natural frequency
+hello = 2*(pi)/ (t3 - t1);
+
+% Calculation of Natural Frequency
+Omeg_n = hello / (sqrt(1 - (zeta_^2)));
 
 
 %% Calculations
