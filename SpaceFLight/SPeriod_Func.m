@@ -90,8 +90,8 @@ for zeta = 0:0.1:1
     plot(time_,y, 'DisplayName',num2str(zeta));
 end
 legend(gca,'show')
-ylabel('PitchRate')
-xlabel('Time')
+ylabel('PitchRate (degrees/s)')
+xlabel('Time (s)')
 
 % Manually input a value of zeta 
 zeta_ = 0.5
@@ -119,15 +119,15 @@ lil_delta = -log((abs(r3) - abs(r2))/ ((abs(r2) - abs(r1))));
 zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
 
 % Calculation of Damped natural frequency
-hello = 2*(pi)/ (t3 - t1);
+zeta_ = 2*(pi)/ (t3 - t1);
 
 % Calculation of Natural Frequency
-Omeg_n = hello / (sqrt(1 - (zeta_^2)));
+Omeg_n = zeta_ / (sqrt(1 - (zeta_^2)));
 end
 
-
 %% Calculations
-%  
+% From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
+
 % Dens_Calc(358,Pg_data(1,5),18,1012)
 % 
 % Q = 0.5 * Rho * (U_0)^2;
