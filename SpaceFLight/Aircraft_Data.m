@@ -140,9 +140,9 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V
     %% OTHER SIMULATION PARAMETERS %%%
     
     % WMM-2000 date [day month year]
-    dmy = [13 05 2002];
+%     dmy = [13 05 2002];
  
-%     d = datetime('today')
+    d = datetime('today')
     
     % Save workspace variables to MAT file
     save(cfgmatfile);

@@ -128,6 +128,12 @@ end
 %% Calculations
 % From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
 
+ac_data = matfile('JetStream.mat');
+
+hi = who(ac_data)
+
+dave = ac_data(2,:)
+
 % Dens_Calc(358,Pg_data(1,5),18,1012)
 % 
 % Q = 0.5 * Rho * (U_0)^2;
