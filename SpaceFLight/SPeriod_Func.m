@@ -1,4 +1,4 @@
-function SPeriod_Func()
+function SPeriod_Func(MethodNumber)
 
 clc
 %%global U_0 Q m S Rho CD_0 I_y
@@ -39,7 +39,8 @@ ylabel('State Variable','FontSize',14)
 
 %% Analyse the plot
 
-
+switch MethodNumber
+    case 0
 %% Determine the Damping Ratio and Natural Frequency By Inspection
 % Omit the trough at t = 0 in the group A plot
 if lc1(1) < 0.5
@@ -78,7 +79,7 @@ PitchRate_ = PitchRate(index:Pfindex) + abs(y1);
 y_ss = PitchRate_(length(PitchRate_));
 
 %% Plot the rescaled response and Standard Second Order Responses
-%plot(time_,PitchRate_,'k', 'LineWidth',1.5,'DisplayName','System Response') 
+plot(time_,PitchRate_,'k', 'LineWidth',1.5,'DisplayName','System Response') 
 grid minor
 
 hold all
@@ -86,22 +87,23 @@ for zeta = 0:0.1:1
     % Use a range of Natural frequencies
     OmegaN = (Omeg_d/sqrt(1 - zeta^2));
     y = y_ss*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
-    %plot(time_,y, 'DisplayName',num2str(zeta));
+    plot(time_,y, 'DisplayName',num2str(zeta));
 end
 legend(gca,'show')
 ylabel('PitchRate')
 xlabel('Time')
 
 % Manually input a value of zeta 
-zeta_ = 0.5;
-OmegaN_ = (Omeg_d/sqrt(1-zeta_^2));
+zeta_ = 0.5
+OmegaN_ = (Omeg_d/sqrt(1-zeta_^2))
 
+    case 1
 %% Use the logarithmic decrement Method
    
 if lc1(1) < 0.5
-   r1 = troughs(4)
+   r1 = troughs(4);
    r2 = pk(4);
-   r3 = troughs(5)
+   r3 = troughs(5);
    t3 = lc1(5);
    t1 = lc1(4);
 else 
@@ -111,21 +113,20 @@ else
 end
 
 % Calculation of the logarithmic decrement
-lil_delta = -log((abs(r3 - r2))/ (abs(r2 - r1)));
+lil_delta = -log((abs(r3) - abs(r2))/ ((abs(r2) - abs(r1))));
 
 % Calculation of damping ratio
-zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)))
+zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
 
 % Calculation of Damped natural frequency
 hello = 2*(pi)/ (t3 - t1);
 
 % Calculation of Natural Frequency
 Omeg_n = hello / (sqrt(1 - (zeta_^2)));
+end
 
 
 %% Calculations
- 
-% Pg_data = xlsread('Phugoid_GpA.xls');
 %  
 % Dens_Calc(358,Pg_data(1,5),18,1012)
 % 
