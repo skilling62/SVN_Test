@@ -133,10 +133,10 @@ Omeg_n = Omeg_d / (sqrt(1 - (zeta_^2)));
 end
 
 %% Calculations
-% From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
-
+%% From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
 load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CM_Aw')
 
+I_y
 % Calculate the density at test conditions
 Rho = Dens_Calc(358,alt0,18,1012);
 
@@ -145,23 +145,20 @@ Q = 0.5*Rho*(u0^2);
 
 % Calculate Zw and Zalpha
 
-Zw = -(CL_Aw + CD_0w)*Q*S_w/(u0*m);
+CL_Aw = 2*pi*0.0788;
+CD_0w
+Zw = -((CL_Aw + CD_0w)*Q*S_w)/(u0*m)
 Zalpha = u0*Zw;
 
 % Calculate Mw and Malpha
 
-Mw = (CM_Aw * Q * S_w * Cbar)/(u0 * I_y);
+Mw = (CM_Aw * Q * S_w * Cbar)/(u0 * I_y)
 Malpha = u0*Mw;
 
 % Calculate Mq
-Mq = (u0*(Omeg_n^2 * Malpha))/Zalpha;
+Mq = (u0*(Omeg_n^2 * Malpha))/Zalpha
 
-%  Malpha = U_0 * M_w;
-%  Zalpha = U_0 * Z_w;
-%  M_q = (Cm_q * ((cbar / 2) * U_0) * Q * S * cbar) / (U_0 * I_y);
-%  
-%  Omeg_nsp = sqrt((Zalpha * M_q / U_0) - Malpha);
-%  Zeta_sp = -((M_q + Malphadot + (Zalpha / U_0))/(2 * Omeg_nsp));
-  
+%% From the damping ratio, the aims is to calculate Mw_dot
+
 end
 
