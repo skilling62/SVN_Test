@@ -112,29 +112,25 @@ if lc1(1) < 0.5
    t3 = lc(5);
    t1 = lc(4);
 else 
-    r1 = pk(4)
-    r2 = troughs(4)
-    r3 = pk(5)
-    t3 = lc(5)
-    t1 = lc(4)
+    r1 = pk(4);
+    r2 = troughs(4);
+    r3 = pk(5);
+    t3 = lc(5);
+    t1 = lc(4);
 end
 
-% r3-r2;
-% r2-r1;
 % Calculation of the logarithmic decrement
-lil_delta = -log(abs((r3 - r2))/(abs(r2 - r1)));
+lil_delta = -log(abs((r3 - r2)/(r2 - r1)));
 
 % Calculation of damping ratio
 zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
 
-% % Calculation of Damped natural frequency
-% Omeg_d = 2*(pi)/ (t3 - t1)
-% 
-% % Calculation of Natural Frequency
-% Omeg_n = zeta_ / (sqrt(1 - (zeta_^2)))
-end
+% Calculation of Damped natural frequency
+Omeg_d = 2*(pi)/ (t3 - t1);
 
-%disp(Omeg_n)
+% Calculation of Natural Frequency
+Omeg_n = Omeg_d / (sqrt(1 - (zeta_^2)));
+end
 
 %% Calculations
 % From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
@@ -158,16 +154,8 @@ Mw = (CM_Aw * Q * S_w * Cbar)/(u0 * I_y);
 Malpha = u0*Mw;
 
 % Calculate Mq
+Mq = (u0*(Omeg_n^2 * Malpha))/Zalpha;
 
-%Mq = (u0*(Omeg_n^2 * Malpha))/zalpha
-
-% 
-% Cm_q = 1; %!!!!!!CHANGE!!!!!!!!!!!!
-% 
-% Malphadot = 1; %!!!!!!CHANGE!!!!!!!!!!!!
-% 
-%  M_w = (Cmalpha * Q * S * cbar) / (U_0 * I_y);
-%  Z_w = -(((Clalpha + CD_0 ) * (Q * S) ) / (U_0 * m));
 %  Malpha = U_0 * M_w;
 %  Zalpha = U_0 * Z_w;
 %  M_q = (Cm_q * ((cbar / 2) * U_0) * Q * S * cbar) / (U_0 * I_y);
