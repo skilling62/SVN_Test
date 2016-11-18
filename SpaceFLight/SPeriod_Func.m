@@ -136,7 +136,6 @@ end
 %% From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
 load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CM_Aw')
 
-I_y
 % Calculate the density at test conditions
 Rho = Dens_Calc(358,alt0,18,1012);
 
@@ -145,10 +144,13 @@ Q = 0.5*Rho*(u0^2);
 
 % Calculate Zw and Zalpha
 
-CL_Aw = 2*pi*0.0788;
+CL_Aw = 4.9732;
 CD_0w
-Zw = -((CL_Aw + CD_0w)*Q*S_w)/(u0*m)
-Zalpha = u0*Zw;
+CM_Aw = -0.683;
+I_y = 806.056
+
+Zw = (-(CL_Aw + CD_0w)*Q*S_w)/(u0*m)
+Zalpha = u0*Zw
 
 % Calculate Mw and Malpha
 
