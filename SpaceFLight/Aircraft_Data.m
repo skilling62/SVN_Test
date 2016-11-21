@@ -23,7 +23,7 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V dSigmaBYdBeta
     % Weights of Aircraft
     m = 6348; % kg, Mass of the Aircraft
     W = m * g; % N, Weight of the Aircraft
-	MTOW = 7350;	% kg, Max Take-off Weight of the Aircraft
+	MTOW = 6950;	% kg, Max Take-off Weight of the Aircraft
 	MLW = 7080;		% kg, Max Landing Weight of the Aircraft
 	OEW = 4720;		% kg, Operating Empty Weight of the Aircraft
 	MZFW = 6760;	% kg, Max Zero Fuel Weight of the Aircraft
@@ -120,6 +120,7 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V dSigmaBYdBeta
     
 xm = 4.67; % Distances from the datum to the CG m
 lf = 13.446; % length of the fuselage m
+la = 14.364; % Overall aeroplena length (m)
 h1f = 1.992; % height of the fuselage at 1/4 length m
 h2f = h1f/2; % height of the fuselage at 3/4 length m
 wf = 1.981;  % max body width m
@@ -160,14 +161,17 @@ K_Rl = 1.2; % Empirical correction factor that is a function of the fuselage Rey
     %%  Moments of Inertia Calulations
     
     % Medium Twin (Cessna 402) pg. 34 - FLIGHT DYNAMICS FOR MICROSOFT FLIGHT SIMULATOR
+    
     R_x = 0.373;
     R_y = 0.269;
     R_z = 0.461;
     
+    % Gravity in feet/second^2
     g = 32.2;
     
+    % Calculation in slugs ft^2 and then convert to kgm^2
     I_x = ((MTOW / g) * R_x * b_w/2); % Moment of inertia on the x axis
-    I_y = ((MTOW / g) * R_y * d_w/2); % Moment of inertia on the x axis
+    I_y = (((MTOW*2.20462 / g) * (R_y * ((la*3.28084)/2))^2))*1.355817962; % Moment of inertia on the x axis
     I_z = ((MTOW / g) * R_z * e_w/2); % Moment of inertia on the x axis
     
     
