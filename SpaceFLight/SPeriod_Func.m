@@ -32,7 +32,7 @@ plot(time,ElvAngle, 'b', 'DisplayName', 'Elevator Deflection Angle (Degrees)')
 grid on
 hold on
 plot(lc, pk, 'mo', lc1, troughs, 'ko','HandleVisibility','off');
-plot(time,PitchRate, 'g','DisplayName', 'Pitch Rate')
+plot(time,PitchRate, 'g','DisplayName', 'Pitch Rate (Degrees/Second)')
 ax.XTickLabelMode = 'auto';
 hold off
 legend(gca,'show')
@@ -134,7 +134,7 @@ end
 
 %% Calculations
 %% From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
-load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CD_Aw','CL_0w','CM_A')
+load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CD_Aw','CL_0w','CM_Af')
 
 % Calculate the density at test conditions
 Rho = Dens_Calc(358,alt0,18,1012);
@@ -149,7 +149,7 @@ Zalpha = u0*Zw;
 
 % Calculate Mw and Malpha
 
-Mw = (CM_A * Q * S_w * Cbar)/(u0 * I_y);
+Mw = (CM_Af * Q * S_w * Cbar)/(u0 * I_y);
 Malpha = u0*Mw;
 
 % Calculate Mq

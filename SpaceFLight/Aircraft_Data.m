@@ -10,6 +10,7 @@
 
 function Aircraft_Data ()
 
+addpath .\SupportingDocs
 % global m S_w S_v b_w b_v AR_w AR_v l_v V_v Y1 Y2 Cr Ct Lan q X_ac
 % global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V dSigmaBYdBeta
 % global CM_Af CD_Uw CL_Uw
