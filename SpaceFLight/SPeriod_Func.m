@@ -145,12 +145,10 @@ Q = 0.5*Rho*(u0^2);
 % Calculate Zw and Zalpha
 
 CL_Aw = 4.9732;
-CD_0w
 CM_Aw = -0.683;
-I_y = 806.056
 
 Zw = (-(CL_Aw + CD_0w)*Q*S_w)/(u0*m)
-Zalpha = u0*Zw
+Zalpha = u0*Zw;
 
 % Calculate Mw and Malpha
 
@@ -158,7 +156,7 @@ Mw = (CM_Aw * Q * S_w * Cbar)/(u0 * I_y)
 Malpha = u0*Mw;
 
 % Calculate Mq
-Mq = (u0*(Omeg_n^2 * Malpha))/Zalpha
+Mq = (u0*(Omeg_n^2 + Malpha))/Zalpha
 
 %% From the damping ratio, the aims is to calculate Mw_dot
 
