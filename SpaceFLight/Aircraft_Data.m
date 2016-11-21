@@ -23,7 +23,7 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V dSigmaBYdBeta
     % Weights of Aircraft
     m = 6348; % kg, Mass of the Aircraft
     W = m * g; % N, Weight of the Aircraft
-	MTOW = 6950;	% kg, Max Take-off Weight of the Aircraft
+	MTOW = 7350;	% kg, Max Take-off Weight of the Aircraft
 	MLW = 7080;		% kg, Max Landing Weight of the Aircraft
 	OEW = 4720;		% kg, Operating Empty Weight of the Aircraft
 	MZFW = 6760;	% kg, Max Zero Fuel Weight of the Aircraft
