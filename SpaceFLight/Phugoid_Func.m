@@ -1,6 +1,5 @@
 
-
-function Phugoid_Func(MethodNumber)
+function [Xu, Zu] = Phugoid_Func(MethodNumber)
 
 addpath .\Cranfield_Flight_Test_Data;
 
@@ -37,13 +36,13 @@ addpath .\Cranfield_Flight_Test_Data;
 	
 	M_AlphaDot = M_wDot * U_0;
 	
-	X_u = (-(CD_Uw + (2 * CD_0w)) * Q * S_w) / (U_0 * m);
+	Xu = (-(CD_Uw + (2 * CD_0w)) * Q * S_w) / (U_0 * m);
 	
 	X_w = (-(CD_Aw - CD_0w) * Q * S_w) / (U_0 * m);
 	
 	X_Alpha = X_w * U_0;
 	
-	Z_u = (-(CL_Uw * (2 * CL_0w)) * Q * S_w) / (U_0 * m);
+	Zu = (-(CL_Uw * (2 * CL_0w)) * Q * S_w) / (U_0 * m);
 	
 	Z_w = (-(CL_Aw - CL_0w) * Q * S_w) / (U_0 * m);
 	
@@ -80,28 +79,28 @@ r4 = troughs(2,:); r5 = pk(3,:); r6 = troughs(3,:);
         Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
         Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)));
 
-        Z_u = - (U_0 * (Omeg_n^2)) / gravity
+        Zu = - (U_0 * (Omeg_n^2)) / gravity;
         
-        CZ_u = (m * U_0 * Z_u) / (Q * S_w);
+        CZ_u = (m * U_0 * Zu) / (Q * S_w);
        
-        X_u = 2 * Zeta * Omeg_n
+        Xu = 2 * Zeta * Omeg_n;
         
-        CX_u = (m * U_0 * X_u) / (Q * S_w);
+        CX_u = (m * U_0 * Xu) / (Q * S_w);
                
 %% Using Bairstow's Phugoid Approximation  from S.Pradeer Paper
     case 2
         A = U_0
         B = -(U_0) * (M_q + M_AlphaDot) - Z_Alpha
         C = (M_q * Z_Alpha) - (M_Alpha * U_0)
-        D = X_u * ((M_Alpha * U_0) - (M_q * Z_Alpha)) ...
+        D = Xu * ((M_Alpha * U_0) - (M_q * Z_Alpha)) ...
             - ((M_u * U_0) * (X_Alpha - gravity))
-        E = gravity * ((M_Alpha * Z_u) - (M_u * Z_Alpha))
+        E = gravity * ((M_Alpha * Zu) - (M_u * Z_Alpha))
 
         Omeg_Phugoid = sqrt(E/C);
 
         Two_Zeta_Omeg_Phuoid = (1 / ((M_Alpha * U_0) - (M_q * Z_Alpha))) ...
-            * (((X_u * (-(M_Alpha * U_0) + (M_q * Z_Alpha))) ...
-            + (Z_u * (-(M_q * X_Alpha) + (((gravity * M_Alpha) * U_0 ...
+            * (((Xu * (-(M_Alpha * U_0) + (M_q * Z_Alpha))) ...
+            + (Zu * (-(M_q * X_Alpha) + (((gravity * M_Alpha) * U_0 ...
             * (M_AlphaDot + M_q) + Z_Alpha) / ((M_Alpha * U_0) ...
             - (M_q * Z_Alpha))))) + ((M_u * ((U_0 * X_Alpha) ...
             - ((gravity * (Z_Alpha * ((U_0 * M_AlphaDot) + Z_Alpha) ...
@@ -119,15 +118,15 @@ r4 = troughs(2,:); r5 = pk(3,:); r6 = troughs(3,:);
         Theta = q;
         Alpha = 1;
         
-        U_Dot = (X_u * U) + (Alpha.*X_Alpha) - (Theta.*gravity)
+        U_Dot = (Xu * U) + (Alpha.*X_Alpha) - (Theta.*gravity);
 
         % Characteristic Equation
 %         0 = Landa^2 + ((-(X_U) * ((X_Alpha * M_u)/ M_Alpha)) ...
 %         - ((g * M_u) / M_Alpha)) * Landa + (gravity * (((Z_Alpha * M_u) ...
 %         - (Z_u * M_Alpha)) / (M_Alpha *U_0)));
 
-        Omeg_Phugoid = sqrt((gravity * (((Z_Alpha * M_u) - (Z_u * M_Alpha)) / (M_Alpha * U_0))))
-        Two_Zeta_Omeg_Phuoid_1 =  -(X_u) + ((M_u * (X_Alpha - gravity)) / M_Alpha)
+        Omeg_Phugoid = sqrt((gravity * (((Z_Alpha * M_u) - (Zu * M_Alpha)) / (M_Alpha * U_0))));
+        Two_Zeta_Omeg_Phuoid_1 =  -(Xu) + ((M_u * (X_Alpha - gravity)) / M_Alpha);
     
     end
     

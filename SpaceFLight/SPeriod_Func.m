@@ -98,7 +98,8 @@ ylabel('PitchRate (degrees/s)')
 xlabel('Time (s)')
 
 hold off
-% Manually input a value of zeta 
+
+% Manually input a value of zeta. This value is read off the plot
 zeta_ = 0.5;
 Omeg_n = (Omeg_d/sqrt(1-zeta_^2));
 

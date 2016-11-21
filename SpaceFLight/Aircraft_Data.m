@@ -122,8 +122,8 @@ addpath .\SupportingDocs
     % Main Wing
     S_w = 25.083; 	% m^2, Main Wing Area
 	b_w = 15.85;	% m, Main Wing Span
-    d_w = 14.351;   % m, Main Wing Length
-    e_w = (b_w + d_w) / 2; % m
+    d_w = 14.364;   % m, Main Wing Length
+    e_w = (b_w + la) / 2; %
 	AR_w = (b_w^2) / S_w; % Aspect Ratio for Main Wing
     Cbar = 1.71704;  % m, Mean Aerodynamic Chord
         
@@ -215,12 +215,10 @@ addpath .\SupportingDocs
     g = 32.2;
     
     % Calculation in slugs ft^2 and then convert to kgm^2
-    I_x = ((MTOW / g) * R_x * b_w/2); % Moment of inertia on the x axis
-    I_y = (((MTOW*2.20462 / g) * (R_y * ((la*3.28084)/2))^2))*1.355817962; % Moment of inertia on the x axis
-    I_z = ((MTOW / g) * R_z * e_w/2); % Moment of inertia on the x axis
+    I_x = (((MTOW*2.20462 / g) * (R_x * ((b_w*3.28084)/2))^2))*1.355817962; 
+    I_y = (((MTOW*2.20462 / g) * (R_y * ((la*3.28084)/2))^2))*1.355817962;
+    I_z = (((MTOW*2.20462 / g) * (R_z * ((e_w*3.28084)/2))^2))*1.355817962;
     
-    
-
     %% OTHER SIMULATION PARAMETERS %%%
     
     % WMM-2000 date [day month year]
