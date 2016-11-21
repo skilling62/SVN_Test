@@ -36,7 +36,7 @@ function Aircraft_Data ()
     h2f = h1f/2; % height of the fuselage at 3/4 length m
     wf = 1.981;  % max body width m
     Sf = 18.51;  % The Projected Side Area of the fuselage m^2
-    la = 14.064; % m, Length of the aircraft
+    la = 14.364; % m, Length of the aircraft
     vis = 1.694; % N.s/m^2, Assumed constant at 3000m Ref: http://www.engineeringtoolbox.com/standard-atmosphere-d_604.htm
     Swept_Chord = 3.9761; %Swept angle of the main wing
     
@@ -74,8 +74,6 @@ function Aircraft_Data ()
 	
 
     CL_Uw = ((Mach)^2 / (1 - (Mach)^2)) * CL_0w;
-    
-    CL_Aw = 0.0788;
 
     CL_Aw = 4.9732;
 
