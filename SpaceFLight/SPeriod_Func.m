@@ -1,4 +1,4 @@
-function SPeriod_Func(MethodNumber)
+function [Xw, Zw, Mw, Mw_dot,Mq] = SPeriod_Func(MethodNumber)
 
 clc
 %%global U_0 Q m S Rho CD_0 I_y
@@ -134,7 +134,7 @@ end
 
 %% Calculations
 %% From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
-load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CM_Aw','CD_Aw','CL_0w')
+load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CD_Aw','CL_0w','CM_A')
 
 % Calculate the density at test conditions
 Rho = Dens_Calc(358,alt0,18,1012);
@@ -144,15 +144,12 @@ Q = 0.5*Rho*(u0^2);
 
 % Calculate Zw and Zalpha
 
-CL_Aw = 4.9732;
-CM_Aw = -0.683;
-
 Zw = (-(CL_Aw + CD_0w)*Q*S_w)/(u0*m);
 Zalpha = u0*Zw;
 
 % Calculate Mw and Malpha
 
-Mw = (CM_Aw * Q * S_w * Cbar)/(u0 * I_y);
+Mw = (CM_A * Q * S_w * Cbar)/(u0 * I_y);
 Malpha = u0*Mw;
 
 % Calculate Mq
@@ -164,10 +161,10 @@ Mq = (u0*(Omeg_n^2 + Malpha))/Zalpha;
 Malpha_dot = 2*Omeg_n - Mq - (Zalpha/u0);
 
 % Calculate Mwdot
-Mw_dot = Malpha_dot/u0
+Mw_dot = Malpha_dot/u0;
 
 %% From Aircraft Data Calculate Xw
-Xw = -((CD_Aw - CL_0w)*Q*S_w)/(u0*m)
+Xw = -((CD_Aw - CL_0w)*Q*S_w)/(u0*m);
 
 end
 

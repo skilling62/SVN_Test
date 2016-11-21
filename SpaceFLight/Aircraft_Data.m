@@ -46,7 +46,7 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V dSigmaBYdBeta
     CD_0w = 0.01852;
     CM_Ow = -0.059;      % 25% MAC
 	
-    CL_Aw = 0.0788;
+    CL_Aw = 4.9732;
     CD_Aw = 0.008956;
     CM_Aw = -0.0014;
       
@@ -78,6 +78,8 @@ global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V dSigmaBYdBeta
     CD_Av = 1;
     CM_Av = 1;
     
+    % Whole Aircraft
+    CM_A = -0.3;
         
     %% Fuselage data
     K_n = 1;    % Empirical wing-body interference factor tha is a function of the fuselage geometry
