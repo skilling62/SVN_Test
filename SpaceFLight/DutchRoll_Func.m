@@ -1,9 +1,14 @@
-function [Y_beta N_Beta Y_r N_r] = DutchRoll_Func ()
-
-global S_v S_w b_w b_v V_v l_v m I_z 
-global CL_Av C_nBeta_wt EffFac_V dSigmaBYdBeta
-
+function DutchRoll_Func()
+ 
 addpath .\Cranfield_Flight_Test_Data;
+%% Constants
+
+Pg_data = xlsread('Phugoid_GpA.xls');
+Rho = Dens_Calc(358,Pg_data(1,5),18,1012);
+load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
+    'm', 'I_z', 'CL_Av', 'C_nBeta_wt', 'EffFac_V', 'dSigmaBYdBeta')
+
+Q = 0.5 * Rho * (U_0)^2;
 
 %% Data Needed for Calculations
 
@@ -18,14 +23,6 @@ C_yBeta = -EffFac_V * (S_v / S_w) * CL_Av * (1 + dSigmaBYdBeta);
 C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
 %% Calculations
-
-Pg_data = xlsread('Phugoid_GpA.xls');
-
-Rho = Dens_Calc(358,Pg_data(1,5),18,1012);
-
-U_0 = Initial_Speed();
-
-Q = 0.5 * Rho * (U_0)^2;
 
 Y_beta = (Q * S_w * C_yBeta) / m;
 
