@@ -1,17 +1,7 @@
 function Spiral_Fun ()
 
 
-
-
-
-CL_Beta = ((CL_Beta / Gamma) * Gamma) + DeltaCL_Beta % Nelson p122 - Use graph to find CL_Beta
-L_Beta = (Q * S_w * b_w * CL_Beta) / I_x
-
-
-%% 	Nelson pg 121
-%	Gamma = Wing Dihedral Angle
-%	Lander = Taper Ratio (tip chord/root chord)
-%	z_v = Distance from centre of pressure of the vertical tail to the fuselage centreline
+%	z_v Still need to find
 
 
 C_nBeta = C_nBeat_wf + (EffFac_V * V_v * CL_Av * (1 - dSigBYdBeta))

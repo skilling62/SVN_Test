@@ -44,6 +44,10 @@ function Aircraft_Data ()
     Y2 = 4.73708; % m, Length from root along the trailling edge to the end of the aileron
     Cr = 2.375; % m, Length of wing chord
     Ct = 0.7874; % m, Length of wing tip
+    Lander = Ct / Cr; % Taper Ratio (tip chord/root chord)
+    CL_BetaByGam = -0.000218; % using graph from Nelson P122 (figure 3.11)
+    Gamma = 7; % Degress, From the POH, Wing Dihedral Angle
+    
     
     % Speed
     U_0 = Initial_Speed();
@@ -134,8 +138,9 @@ function Aircraft_Data ()
     S_v = 5.639215; % m^2, Vertical Stabiliser area 
 	b_v = 3.0861;   % m, Height of Verticial Stabiliser
     AR_v = (b_v^2) / S_v; %  Aspect Ratio for Verticial Stabiliser
-    l_v = 7.12;		% Distance from CG to vertical Stabiliser MAC
-	V_v = (l_v * S_v) / (S_w * Cbar);		% Vertical Stabiliser volume ratio
+    l_v = 7.12;     % Distance from CG to vertical Stabiliser MAC
+	V_v = (l_v * S_v) / (S_w * Cbar);   % Vertical Stabiliser volume ratio
+    z_v = 5; % !!!!!!!!!!!!!!!!!!!!!!!! NEED TO FIND !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    % m, Distance from centre of pressure of the vertical tail to the fuselage centreline 
     Y2_v = (b_v / 2) - ((b_v / 2) * 0.95); % Spanwise Distance from Centreline to the inboard edge of the rudder percentage taken estimate 
     EffFac_V = Y2_v / (b_v / 2); % Efficiency factor of the Veritical Stabiliser
     

@@ -43,7 +43,7 @@ C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
 %% Calculations
 
-Y_beta = (Q * S_w * C_yBeta) / m;
+Y_Beta = (Q * S_w * C_yBeta) / m;
 
 N_Beta = (C_nBeta * Q * S_w) / I_z;
 
@@ -51,4 +51,6 @@ Y_r = (Q * S_w * b_w * C_yr) / (2 * m * U_0);
 
 N_r = (Q * S_w * (b_w^2) * C_nr) / (2 * I_z * U_0);
 
+Omeg_nDR = sqrt(((Y_Beta * N_r) - (N_Beta * Y_r) + (U_0 * N_Beta)) / U_0)
+Zeta_DR = -(1 / (2 * Omeg_nDR)) * ((Y_Beta + (U_0 * N_r)) / U_0) 
 end
