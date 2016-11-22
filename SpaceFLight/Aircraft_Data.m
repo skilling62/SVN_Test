@@ -10,14 +10,13 @@
 
 function Aircraft_Data ()
 
-addpath .\SupportingDocs
-% global m S_w S_v b_w b_v AR_w AR_v l_v V_v Y1 Y2 Cr Ct Lan q X_ac
-% global EffFac_W CL_Av dEpsBYdAlpha C_nBeta_wt EffFac_V dSigmaBYdBeta
-% global CM_Af CD_Uw CL_Uw
+    addpath .\SupportingDocs
 
     % Name of the MAT-file that will be generated
     cfgmatfile = 'JetStream';
 
+    addpath .\Cranfield_Flight_Test_Data;
+    
     gravity = 9.81; % Gravity accelartional constant m/s^-2
     Lan = 1.4; % Air Specific Constant
     %% Aircraft Specifications
@@ -47,13 +46,14 @@ addpath .\SupportingDocs
     Ct = 0.7874; % m, Length of wing tip
     
     % Speed
-    
     U_0 = Initial_Speed();
-    
     Kts2Mach = 0.0015; 
-    
     Mach = U_0 * Kts2Mach;
     
+    % Temp
+    Pg_data = xlsread('Phugoid_GpA.xls');
+    Rho = Dens_Calc(358,Pg_data(1,5),18,1012);
+    q = Pg_data(:,3);
     
     %% Coefficients of Aircraft		
     % Main Wing
@@ -107,8 +107,7 @@ addpath .\SupportingDocs
     
     CL_Av = 1;
     CD_Av = 1;
-    CM_Av = 1;
-    
+     
     CD_Uw = 1;  % !!!!!!!! Need to find !!!!!!!!
 
         
@@ -116,7 +115,7 @@ addpath .\SupportingDocs
     CM_Af = -0.3;
         
     %% Fuselage data
-    X_ac = 1;   % !!!!!!!! Need to find !!!!!!!! 
+    X_ac = xm; 
     
 	%% Wing Specifications
     % Main Wing
@@ -189,14 +188,8 @@ addpath .\SupportingDocs
     % CG Calculated from the Total_Moment and Total_Weight
     CG = ((Total_Moment / Total_Weight) - 5.149) * (100/1.717);
 
-    
-    
-    
-    
     %% Other Parametres
-    
-    q = 0.75;       % !!!!!!!! Need to find !!!!!!!!
-    
+       
     C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
     
     dEpsBYdAlpha = (2 * CL_Aw) / (pi * AR_w);
