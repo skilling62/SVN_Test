@@ -43,7 +43,7 @@ pfindex = (index + length(time_)) -1 ;
 RollRate_ = p(index:pfindex) - abs(y1);
 
 
-    T_Con = 2 * (W / S_w)/ (CL_Aw * Rho * U_0 * gravity); % Time Constant
+%     T_Con = 2 * (W / S_w)/ (CL_Aw * Rho * U_0 * gravity); % Time Constant
 
 % Find the steady state
 if GroupName == 1
@@ -52,11 +52,11 @@ elseif GroupName == 2
     p_ss = pk(3) - abs(y1);
 end
 
-    CL_Sig_Al = ((2 * CL_Aw * T_Con * Cr) / (S_w * b_w)) ...
-        * (((Y2/2)^2 + ((Lan - 1)/(b_w / 2))*(Y2/3)^3)) - (((Y1/2)^2 ...
-        + ((Lan - 1)/(b_w / 2))*(Y1/3)^3));
-   
-    L_Sig_Al = (Q * S_w * b_w * CL_Sig_Al) / I_z
+%     CL_Sig_Al = ((2 * CL_Aw * T_Con * Cr) / (S_w * b_w)) ...
+%         * (((Y2/2)^2 + ((Lan - 1)/(b_w / 2))*(Y2/3)^3)) - (((Y1/2)^2 ...
+%         + ((Lan - 1)/(b_w / 2))*(Y1/3)^3));
+%    
+%     L_Sig_Al = (Q * S_w * b_w * CL_Sig_Al) / I_z
 
 % Find 63.2% of the final value
 t_ss = 0.632*p_ss;

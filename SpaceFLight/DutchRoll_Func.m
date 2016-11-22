@@ -22,8 +22,6 @@ grid minor
 axis tight
 
 
-
-
 Rho = Dens_Calc(358,DR_data(1,5),18,1012);
 
 load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
