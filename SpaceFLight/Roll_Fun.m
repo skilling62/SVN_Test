@@ -1,4 +1,4 @@
-function [L_Sig_Al] = Roll_Fun()
+function [Lp] = Roll_Fun()
 
 clc
 
@@ -8,7 +8,7 @@ addpath .\Cranfield_Flight_Test_Data;
 
 %% Import the Data (Time vector and roll rate) and plot
 % Import Data
-Roll_data = xlsread('Roll_GpA.xls');
+Roll_data = xlsread('Roll_GpB.xls');
 time = Roll_data(:,1);
 p = Roll_data(:,4);
 delta_a = Roll_data(:,2);
@@ -17,7 +17,7 @@ GroupName = Roll_data(1,8);
 
 % Plot
 subplot(2,1,1)
-plot(time,p,'DisplayName','Pitch Rate (Degrees/s)')
+plot(time,p,'DisplayName','Roll Rate (Degrees/s)')
 [pk,locs] = findpeaks(p,time,'MinPeakDistance',1.8);
 [troughs, lc1] = findpeaks(-p,time,'MinPeakDistance',1.5);
 troughs = -troughs;
@@ -52,14 +52,32 @@ t_ss = 0.632*p_ss;
 Vp_ss = linspace(p_ss,p_ss,length(time_));
 Vt_ss = linspace(t_ss,t_ss,length(time_));
 
+% Find the time at which 63.2% is reached
+idx = find(Vt_ss - RollRate_ < eps, 1);
+px = time_(idx);
+py = Vt_ss(idx);
+
+% Negate the flat response at the start
+k = find(RollRate_>0.1,1);
+py_ = RollRate_(k);
+px_ = time_(k);
+
+% Plot the response
 subplot(2,1,2)
-plot(time_,RollRate_)
+plot(time_,RollRate_,'DisplayName','Roll Rate (Degrees/s)')
 hold on
-plot(time_,Vp_ss)
-plot(time_,Vt_ss,'--k')
+plot(time_,Vt_ss,'--k', px, py,'ro','HandleVisibility','off')
+plot(time_,Vp_ss,'DisplayName','Steady State')
+plot(px_,py_,'ko','HandleVisibility','off')
 hold off
-
-
+axis tight
+grid minor
+xlabel('Time (Seconds)')
+ylabel('Roll Rate (Degrees/s)')
+legend(gca,'show')
+% Calculate Time Constant and Lp
+tau = px - px_;
+Lp = -1/tau;
     
 % Rho = Dens_Calc(358,Roll_data(1,5),18,1012);
 % 

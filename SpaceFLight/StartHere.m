@@ -22,7 +22,8 @@ addpath .\Linearised_Aircraft_Model
 
 %% Calculate Lateral Stability Derivatives
 
-
+% Generate Derivatives from Roll Response
+[Lp] = Roll_Fun();
 
 %%
 % Lateral_Example_V2
