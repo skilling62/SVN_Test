@@ -1,17 +1,10 @@
 
 function [Xu, Zu] = Phugoid_Func(MethodNumber)
-
 addpath .\Cranfield_Flight_Test_Data;
-
 %% Loading Varibles 
-    
-
-    Pg_data = xlsread('Phugoid_GpA.xls');
-    Rho = Dens_Calc(358,Pg_data(1,5),18,1012);
-        
-    load('JetStream.mat', 'gravity', 'm', 'S_w', 'EffFac_V', 'V_v' , 'l_v' , 'Cbar', 'CL_Av', ...
+load('JetStream.mat', 'gravity', 'm', 'S_w', 'EffFac_V', 'V_v' , 'l_v' , 'Cbar', 'CL_Av', ...
         'CM_Af', 'CD_Uw', 'CL_Uw', 'CD_0w', 'CD_Aw', 'CL_0w', 'CL_Aw', 'X_ac', 'CG', 'I_y', ...
-        'dEpsBYdAlpha', 'U_0', 'q')
+        'dEpsBYdAlpha', 'U_0', 'q', 'Rho')
     
 %% Calulations
 
@@ -51,7 +44,7 @@ addpath .\Cranfield_Flight_Test_Data;
 %% Creating Data to use in calulations
 
 kts2ms = 0.51444; % kts to m/s 1 = 0.51444
-
+Pg_data = xlsread('Phugoid_GpA.xls');
 time = Pg_data(:,1);
 U = Pg_data(:,4) * kts2ms;
 
@@ -113,8 +106,6 @@ r4 = troughs(2,:); r5 = pk(3,:); r6 = troughs(3,:);
 
 %% Using 3-Degrees-of-Freedom Approximation from S.Pradeer Paper
     case 3
-        
-        q = Pg_data(:,3);
         Theta = q;
         Alpha = 1;
         
