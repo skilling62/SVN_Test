@@ -1,5 +1,3 @@
- 
-
 function [Lp] = Roll_Func(MethodNumber)
 clc
 
@@ -14,7 +12,7 @@ switch MethodNumber
     
     case 1
     % Import Data
-    Roll_data = xlsread('Roll_GpB.xls');
+    Roll_data = xlsread('Roll_GpA.xls');
     time = Roll_data(:,1);
     p = Roll_data(:,4);
     delta_a = Roll_data(:,2);
@@ -94,16 +92,15 @@ switch MethodNumber
     % Calculate Time Constant and Lp
     tau = px - px_;
     Lp = -1/tau;
-    
-
    
 %% Equations
     case 2
     
     Q = 0.5 * Rho * (U_0^2);
            
-    CL_Beta = CL_BetaByGam / Gamma; % Nelson p122 - Used graph to find CL_Beta
-
+    % Nelson p122 - Used graph to find CL_Beta
+    CL_Beta = CL_BetaByGam / Gamma; 
+    
     L_Beta = (Q * S_w * b_w * CL_Beta) / I_x
 
     end
