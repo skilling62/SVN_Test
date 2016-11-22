@@ -7,7 +7,7 @@ addpath .\Cranfield_Flight_Test_Data;
 %% Determine the Damping Ratio and Natural Frequency from the response
 
 % Import Data
-DR_data = xlsread('Dutch-Roll_GpB.xls');
+DR_data = xlsread('Dutch-Roll_GpA.xls');
 time = DR_data(:,1);
 delta_rudder = DR_data(:,2);
 r = DR_data(:,4);
@@ -32,13 +32,43 @@ hold off
 % Rescale the response
 if GroupName == 1
     t1 = lc1(13);
+    tloga1 = locs(14);
+    tloga3 = locs (15);
+    r1 = pk(14);
+    r2 = troughs(13);
+    r3 = pk(15);
     t2 = lc1(14);
     y1 = troughs(13);
 elseif GroupName == 2
     t1 = lc1(7);
+    tloga1 = locs(8);
+    tloga3 = locs(9);
+    r1 = pk(8);
+    r2 = troughs(7);
+    r3 = pk(9);
     t2 = lc1(8);
     y1 = troughs(7);
 end
+
+%% Logarithmic Decrement
+% Calculation of the logarithmic decrement
+lil_delta = -log(abs((r3 - r2)/(r2 - r1)));
+
+% Calculation of damping ratio
+zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
+
+% Calculation of Damped natural frequency
+Omeg_dloga = 2*(pi)/ (tloga3 - tloga1);
+
+% Calculation of Natural Frequency
+Omeg_nloga = Omeg_dloga / (sqrt(1 - (zeta_^2)));
+
+%% Inspection Method
+% Calculate the time period
+TPeriod = t2-t1;
+
+% Calculate the damped natural frequency
+Omeg_d = (2*pi/TPeriod);
 
 % New time Vector whose domain is scaled down
 time_ = time(time>=t1)-t1;
@@ -55,13 +85,22 @@ r_ = r(index:Pfindex) + abs(y1);
 % Determine the steady state value of the rescaled PitchRate vector 
 y_ss = r_(length(r_));
 
-% Plot the rescaled response
+% Plot the rescaled response and standard second order responses
 subplot(2,1,2)
 plot(time_,r_,'k', 'LineWidth',1.5,'DisplayName','System Response') 
 grid minor
 
-
-
+hold all
+for zeta = 0:0.1:1
+% Use a range of Natural frequencies
+OmegaN = (Omeg_d/sqrt(1 - zeta^2));
+y = y_ss*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
+plot(time_,y, 'DisplayName',num2str(zeta));
+end
+legend(gca,'show')
+ylabel('PitchRate (degrees/s)')
+xlabel('Time (s)')
+hold off
 
 
 %% Determine the stability Coefficients, zeta and omega from aircraft parameters
@@ -84,15 +123,22 @@ C_yBeta = -EffFac_V * (S_v / S_w) * CL_Av * (1 + dSigmaBYdBeta);
 C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
 %% Calculations
+% Nelson p199
 
-Y_Beta = (Q * S_w * C_yBeta) / m;
+Y_Beta = (Q * S_w * C_yBeta) / m
 
-N_Beta = (C_nBeta * Q * S_w) / I_z;
+N_Beta = (C_nBeta * Q * S_w) / I_z
 
 Y_r = (Q * S_w * b_w * C_yr) / (2 * m * U_0);
 
-N_r = (Q * S_w * (b_w^2) * C_nr) / (2 * I_z * U_0);
+N_r = (Q * S_w * (b_w^2) * C_nr) / (2 * I_z * U_0)
+
+% Y_Beta = -45.72
+% Y_r = 0
+% N_Beta = 4.49
+% N_r = -0.76
+% U_0 = 176
 
 Omeg_nDR = sqrt(((Y_Beta * N_r) - (N_Beta * Y_r) + (U_0 * N_Beta)) / U_0);
-Zeta_DR = -(1 / (2 * Omeg_nDR)) * ((Y_Beta + (U_0 * N_r)) / U_0); 
+Zeta_DR = -(1 / (2 * Omeg_nDR)) * ((Y_Beta + (U_0 * N_r)) / U_0)
 end
