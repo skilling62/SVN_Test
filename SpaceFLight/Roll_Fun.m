@@ -29,7 +29,7 @@ xlabel('Time (Seconds)')
 ylabel('State Variable')
 legend(gca,'show')
 hold off
-%% Determine the TIme Constant
+%% Determine the Time Constant
 
 % Rescale the plot
 t1 = lc1(3);
@@ -75,6 +75,7 @@ grid minor
 xlabel('Time (Seconds)')
 ylabel('Roll Rate (Degrees/s)')
 legend(gca,'show')
+
 % Calculate Time Constant and Lp
 tau = px - px_;
 Lp = -1/tau;

@@ -3,8 +3,14 @@ function DutchRoll_Func()
 addpath .\Cranfield_Flight_Test_Data;
 %% Constants
 
-Pg_data = xlsread('Phugoid_GpA.xls');
-Rho = Dens_Calc(358,Pg_data(1,5),18,1012);
+DR_data = xlsread('Dutch-Roll_GpA.xls');
+
+time = DR_data(:,1)
+r = DR_data(:,4)
+plot (time,r)
+
+
+Rho = Dens_Calc(358,DR_data(1,5),18,1012);
 load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
     'm', 'I_z', 'CL_Av', 'C_nBeta_wt', 'EffFac_V', 'dSigmaBYdBeta')
 
