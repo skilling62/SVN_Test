@@ -2,12 +2,31 @@ function [L_Sig_Al] = Roll_Fun()
 
 global S_w b_w I_z CL_Aw g W Y1 Y2 Cr Lan
 
+addpath .\Cranfield_Flight_Test_Data;
 
-    addpath .\Cranfield_Flight_Test_Data;
+%% Import the Data (Time vector and roll rate) and plot
+% Import Data
+Roll_data = xlsread('Roll_GpA.xls');
+time = Roll_data(:,1);
+p = Roll_data(:,4);
+delta_a = Roll_data(:,2);
+phi = Roll_data(:,3);
 
-    Pg_data = xlsread('Phugoid_GpA.xls');
+% Plot
+plot(time,p,'DisplayName','Pitch Rate (Degrees/s)')
+[pk,locs] = findpeaks(p,time,'MinPeakDistance',1.8);
+hold on
+plot(locs,pk,'mo','HandleVisibility','off')
+plot (time, delta_a,'DisplayName','Aileron Deflection Angle (Degrees)');
+grid minor
+hold off
+xlabel('Time (Seconds)')
+ylabel('State Variable')
+legend(gca,'show')
+
+%% Determine the TIme Constant
     
-    Rho = Dens_Calc(358,Pg_data(1,5),18,1012);
+Rho = Dens_Calc(358,Roll_data(1,5),18,1012);
 
     U_0 = Initial_Speed();
 
