@@ -64,7 +64,7 @@ Vp_ss = linspace(p_ss,p_ss,length(time_));
 Vt_ss = linspace(t_ss,t_ss,length(time_));
 
 % Find the time at which 63.2% is reached
-idx = find(Vt_ss - RollRate_ < eps, 1);
+idx = find(Vt_ss' - RollRate_ < eps, 1);
 px = time_(idx);
 py = Vt_ss(idx);
 

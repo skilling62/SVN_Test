@@ -1,15 +1,33 @@
 function DutchRoll_Func()
  
+clc
+
 addpath .\Cranfield_Flight_Test_Data;
 %% Constants
 
-Pg_data = xlsread('Phugoid_GpA.xls');
+
+% Import Data
+
 DR_data = xlsread('Dutch-Roll_GpA.xls');
-time = DR_data(:,1)
-r = DR_data(:,4)
+time = DR_data(:,1);
+delta_rudder = DR_data(:,2);
+r = DR_data(:,4);
+
+% Plot Roll Rate Response
 plot (time,r)
+hold on
+plot (time,delta_rudder)
+hold off
+grid minor
+axis tight
+
+
+
+
+Rho = Dens_Calc(358,DR_data(1,5),18,1012);
+
 load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
-    'm', 'I_z', 'CL_Av', 'C_nBeta_wt', 'EffFac_V', 'dSigmaBYdBeta', 'Rho')
+    'm', 'I_z', 'CL_Av', 'C_nBeta_wt', 'EffFac_V', 'dSigmaBYdBeta')
 
 Q = 0.5 * Rho * (U_0)^2;
 
