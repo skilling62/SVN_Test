@@ -7,7 +7,7 @@ addpath .\Cranfield_Flight_Test_Data;
 %% Determine the Damping Ratio and Natural Frequency from the response
 
 % Import Data
-DR_data = xlsread('Dutch-Roll_GpA.xls');
+DR_data = xlsread('Dutch-Roll_GpB.xls');
 time = DR_data(:,1);
 delta_rudder = DR_data(:,2);
 r = DR_data(:,4);
@@ -35,8 +35,8 @@ if GroupName == 1
     tloga1 = locs(14);
     tloga3 = locs (15);
     r1 = pk(14);
-    r2 = troughs(13);
-    r3 = pk(15);
+    r2 = troughs(14);
+    r3 = pk(15)
     t2 = lc1(14);
     y1 = troughs(13);
 elseif GroupName == 2
@@ -55,7 +55,7 @@ end
 lil_delta = -log(abs((r3 - r2)/(r2 - r1)));
 
 % Calculation of damping ratio
-zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
+zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)))
 
 % Calculation of Damped natural frequency
 Omeg_dloga = 2*(pi)/ (tloga3 - tloga1);
@@ -129,7 +129,7 @@ Y_Beta = (Q * S_w * C_yBeta) / m
 
 N_Beta = (C_nBeta * Q * S_w) / I_z
 
-Y_r = (Q * S_w * b_w * C_yr) / (2 * m * U_0);
+Y_r = (Q * S_w * b_w * C_yr) / (2 * m * U_0)
 
 N_r = (Q * S_w * (b_w^2) * C_nr) / (2 * I_z * U_0)
 
