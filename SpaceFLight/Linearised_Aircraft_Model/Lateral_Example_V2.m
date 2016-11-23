@@ -31,7 +31,7 @@ Table_Density = stdatm(:,4);    % Kg/m^3
 % Constants
 % =========================================================================
 
-% u0 = 0.7*ac_coeff.VaBnd( length(ac_coeff.VaBnd) );    % m/s
+ u0 = 0.7*ac_coeff.VaBnd( length(ac_coeff.VaBnd) )    % m/s
 % u0 = 35;
 % Altitude = 500;
 
@@ -108,9 +108,9 @@ A_Lat = [Yv,               Yp,               -(u0 - Yr),              g;...
 
 % No control input (free response) 
  
-% B = zeros(4,2)
+ B_Lat = zeros(4,2)
 
-B_Lat = [1 1; 1 1; 1 1; 1 1]
+%B_Lat = [1 1; 1 1; 1 1; 1 1]
 
 % all sensor outputs are visible 
 C_Lat = eye(4)

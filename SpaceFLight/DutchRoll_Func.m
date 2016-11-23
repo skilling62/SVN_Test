@@ -127,15 +127,15 @@ C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
 Y_Beta = (Q * S_w * C_yBeta) / m
 
-N_Beta = (C_nBeta * Q * S_w) / I_z;
+N_Beta = (C_nBeta * Q * S_w) / I_z
 
-Y_r = (Q * S_w * b_w * C_yr) / (2 * m * U_0);
+Y_r = (Q * S_w * b_w * C_yr) / (2 * m * U_0)
 
 N_r = (Q * S_w * (b_w^2) * C_nr) / (2 * I_z * U_0)
 
 % Y_Beta = -45.72
 % Y_r = 0
- N_Beta = 4.49
+% N_Beta = 4.49
 % N_r = -0.76
 % U_0 = 176
 

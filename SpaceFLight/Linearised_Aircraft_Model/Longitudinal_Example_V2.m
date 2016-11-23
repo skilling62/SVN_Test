@@ -1,5 +1,5 @@
 clc;
-clear all;
+
 close all;
 
 format long g
@@ -103,8 +103,8 @@ ARw = (ac_coeff.b^2)/ac_coeff.S;
 CLat = 0.8*ac_coeff.CLa;             % guess for the time being.
 deps = ( 2*ac_coeff.CLa )/( pi*ARw );
 CMat = -eta*VH*CLat*(1 - deps);
-CMa = CMaw + CMat
-CMa = ac_coeff.Cma
+CMa = CMaw + CMat;
+CMa = ac_coeff.Cma;
 
 Mw = CMa*( ( Q*ac_coeff.S*ac_coeff.MAC )/( u0*ac_coeff.Iy ) ); % 1/m.s
 
@@ -159,7 +159,7 @@ A_Lon = [Xu,               Xw,               0,              -g;...
  
 % B = zeros(4,2)
 
-B_Lon = [1 1; 1 1; 1 1; 1 1]
+B_Lon = [0 0; 0 0; 0 0; 0 0]
 
 % all sensor outputs are visible 
 C_Lon = eye(4)
