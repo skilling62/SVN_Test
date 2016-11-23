@@ -109,7 +109,7 @@ function Aircraft_Data ()
     CD_0v = 1;
     CM_0v = 1;
     
-    CL_Av = 1;
+    CL_Av = 3.06;
     CD_Av = 1;
      
     CD_Uw = 1;  % !!!!!!!! Need to find !!!!!!!!
@@ -142,8 +142,9 @@ function Aircraft_Data ()
 	V_v = (l_v * S_v) / (S_w * Cbar);   % Vertical Stabiliser volume ratio
     z_v = 5; % !!!!!!!!!!!!!!!!!!!!!!!! NEED TO FIND !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    % m, Distance from centre of pressure of the vertical tail to the fuselage centreline 
     Y2_v = (b_v / 2) - ((b_v / 2) * 0.95); % Spanwise Distance from Centreline to the inboard edge of the rudder percentage taken estimate 
-    EffFac_V = Y2_v / (b_v / 2); % Efficiency factor of the Veritical Stabiliser
+%     EffFac_V = Y2_v / (b_v / 2); % Efficiency factor of the Veritical Stabiliser
     
+    EffFac_V = 1;
     
     
     % Horizontal Stabilisers Specification
