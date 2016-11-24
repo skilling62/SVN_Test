@@ -9,6 +9,9 @@ clc;
 
 addpath .\Linearised_Aircraft_Model
 
+%% Set Reference Speed u0
+[u0] = Initial_Speed();
+
 %% Calculate Longitudinal Stability Derivatives
 
 % Generate derivates from the Phugoid Response
@@ -23,7 +26,7 @@ addpath .\Linearised_Aircraft_Model
 %% Calculate Lateral Stability Derivatives
 
 % Generate Derivatives from Roll Response
-[Lp] = Roll_Fun();
+[Lp] = Roll_Func(2);
 
 %%
-Longitudinal_Example_V2
+Longitudinal_Example_V5

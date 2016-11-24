@@ -16,7 +16,7 @@
 %
 
 
-function [U_0] = Initial_Speed ()
+function [u0] = Initial_Speed ()
 
 global Mach
 
@@ -34,13 +34,13 @@ global Mach
     
     
     % m/s, U_0 is the average speed of the phugoid
-    U_0 = (((U1_0 + U2_0 + U3_0) / 3) * kts2ms);	
+    u0 = (((U1_0 + U2_0 + U3_0) / 3) * kts2ms);	
     
     
     % Knots to Mach Number convertion 1 = 0.0015
     Kts2Mach = 0.0015; 
     
-    Mach = U_0 * Kts2Mach;
+    Mach = u0 * Kts2Mach;
     
     %   Ref: http://www.airlines-inform.com/commercial-aircraft/Jetstream-31.html
 

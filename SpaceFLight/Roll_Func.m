@@ -99,9 +99,9 @@ switch MethodNumber
     Q = 0.5 * Rho * (U_0^2);
            
     
-   CL_p = -(CL_Aw / 12) * ((1 + (3 * Lander)) / (1 + Lander))
+   CL_p = -(CL_Aw / 12) * ((1 + (3 * Lander)) / (1 + Lander));
     
-    L_p = (Q * S_w * (b_w^2) * CL_p) / (2 * I_x * U_0)
+    L_p = (Q * S_w * (b_w^2) * CL_p) / (2 * I_x * U_0);
 
     end
 end
