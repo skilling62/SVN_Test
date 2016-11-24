@@ -106,17 +106,20 @@ hold off
 %% Determine the stability Coefficients, zeta and omega from aircraft parameters
 
 load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
-    'm', 'I_z', 'CL_Av', 'C_nBeta_wt', 'EffFac_V', 'EffFac_W', 'dSigmaBYdBeta')
+    'm', 'I_z', 'CL_Av', 'C_nBeta_wt', 'EffFac_V', 'EffFac_W', ...
+    'dSigmaBYdBeta', 'K_n', 'K_Rl', 'Sf', 'lf')
 
 Rho = Dens_Calc(358,DR_data(1,5),18,1012);
 
 Q = 0.5 * Rho * (U_0)^2;
 
-C_yr = 2 * CL_Av * EffFac_V *((S_v / S_w)*(l_v/b_w));
+C_yr = 2 * CL_Av * EffFac_V *((S_v / S_w) * (l_v / b_w));
 
 C_nr = -2 * EffFac_V * V_v * (l_v / b_w) * CL_Av;
 
 C_yBeta = -EffFac_W * (S_v / S_w) * CL_Av * (1 + dSigmaBYdBeta);
+
+C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
 
 C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 

@@ -4,12 +4,14 @@ function Spiral_Func()
 
 load('JetStream', 'C_nBeta_wt', 'EffFac_V', 'S_v', 'V_v', 'CL_Av', 'dSigmaBYdBeta', ...
     'S_w', 'b_w', 'I_z', 'S_w', 'b_w', 'I_x', 'I_z', 'l_v', 'z_v', 'U_0', ...
-    'CL_Av', 'S_w', 'Gamma', 'CL_BetaByGam', 'CL_w')
+    'CL_Av', 'S_w', 'Gamma', 'CL_BetaByGam', 'CL_w', 'K_n', 'K_Rl', 'Sf', 'lf')
 
 Spiral_Data = xlsread('Spiral_GpA.xls');
 Rho = Dens_Calc(358,Spiral_Data(1,3),18,1012);
 Q = 0.5 * Rho * (U_0^2);
 
+
+C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
 C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 - dSigmaBYdBeta));
 N_Beta = (Q * S_w * b_w * C_nBeta) / I_z
 
