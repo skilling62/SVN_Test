@@ -36,10 +36,10 @@ function Aircraft_Data ()
     h1f = 2.038446372; % height of the fuselage at 1/4 length m
     h2f = 1.788840694; % height of the fuselage at 3/4 length m
     wf = 1.825;  % max body width m
-    Sf = 18.51; % or 8.632454419  % The Projected Side Area of the fuselage m^2
+    Sf = 18.51; % The Projected Side Area of the fuselage m^2
     la = 14.364; % m, Length of the aircraft
     vis = 1.694; % N.s/m^2, Assumed constant at 3000m Ref: http://www.engineeringtoolbox.com/standard-atmosphere-d_604.htm
-    Swept_Chord = 3.9761; %Swept angle of the main wing
+    Swept_Chord = 3.9761 * (pi / 180); %Swept angle of the main wing
     
     Y1 = 3.61514; % m, Length from root along the trailling edge to the start of the aileron
     Y2 = 4.73708; % m, Length from root along the trailling edge to the end of the aileron
@@ -47,7 +47,7 @@ function Aircraft_Data ()
     Ct = 0.775; % m, Length of wing tip
     Lander = Ct / Cr; % Taper Ratio (tip chord/root chord)
     CL_BetaByGam = -0.000218; % using graph from Nelson P122 (figure 3.11)
-    Gamma = 7; % or 0.1221731 Rads-1 % Degress, From the POH, Wing Dihedral Angle
+    Gamma = 7 * (pi / 180); % Degress changed to Rads, From the POH, Wing Dihedral Angle
     
     
     % Speed
@@ -91,7 +91,7 @@ function Aircraft_Data ()
     CD_0h = 0.01217;
     CM_0h = -0.00;        % 25% MAC
     
-    CL_Ah = 1;
+    CL_Ah = 2.360586116;
     CD_Ah = 1;
     CM_Ah = 1;
     
@@ -110,7 +110,7 @@ function Aircraft_Data ()
     CD_0v = 1;
     CM_0v = 1;
     
-    CL_Av = 3.06;
+    CL_Av = 2.360586116;
     CD_Av = 1;
      
     CD_Uw = 1;  % !!!!!!!! Need to find !!!!!!!!
@@ -120,45 +120,40 @@ function Aircraft_Data ()
     CM_Af = -0.3;
         
     %% Fuselage data
-    X_ac = xm; 
+  
     
 	%% Wing Specifications
     % Main Wing
     S_w = 25.0838208; 	% m^2, Main Wing Area
-	b_w = 15.6; % or 6.8875 m 1 wing not both	% m, Main Wing Span
+	b_w = 6.8875; %15.6; % or 6.8875 m 1 wing not both	% m, Main Wing Span
     d_w = 14.364;   % m, Main Wing Length
     e_w = (b_w + la) / 2; %
 	AR_w = (b_w^2) / S_w; % Aspect Ratio for Main Wing
-    Cbar = 1.71704; % or 1.69?? % m, Mean Aerodynamic Chord
-        
-	Y1_w = (b_w / 2) - ((b_w / 2) * 0.3); % Spanwise Distance from Centreline to the inboard edge of the aileron control percentage taken estimate 
+    Cbar = 1.69; % m, Mean Aerodynamic Chord
+    Y1_w = (b_w / 2) - ((b_w / 2) * 0.3); % Spanwise Distance from Centreline to the inboard edge of the aileron control percentage taken estimate 
 	EffFac_W = Y1_w / (b_w / 2); % Efficiency factor of the main wing
-       
+    X_ac = Cbar / 4; % Aerodynamic Centre 1/4 MAC length   
        
     % Vertical Stabiliser  
-    b_v = 3.0375;   % m, Vertical Stabiliser Height from the Fuselage
-    b_Totv = 5.2375; % m, Vertical Stabiliser Overall Height  
+    b_v = 3.0375;   % m, Vertical Stabiliser span from the Fuselage
+    b_Totv = 5.2375; % m, Vertical Stabiliser Overall span  
     S_v = 5.639214528; % m^2, Vertical Stabiliser area 
     Cr_v = 1.4375; % m, Vertical Stabiliser Root Chord
     Span_v = 15.6; % m, Span of the vertical Stabiliser
     AR_v = (b_v^2) / S_v; %  Aspect Ratio for Verticial Stabiliser
     l_v = 7.12;     % Distance from CG to vertical Stabiliser MAC
-    Length_v = 14.1375; % Total Length of the Vertical Stabiliser
-	V_v = (l_v * S_v) / (S_w * Cbar);   % Vertical Stabiliser volume ratio
+   	V_v = (l_v * S_v) / (S_w * Cbar);   % Vertical Stabiliser volume ratio
     z_v = 5; % !!!!!!!!!!!!!!!!!!!!!!!! NEED TO FIND !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    % m, Distance from centre of pressure of the vertical tail to the fuselage centreline 
-    Y2_v = (b_v / 2) - ((b_v / 2) * 0.95); % Spanwise Distance from Centreline to the inboard edge of the rudder percentage taken estimate 
-%     EffFac_V = Y2_v / (b_v / 2); % Efficiency factor of the Veritical Stabiliser
-    
-    EffFac_V = 1;
+    EffFac_V = 1; % Efficiency factor of the Vertical Stabiliser
     
     
     % Horizontal Stabilisers Specification
     S_h = 7.80385536;  % m^2, Horizontal Stabiliser area 
-    b_h = 6.64464;  % m, Span of Horizontal Stabiliser
+    b_h = 6.5;  % m, Span of Horizontal Stabiliser
     Cr_h = 1.65; % m, Horizontal Stabiliser Root Chord
     Ct_h = 0.675; % m, Horizontal Stabiliser Tip Chord
     AR_h = (b_h^2) / S_h;   %  Aspect Ratio for Horizontial Stabiliser
-    Span = 6.5; % m, Span of the Whole Horizontal Stabiliser
+  
    
     
     
@@ -168,9 +163,9 @@ function Aircraft_Data ()
     KN_Factor1 = xm / lf;
     KN_Factor2 = (lf^2) / Sf;
     KN_Factor3 = sqrt(h1f / h2f);
-    KN_Factor4 = h1f / wf;
+    KN_Factor4 = hf / wf;
 
-    K_n = 0.0015; % Empirical Wing-bodyinterference factore that is a function of the fuselage geometry 
+    K_n = 0.00085; % Empirical Wing-bodyinterference factore that is a function of the fuselage geometry 
 
 % Using results from V_lf, graph used to find the K_Rl Empirical factor, Found in Nelson pg 75
     V_lf = (Sf * lf) / (S_w * b_w);

@@ -12,7 +12,8 @@ Q = 0.5 * Rho * (U_0^2);
 
 C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 - dSigmaBYdBeta));
 N_Beta = (Q * S_w * b_w * C_nBeta) / I_z
-    
+
+% Nelson p122 - Used graph to find CL_Beta
 CL_Beta = CL_BetaByGam / Gamma; 
 L_Beta = (Q * S_w * b_w * CL_Beta) / I_x
 

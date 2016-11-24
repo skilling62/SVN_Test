@@ -1,8 +1,8 @@
-function [Lp] = Roll_Func(MethodNumber)
+function [L_p] = Roll_Func(MethodNumber)
 clc
 
 load('Jetstream', 'S_w', 'b_w', 'I_z', 'CL_Aw', 'gravity', 'U_0', ...
-    'W', 'Y1', 'Y2', 'Cr', 'Lan', 'CL_BetaByGam', 'Gamma', 'I_x', 'Rho') 
+    'W', 'Y1', 'Y2', 'Cr', 'Lander', 'CL_BetaByGam', 'Gamma', 'I_x', 'Rho') 
 
 addpath .\Cranfield_Flight_Test_Data;
 
@@ -91,17 +91,17 @@ switch MethodNumber
 
     % Calculate Time Constant and Lp
     tau = px - px_;
-    Lp = -1/tau;
+    L_p = -1/tau;
    
 %% Equations
     case 2
     
     Q = 0.5 * Rho * (U_0^2);
            
-    % Nelson p122 - Used graph to find CL_Beta
-    CL_Beta = CL_BetaByGam / Gamma; 
     
-    L_Beta = (Q * S_w * b_w * CL_Beta) / I_x
+   CL_p = -(CL_Aw / 12) * ((1 + (3 * Lander)) / (1 + Lander))
+    
+    L_p = (Q * S_w * (b_w^2) * CL_p) / (2 * I_x * U_0)
 
     end
 end

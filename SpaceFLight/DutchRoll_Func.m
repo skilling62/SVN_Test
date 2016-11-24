@@ -112,11 +112,9 @@ Rho = Dens_Calc(358,DR_data(1,5),18,1012);
 
 Q = 0.5 * Rho * (U_0)^2;
 
-C_yBetaTail = CL_Av * EffFac_V * (S_v / S_w);
+C_yr = 2 * CL_Av * EffFac_V *((S_v / S_w)*(l_v/b_w));
 
-C_yr = -2 * (-C_yBetaTail) * (l_v / b_v);
-
-C_nr = -2 * EffFac_V * V_v * (l_v / b_v) * CL_Av;
+C_nr = -2 * EffFac_V * V_v * (l_v / b_w) * CL_Av;
 
 C_yBeta = -EffFac_W * (S_v / S_w) * CL_Av * (1 + dSigmaBYdBeta);
 
