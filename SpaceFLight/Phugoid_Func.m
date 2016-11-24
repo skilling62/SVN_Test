@@ -6,7 +6,7 @@ load('JetStream.mat', 'gravity', 'm', 'S_w', 'EffFac_V', 'V_v' , 'l_v' , 'Cbar',
         'CM_Af', 'CD_Uw', 'CL_Uw', 'CD_0w', 'CD_Aw', 'CL_0w', 'CL_Aw', 'X_ac', 'CG', 'I_y', ...
         'dEpsBYdAlpha', 'U_0', 'q', 'Rho')
     
-    CD_Uw = 0.1
+    CD_Uw = 0.1;
 %% Calulations
 
     Q = 0.5 * Rho * (U_0^2);
@@ -73,15 +73,15 @@ r4 = troughs(2,:); r5 = pk(3,:); r6 = troughs(3,:);
 
         lil_delta = -log((abs(r3 - r1))/ (abs(r2 - r3)));
         
-        Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)))
+        Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
         
-        Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)))
+        Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)));
 
         Zu = - (U_0 * (Omeg_n^2)) / gravity;
         
         CZ_u = (m * U_0 * Zu) / (Q * S_w);
        
-        Xu = 2 * Zeta * Omeg_n;
+        Xu = -(Zeta * 2 * Omeg_n);
         
         CX_u = (m * U_0 * Xu) / (Q * S_w);
                
