@@ -108,7 +108,7 @@ A_Lat = [Yv,               Yp,               -(u0 - Yr),              g;...
 
 % No control input (free response) 
  
- B_Lat = zeros(4,2)
+B_Lat = zeros(4,2)
 
 %B_Lat = [1 1; 1 1; 1 1; 1 1]
 
@@ -129,8 +129,8 @@ Ac_Model = ss(A_Lat, B_Lat, C_Lat, D_Lat)
 
 % visualise free response
 
-% disturbance of 10 deg in pitch
-x0_Lat = [0 0 0 10*(pi/180)];
+% disturbance of 10 deg in bank
+x0_Lat = [0 0 0 0*(pi/180)];
 
 
 % =========================================================================

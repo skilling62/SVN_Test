@@ -6,6 +6,7 @@ load('JetStream.mat', 'gravity', 'm', 'S_w', 'EffFac_V', 'V_v' , 'l_v' , 'Cbar',
         'CM_Af', 'CD_Uw', 'CL_Uw', 'CD_0w', 'CD_Aw', 'CL_0w', 'CL_Aw', 'X_ac', 'CG', 'I_y', ...
         'dEpsBYdAlpha', 'U_0', 'q', 'Rho')
     
+    CD_Uw = 0.1
 %% Calulations
 
     Q = 0.5 * Rho * (U_0^2);
@@ -54,6 +55,8 @@ troughs = -troughs;
 plot(time,U, 'g',lc, pk, 'mo', lc1, troughs, 'ko');
 ax.XTickLabelMode = 'auto';
 grid minor;
+xlabel('Time (Seconds)')
+ylabel ('Velocity (m/s)')
 
 t1 = lc(1,:); t2 = lc1(1,:); t3 = lc(2,:);
 t4 = lc1(2,:); t5 = lc(3,:); t6 = lc1(3,:);

@@ -157,9 +157,9 @@ A_Lon = [Xu,               Xw,               0,              -g;...
 
 % No control input (free response) 
  
-% B = zeros(4,2)
+B_Lon = zeros(4,2)
 
-B_Lon = [0 0; 0 0; 0 0; 0 0]
+% B_Lon = [1 1; 1 1; 1 1; 1 1]
 
 % all sensor outputs are visible 
 C_Lon = eye(4)
@@ -179,7 +179,7 @@ Ac_Model = ss(A_Lon, B_Lon, C_Lon, D_Lon)
 % visualise free response
 
 % disturbance of 10 deg in pitch
-x0_Lon = [0 0 0 0];
+x0_Lon = [8.2 0 0 0];
 % % [y, t, x] = initial(Ac_Model, x0);
 % % y = transpose(y);
 % % plot(t,y)
