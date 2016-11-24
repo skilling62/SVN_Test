@@ -159,7 +159,7 @@ Mq = (u0*(Omeg_n^2 + Malpha))/Zalpha;
 %% From the damping ratio calculate Mw_dot
 
 % Calculate Malphadot
-Malpha_dot = 2*Omeg_n - Mq - (Zalpha/u0);
+Malpha_dot = -1*((zeta_ * 2*Omeg_n) - Mq - (Zalpha/u0));
 
 % Calculate Mwdot
 Mw_dot = Malpha_dot/u0;

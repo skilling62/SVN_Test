@@ -31,7 +31,7 @@ Table_Density = stdatm(:,4);    % Kg/m^3
 % Constants
 % =========================================================================
 
-u0 = 0.7*ac_coeff.VaBnd( length(ac_coeff.VaBnd) );    % m/s
+% u0 = 0.7*ac_coeff.VaBnd( length(ac_coeff.VaBnd) );    % m/s
 Altitude = 500;
 
 % Aircraft velocity (needs to be updated with each time step)
@@ -77,20 +77,20 @@ CD0 = ac_coeff.CDmin;
 CDu = 0;       % approximated for jet aircraft - page 111 of Nelson
 CTu = -CD0;    % page 111 of Nelson (dC_T/(d(u/u0))
 CXu = -( CDu + 2*CD0 ) + CTu;
-Xu = ( CXu*Q*ac_coeff.S )/( u0*ac_coeff.m ); % /s
+% Xu = ( CXu*Q*ac_coeff.S )/( u0*ac_coeff.m ); % /s
 
 CZu = -( (ac_coeff.M^2)/(1 - ac_coeff.M^2) )*ac_coeff.CL0 - 2*ac_coeff.CL0;
-Zu = ( CZu*Q*ac_coeff.S )/( u0*ac_coeff.m ); % /s
+% Zu = ( CZu*Q*ac_coeff.S )/( u0*ac_coeff.m ); % /s
 
 Mu = 0;         % Assumed for low speed flight - p126 of Nelson
 
 % w derivatives
 CDa = 0;            % not a linear relationship - for low angles of attack assumed to be 0
 CXw = -( CDa - ac_coeff.CL0 );
-Xw = ( CXw*Q*ac_coeff.S )/( u0*ac_coeff.m ); % /s
+% Xw = ( CXw*Q*ac_coeff.S )/( u0*ac_coeff.m ); % /s
 
 CZw = -( ac_coeff.CLa + CD0 );
-Zw = ( CZw*Q*ac_coeff.S )/( u0*ac_coeff.m ); % /s
+% Zw = ( CZw*Q*ac_coeff.S )/( u0*ac_coeff.m ); % /s
 
 % Iy = Jgross(2);
 
@@ -106,20 +106,20 @@ CMat = -eta*VH*CLat*(1 - deps);
 CMa = CMaw + CMat;
 CMa = ac_coeff.Cma;
 
-Mw = CMa*( ( Q*ac_coeff.S*ac_coeff.MAC )/( u0*ac_coeff.Iy ) ); % 1/m.s
+% Mw = CMa*( ( Q*ac_coeff.S*ac_coeff.MAC )/( u0*ac_coeff.Iy ) ); % 1/m.s
 
 % q derivatives
 Cmq = -2*eta*CLat*VH*( ac_coeff.lt/ac_coeff.MAC );
-Mq = Cmq*( ac_coeff.MAC/( 2*u0 ) )*( ( Q*ac_coeff.S*ac_coeff.MAC )/ac_coeff.Iy );
-
+% Mq = Cmq*( ac_coeff.MAC/( 2*u0 ) )*( ( Q*ac_coeff.S*ac_coeff.MAC )/ac_coeff.Iy );
+% 
 % w_dot derivates
-Xw_dot = 0;
-Zw_dot = 0;
-Mw_dot = -0.0051; % 1/ft
+% Xw_dot = 0;
+% Zw_dot = 0;
+% Mw_dot = -0.0051; % 1/ft
 
 % q derivatives
-Xq = 0;
-Zq = 0;
+% Xq = 0;
+% Zq = 0;
 
 % =========================================================================
 % Aircraft model
