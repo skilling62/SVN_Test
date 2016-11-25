@@ -23,9 +23,9 @@ function Aircraft_Data ()
 %% ========================= Constants ====================================
 
 % ------------------------------------------------------------------------- 
-    gravity = 9.81;                 % Gravity accelartional constant m/s^-2
-    Lan = 1.4;                      % Air Specific Constant
-    vis = 1.694;                    % N.s/m^2, Assumed constant at 3000m Ref: http://www.engineeringtoolbox.com/standard-atmosphere-d_604.htm
+    gravity = 9.81;                     % Gravity accelartional constant m/s^-2
+    Lan = 1.4;                          % Air Specific Constant
+    vis = 1.694;                        % N.s/m^2, Assumed constant at 3000m Ref: http://www.engineeringtoolbox.com/standard-atmosphere-d_604.htm
 % ------------------------------------------------------------------------- 
     
 %% ========================================================================
@@ -55,10 +55,11 @@ function Aircraft_Data ()
     wf = 1.825;                         % max body width m
     Sf = 18.51;                         % The Projected Side Area of the fuselage m^2
     la = 14.364;                        % m, Length of the aircraft
+    CentreLine_f = 6.126934;            % m, Fuselage Centreline
 % -------------------------------------------------------------------------
     
 % --------------------------- Main Wing -----------------------------------
-    Swept_Chord = 3.9761 * (pi / 180);  %Swept angle of the main wing
+    Swept_Angle = 3.9761 * (pi / 180);  %Swept angle of the main wing
     Y1 = 3.61514;                       % m, Length from root along the trailling edge to the start of the aileron
     Y2 = 4.73708;                       % m, Length from root along the trailling edge to the end of the aileron
     Cr = 2.3375;                        % m, Length of wing chord
@@ -75,6 +76,7 @@ function Aircraft_Data ()
     b_Totv = 5.2375;                    % m, Vertical Stabiliser Overall span  
     S_v = 5.639214528;                  % m^2, Vertical Stabiliser area 
     Cr_v = 1.4375;                      % m, Vertical Stabiliser Root Chord
+    Cp_v = Cr_v * 0.25;                 % m, Location of the Centre of Pressure for the Vertical Stabiliser
 % -------------------------------------------------------------------------
     
 % -------------------------- Horizontal Stabilier -------------------------
@@ -98,7 +100,7 @@ function Aircraft_Data ()
     
 % -------------------------- Vertical Stabiliser --------------------------
     l_v = 7.12;                             % Distance from CG to vertical Stabiliser MAC
-    z_v = 5;                                % !!!!!!!!!!!!!!!!!!!!!!!! NEED TO FIND !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    % m, Distance from centre of pressure of the vertical tail to the fuselage centreline 
+    z_u = 6.134134426;                      % m, Distance from centre of pressure of the vertical tail to the fuselage centreline 
 % -------------------------------------------------------------------------
 
 
@@ -258,7 +260,7 @@ function Aircraft_Data ()
 
 % -------------------------------------------------------------------------
     dEpsBYdAlpha = (2 * CL_Aw) / (pi * AR_w);                   % Change in downwash due to a change on Angle of Attack
-    dSigmaBYdBeta = (S_v / S_w) / (1 + (cos(Swept_Chord)));     % Change in Sidewash angle with a change in sideslip angle
+    dSigmaBYdBeta = (S_v / S_w) / (1 + (cos(Swept_Angle)));     % Change in Sidewash angle with a change in sideslip angle
     CM_Av = -(EffFac_V) * V_v * CL_Av * (1 - dEpsBYdAlpha);     % Coefficient of Moment to the Angle of Attack relative to the Verticial Stabiliser 
 % -------------------------------------------------------------------------
 
