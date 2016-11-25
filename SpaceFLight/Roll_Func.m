@@ -1,4 +1,4 @@
-function [L_p] = Roll_Func(MethodNumber)
+function [L_p,tau] = Roll_Func(MethodNumber)
 clc
 
 load('Jetstream', 'S_w', 'b_w', 'I_z', 'CL_Aw', 'gravity', 'U_0', ...
@@ -103,5 +103,5 @@ switch MethodNumber
     
     L_p = (Q * S_w * (b_w^2) * CL_p) / (2 * I_x * U_0);
 
-    end
+end
 end

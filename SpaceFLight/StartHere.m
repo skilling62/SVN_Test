@@ -12,6 +12,14 @@ addpath .\Linearised_Aircraft_Model
 %% Set Reference Speed u0
 [u0] = Initial_Speed();
 
+%% Calculate Lateral Stability Derivatives
+
+% Generate Derivatives from Roll Response
+[Lp] = Roll_Func(1);
+
+% Generate Dervivatives from Dutch Roll Response
+
+
 %% Calculate Longitudinal Stability Derivatives
 
 % Generate derivates from the Phugoid Response
@@ -22,11 +30,6 @@ addpath .\Linearised_Aircraft_Model
 % Generate Dervivates from Short Period. The input to the function is the method 
 % Input '0' = inspection, Input '1' = Logarithmic Decrement
 [Xw, Zw, Mw, Mw_dot, Mq] = SPeriod_Func(0);
-
-%% Calculate Lateral Stability Derivatives
-
-% Generate Derivatives from Roll Response
-[Lp] = Roll_Func(2);
 
 %%
 Longitudinal_Example_V5

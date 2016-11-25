@@ -127,7 +127,7 @@ C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
 C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
 
-T_Con = 2 * (W / S_w)/ (CL_Aw * Rho * U_0 * gravity); % Time Constant
+T_Con = 2 * (W / S_w)/ (CL_Aw * Rho * U_0 * gravity) % Time Constant
 
 
 C_yLilDelta_r = (S_v / S_w) * T_Con * CL_Av;
