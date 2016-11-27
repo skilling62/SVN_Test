@@ -51,11 +51,14 @@ U = Pg_data(:,4) * kts2ms;
 [pk,lc] = findpeaks(U,time);
 [troughs, lc1] = findpeaks(-U,time);
 troughs = -troughs;
-plot(time,U, 'g',lc, pk, 'mo', lc1, troughs, 'ko');
+plot(time,U);
+grid minor
+hold on
+plot(lc, pk, 'mo', lc1, troughs, 'ko');
 ax.XTickLabelMode = 'auto';
-grid minor;
+hold off
 xlabel('Time (Seconds)')
-ylabel ('Velocity (m/s)')
+ylabel ('Aircraft Velocity (m/s)')
 
 %% Determine the amplitude of the response and corresponding times for use in the logarithmic decrement method
 r1 = pk(1);
