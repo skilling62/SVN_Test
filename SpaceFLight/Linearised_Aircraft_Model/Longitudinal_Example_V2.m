@@ -110,7 +110,7 @@ CMa = ac_coeff.Cma;
 
 % q derivatives
 Cmq = -2*eta*CLat*VH*( ac_coeff.lt/ac_coeff.MAC );
-% Mq = Cmq*( ac_coeff.MAC/( 2*u0 ) )*( ( Q*ac_coeff.S*ac_coeff.MAC )/ac_coeff.Iy );
+%Mq = Cmq*( ac_coeff.MAC/( 2*u0 ) )*( ( Q*ac_coeff.S*ac_coeff.MAC )/ac_coeff.Iy );
 % 
 % w_dot derivates
 % Xw_dot = 0;
@@ -148,7 +148,20 @@ Cmq = -2*eta*CLat*VH*( ac_coeff.lt/ac_coeff.MAC );
 %     X0_SP  = [0, 1]
 %     
 % damp(A_SP)    
-    
+ 
+% =========================================================================
+% Phugoid Example
+% =========================================================================
+% A_ph = [Xu,         -g
+%         -Zu/uo      0];
+%     
+% B_ph = zeros(2,2);
+% 
+% C_ph = eye(2);
+% 
+% D_ph = zeros(2,2);
+
+
     
 A_Lon = [Xu,               Xw,               0,              -g;...
      Zu,               Zw,               u0,              0;...

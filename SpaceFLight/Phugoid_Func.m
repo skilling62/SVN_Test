@@ -76,9 +76,9 @@ t3 = lc(2);
     
     lil_delta = -log(abs((r3-r2)/(r2-r1)));
     
-    Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
+    Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)))
         
-    Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)));
+    Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)))
 
     Zu = - (U_0 * (Omeg_n^2)) / gravity;
         
@@ -124,8 +124,8 @@ t3 = lc(2);
 %         - ((g * M_u) / M_Alpha)) * Landa + (gravity * (((Z_Alpha * M_u) ...
 %         - (Z_u * M_Alpha)) / (M_Alpha *U_0)));
 
-    Omeg_Phugoid = sqrt((gravity * (((Z_Alpha * M_u) - (Zu * M_Alpha)) / (M_Alpha * U_0))));
-    Two_Zeta_Omeg_Phuoid_1 =  -(Xu) + ((M_u * (X_Alpha - gravity)) / M_Alpha);
+    Omeg_Phugoid = sqrt((gravity * (((Z_Alpha * M_u) - (Zu * M_Alpha)) / (M_Alpha * U_0))))
+    Two_Zeta_Omeg_Phuoid_1 =  -(Xu) + ((M_u * (X_Alpha - gravity)) / M_Alpha)
     
     end
     

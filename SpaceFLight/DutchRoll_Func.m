@@ -112,82 +112,7 @@ load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
 Rho = Dens_Calc(358,DR_data(1,5),18,1012);
 
 Q = 0.5 * Rho * (U_0)^2;
-
-%%
-
- % Import Data
-    Roll_data = xlsread('Roll_GpA.xls');
-    time = Roll_data(:,1);
-    p = Roll_data(:,4);
-    delta_a = Roll_data(:,2);
-    phi = Roll_data(:,3);
-    GroupName = Roll_data(1,8);
-
-    % Plot
-    subplot(2,1,1)
-    plot(time,p,'DisplayName','Roll Rate (Degrees/s)')
-    [pk,locs] = findpeaks(p,time,'MinPeakDistance',1.8);
-    [troughs, lc1] = findpeaks(-p,time,'MinPeakDistance',1.5);
-    troughs = -troughs;
-    hold on
-    plot(locs,pk,'mo',lc1, troughs, 'ko','HandleVisibility','off')
-    plot (time, delta_a,'DisplayName','Aileron Deflection Angle (Degrees)');
-    grid minor
-    xlabel('Time (Seconds)')
-    ylabel('State Variable')
-    legend(gca,'show')
-    hold off
-   % Determine the Time Constant
-
-    % Rescale the plot
-    t1 = lc1(3);
-    t2 = lc1(4);
-    y1 = troughs(3);
-    time_ = time(time>=t1 & time<t2)-t1;
-    index = length(time) - length(time(time>=t1)) + 1;
-    pfindex = (index + length(time_)) -1 ;
-    RollRate_ = p(index:pfindex) - abs(y1);
-
-    % Find the steady state
-    if GroupName == 1
-            p_ss = pk(4) - abs(y1);
-        elseif GroupName == 2
-            p_ss = pk(3) - abs(y1);
-    end
-
-    % Find 63.2% of the final value
-    t_ss = 0.632*p_ss;
-    Vp_ss = linspace(p_ss,p_ss,length(time_));
-    Vt_ss = linspace(t_ss,t_ss,length(time_));
-
-    % Find the time at which 63.2% is reached
-    idx = find(Vt_ss' - RollRate_ < eps, 1);
-    px = time_(idx);
-    py = Vt_ss(idx);
-
-    % Negate the flat response at the start
-    k = find(RollRate_>0.1,1);
-    py_ = RollRate_(k);
-    px_ = time_(k);
-
-    % Plot the response
-    subplot(2,1,2)
-    plot(time_,RollRate_,'DisplayName','Roll Rate (Degrees/s)')
-    hold on
-    plot(time_,Vt_ss,'--k', px, py,'ro','HandleVisibility','off')
-    plot(time_,Vp_ss,'DisplayName','Steady State')
-    plot(px_,py_,'ko','HandleVisibility','off')
-    hold off
-    axis tight
-    grid minor
-    xlabel('Time (Seconds)')
-    ylabel('Roll Rate (Degrees/s)')
-    legend(gca,'show')
-
-    % Calculate Time Constant and Lp
-    tau = px - px_;
-
-
+ 
 %%
 C_yr = 2 * CL_Av * EffFac_V *((S_v / S_w) * (l_v / b_w));
 
@@ -199,9 +124,9 @@ C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
 
 C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
-C_yLilDelta_r = (S_v / S_w) * tau * CL_Av;
-
-C_nLilDelta_r = -(V_v * EffFac_V * tau * CL_Av);
+% C_yLilDelta_r = (S_v / S_w) * tau * CL_Av;
+% 
+% C_nLilDelta_r = -(V_v * EffFac_V * tau * CL_Av);
 
 %% Calculations
 % Nelson p199

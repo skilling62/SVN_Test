@@ -67,7 +67,7 @@ function Aircraft_Data ()
     S_w = 25.0838208;                   % m^2, Main Wing Area
 	b_w = 15.6;                         % m, Main Wing Span
     e_w = (b_w + la) / 2;               % m, Main Wing Span + Length of Aircract divided by 2
-	Cbar = 1.69;                        % m, Mean Aerodynamic Chord
+	Cbar = 1.72;                        % m, Mean Aerodynamic Chord (5ft7.6 inches, from POH p.4)
     Gamma = 7 * (pi / 180);             % Degress changed to Rads, From the POH, Wing Dihedral Angle
 % -------------------------------------------------------------------------    
    
@@ -137,7 +137,7 @@ function Aircraft_Data ()
     
 %   Calculation in slugs ft^2 and then convert to kgm^2
     I_x = (((MTOW*2.20462 / g) * (R_x * ((b_w * 3.28084) / 2))^2)) * 1.355817962; 
-    I_y = (((MTOW*2.20462 / g) * (R_y * ((la * 3.28084) / 2))^2)) * 1.355817962;
+    I_y = ((MTOW*2.20462 / g) * (R_y * (la * 3.28084/2))^2) * 1.355817962;
     I_z = (((MTOW*2.20462 / g) * (R_z * ((e_w * 3.28084)/2))^2)) * 1.355817962;     
 % -------------------------------------------------------------------------
 
@@ -208,6 +208,7 @@ function Aircraft_Data ()
 % ==================== Coefficients of Aircraft ===========================
 
 % --------------------------- Fuselage ------------------------------------
+    % Approximated from Cooke simulation model p28
     CM_Af = -0.3;
 % -------------------------------------------------------------------------
 
@@ -223,7 +224,7 @@ function Aircraft_Data ()
 
     CL_Uw = ((Mach)^2 / (1 - (Mach)^2)) * CL_0w;
 
-    CL_Aw = 4.9732;
+    CL_Aw = 4.9733;
     CD_Aw = 0.008956;
     CM_Aw = -0.0014;
     

@@ -1,11 +1,10 @@
 function [Xw, Zw, Mw, Mw_dot,Mq] = SPeriod_Func(MethodNumber)
 
 clc
-%%global U_0 Q m S Rho CD_0 I_y
 
 addpath .\Cranfield_Flight_Test_Data;
 
-kts2ms = 0.51444; % kts to m/s 1 = 0.51444
+kts2ms = 0.51444;
 
 %% Import data
 SpData = xlsread('SPPO_GpA.xls');
@@ -104,7 +103,7 @@ zeta_ = 0.5;
 Omeg_n = (Omeg_d/sqrt(1-zeta_^2));
 
     case 1
-%% Use the logarithmic decrement Method
+%% Use the logarithmic decrement Method to determine the natural frequency and damping ratio
    
 if lc1(1) < 0.5
    r1 = pk(4);
@@ -145,7 +144,7 @@ Q = 0.5*Rho*(u0^2);
 
 % Calculate Zw and Zalpha
 
-Zw = (-(CL_Aw + CD_0w)*Q*S_w)/(u0*m)
+Zw = (-(CL_Aw + CD_0w)*Q*S_w)/(u0*m);
 Zalpha = u0*Zw;
 
 % Calculate Mw and Malpha
@@ -159,13 +158,15 @@ Mq = (u0/Zalpha)*(Omeg_n^2 + Malpha);
 %% From the damping ratio calculate Mw_dot
 
 % Calculate Malphadot
-Malpha_dot = -1*((zeta_ * 2*Omeg_n) - Mq - (Zalpha/u0));
+Malpha_dot = (-1*(zeta_ * 2*Omeg_n) - Mq - (Zalpha/u0));
 
 % Calculate Mwdot
 Mw_dot = Malpha_dot/u0;
 
 %% From Aircraft Data Calculate Xw
 Xw = -((CD_Aw - CL_0w)*Q*S_w)/(u0*m);
+
+% Determine Cmq from aircraft data
 
 end
 

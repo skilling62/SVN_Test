@@ -29,7 +29,7 @@ addpath .\Linearised_Aircraft_Model
 
 % Generate Dervivates from Short Period. The input to the function is the method 
 % Input '0' = inspection, Input '1' = Logarithmic Decrement
-[Xw, Zw, Mw, Mw_dot, Mq] = SPeriod_Func(0);
+[Xw, Zw, Mw, Mw_dot, Mq] = SPeriod_Func(1);
 
 %%
 Longitudinal_Example_V5
