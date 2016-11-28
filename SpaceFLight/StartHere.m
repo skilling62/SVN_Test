@@ -15,11 +15,15 @@ addpath .\Linearised_Aircraft_Model
 %% Calculate Lateral Stability Derivatives
 
 % Generate Derivatives from Roll Response
-% Input '1' = 
+% Input '1' = Graphical approximation of Lp   Input '2' Lp approximation
+% from aircraft data
 [Lp] = Roll_Func(1);
 
 % Generate Dervivatives from Dutch Roll Response
-[Yv ,Yr, Nr] = DutchRoll_Func(1);
+% Input '1' Damping and frequency only (logarithmic decrement) Input '2'
+% Damping and frequency only (inspection)   Input '3' Derivatives, damping
+% and frequency (aircraft data)
+[Yv ,Yr, Nr] = DutchRoll_Func(3);
 
 % Generate Derivatives from the Spiral Response
 [Nv, Lv, Lr, Yp, Np] = Spiral_Func();
@@ -36,4 +40,4 @@ addpath .\Linearised_Aircraft_Model
 [Xw, Zw, Mw, Mw_dot, Mq] = SPeriod_Func(1);
 
 %%
-Longitudinal_Example_V5
+ Longitudinal_Example_V5
