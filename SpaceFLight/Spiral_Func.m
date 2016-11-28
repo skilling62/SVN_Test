@@ -30,27 +30,27 @@ Rho = Dens_Calc(358,Spiral_Data(1,3),18,1012);
 
 Q = 0.5 * Rho * (U_0^2);
 
-C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
+% Calculate Wing fuesulage contribution to CnBeta (p75)
+C_nBeta_wf = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
 
-C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 - dSigmaBYdBeta));
+% Calculate Nbeta abd Nv
+C_nBeta = C_nBeta_wf + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
-% N_Beta is the directional stability (Nelson p197)
-NBeta = (Q * S_w * b_w * C_nBeta) / I_z;
+NBeta = (Q * S_w * b_w * C_nBeta) / I_z
 
 Nv = NBeta/U_0;
 
-% Nelson p122 - Used graph to find CL_Beta. L_Beta is the dihedral effect
-CL_Beta = (CL_BetaByGam * Gamma) - 0.0002 
+% Calculate CL_Beta Used graph to find CL_Beta. L_Beta is the dihedral
+% effect p122
+CL_Beta = (CL_BetaByGam * Gamma) - 0.0002; 
 
-LBeta = (Q * S_w * b_w * CL_Beta) / I_x
+LBeta = (Q * S_w * b_w * CL_Beta) / I_x;
 
 Lv = LBeta/U_0;
 
-C_yBeta = -EffFac_V * (S_v / S_w) * CL_Av * (1 + dSigmaBYdBeta);
-
+% Calculate Lr (the roll moment due to yaw rate)
 C_yBeta_tail = - (CL_Av * EffFac_V * (S_v / S_w));
 
-% Calculate Lr (the roll moment due to yaw rate)
 CL_r = (CL_0w / 4) - (2 * (l_v/b_w) * (z_u/b_w) * C_yBeta_tail);
 
 Lr = (Q * S_w * (b_w^2) * CL_r) / (2 * I_x * U_0);

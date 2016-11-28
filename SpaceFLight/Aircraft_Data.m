@@ -68,7 +68,7 @@ function Aircraft_Data ()
 	b_w = 15.6;                         % m, Main Wing Span
     e_w = (b_w + la) / 2;               % m, Main Wing Span + Length of Aircract divided by 2
 	Cbar = 1.72;                        % m, Mean Aerodynamic Chord (5ft7.6 inches, from POH p.4)
-    Gamma = 7 * (pi / 180);             % Degress changed to Rads, From the POH, Wing Dihedral Angle
+    Gamma = 7 * (pi() / 180);             % Degress changed to Rads, From the POH, Wing Dihedral Angle
 % -------------------------------------------------------------------------    
    
 % ------------------------- Vertical Stabiliser ---------------------------
@@ -246,7 +246,7 @@ function Aircraft_Data ()
     CM_Aw = -0.0014;
     
     % using graph from Nelson P122 (figure 3.11) convert from d^2 to rad^2
-    CL_BetaByGam = -0.000218 *0.0003046; 
+    CL_BetaByGam = -0.000218 * ((pi() * 180)^2);
 % -------------------------------------------------------------------------
     
 % -------------------------- Vertical Stabiliser --------------------------
