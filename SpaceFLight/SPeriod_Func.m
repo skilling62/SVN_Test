@@ -8,6 +8,7 @@ kts2ms = 0.51444;
 
 %% Import data
 SpData = xlsread('SPPO_GpA.xls');
+load ('JetStream','Rho','U_0');
 
 % Assign variables to columns
 time = SpData(:,1);
@@ -18,10 +19,6 @@ Alpha = SpData(:,3);
 Pitch = SpData(:,4);
 % Pitch rate = q. A principal value for short period
 PitchRate = SpData(:,5);
-% Initial Velocity
-u0 = SpData(1,7) * kts2ms;
-% Initial Altitude
-alt0 = SpData(1,8);
 
 %% Plot angle of attack vs speed to determine response
 [pk,lc] = findpeaks(PitchRate,time,'MinPeakDistance',1.8);
@@ -136,35 +133,32 @@ Omeg_n = Omeg_d / (sqrt(1 - (zeta_^2)));
 %% From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
 load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CD_Aw','CL_0w','CM_Alpha')
 
-% Calculate the density at test conditions
-Rho = Dens_Calc(358,alt0,18,1012);
-
 % Calculate Dynamic Pressure
-Q = 0.5*Rho*(u0^2);
+Q = 0.5*Rho*(U_0^2);
 
 % Calculate Zw and Zalpha
 
-Zw = (-(CL_Aw + CD_0w)*Q*S_w)/(u0*m);
-Zalpha = u0*Zw;
+Zw = (-(CL_Aw + CD_0w)*Q*S_w)/(U_0*m);
+Zalpha = U_0*Zw;
 
 % Calculate Mw and Malpha
 
-Mw = (CM_Alpha * Q * S_w * Cbar)/(u0 * I_y);
-Malpha = u0*Mw;
+Mw = (CM_Alpha * Q * S_w * Cbar)/(U_0 * I_y);
+Malpha = U_0*Mw;
 
 % Calculate Mq
-Mq = (u0/Zalpha)*(Omeg_n^2 + Malpha);
+Mq = (U_0/Zalpha)*(Omeg_n^2 + Malpha);
 
 %% From the damping ratio calculate Mw_dot
 
 % Calculate Malphadot
-Malpha_dot = (-1*(zeta_ * 2*Omeg_n) - Mq - (Zalpha/u0));
+Malpha_dot = (-1*(zeta_ * 2*Omeg_n) - Mq - (Zalpha/U_0));
 
 % Calculate Mwdot
-Mw_dot = Malpha_dot/u0;
+Mw_dot = Malpha_dot/U_0;
 
 %% From Aircraft Data Calculate Xw
-Xw = -((CD_Aw - CL_0w)*Q*S_w)/(u0*m);
+Xw = -((CD_Aw - CL_0w)*Q*S_w)/(U_0*m);
 
 case 2
     
