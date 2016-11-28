@@ -77,10 +77,10 @@ function Aircraft_Data ()
     S_v = 5.639214528;                  % m^2, Vertical Stabiliser area 
     Cr_v = 1.4375;                      % m, Vertical Stabiliser Root Chord
     Cp_v = Cr_v * 0.25;                 % m, Location of the Centre of Pressure for the Vertical Stabiliser
-    
-    % Calculate the Control surface area/lifting surface area Paremeter (Cook p56)
     Cr = 0.669;
     Cf = 1.910;
+    
+    % Calculate the Control surface area/lifting surface area Paremeter (Cook p56)
     Vcontrol_surface = 0.669/1.910;
     % Determine graphically the flap effectiveness parameter (tau) from
     % Nelson p64
