@@ -1,4 +1,4 @@
-function DutchRoll_Func()
+function DutchRoll_Func(MethodNumber)
  
 clc
 
@@ -50,108 +50,111 @@ elseif GroupName == 2
     y1 = troughs(7);
 end
 
-%% Logarithmic Decrement
-% Calculation of the logarithmic decrement
-lil_delta = -log(abs((r3 - r2)/(r2 - r1)));
+    switch MethodNumber
+        %% Logarithmic Decrement
+            case 1
+        % Calculation of the logarithmic decrement
+        lil_delta = -log(abs((r3 - r2)/(r2 - r1)));
 
-% Calculation of damping ratio
-zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
+        % Calculation of damping ratio
+        zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)))
 
-% Calculation of Damped natural frequency
-Omeg_dloga = 2*(pi)/ (tloga3 - tloga1);
+        % Calculation of Damped natural frequency
+        Omeg_dloga = 2*(pi)/ (tloga3 - tloga1);
 
-% Calculation of Natural Frequency
-Omeg_nloga = Omeg_dloga / (sqrt(1 - (zeta_^2)));
+        % Calculation of Natural Frequency
+        Omeg_nloga = Omeg_dloga / (sqrt(1 - (zeta_^2)));
 
-%% Inspection Method
-% Calculate the time period
-TPeriod = t2-t1;
+        %% Inspection Method
+            case 2
+        % Calculate the time period
+        TPeriod = t2-t1;
 
-% Calculate the damped natural frequency
-Omeg_d = (2*pi/TPeriod);
+        % Calculate the damped natural frequency
+        Omeg_d = (2*pi/TPeriod);
 
-% New time Vector whose domain is scaled down
-time_ = time(time>=t1)-t1;
+        % New time Vector whose domain is scaled down
+        time_ = time(time>=t1)-t1;
 
-% Determine the index of the starting point in the original time vector
-index = length(time) - length(time(time>=t1)) + 1;
+        % Determine the index of the starting point in the original time vector
+        index = length(time) - length(time(time>=t1)) + 1;
 
-% Find the end position in the original pitch vector
-Pfindex = (index + length(time_)) -1 ;
+        % Find the end position in the original pitch vector
+        Pfindex = (index + length(time_)) -1 ;
 
-% New Pitch Rate vector
-r_ = r(index:Pfindex) + abs(y1);
+        % New Pitch Rate vector
+        r_ = r(index:Pfindex) + abs(y1);
 
-% Determine the steady state value of the rescaled PitchRate vector 
-y_ss = r_(length(r_));
+        % Determine the steady state value of the rescaled PitchRate vector 
+        y_ss = r_(length(r_));
 
-% Plot the rescaled response and standard second order responses
-subplot(2,1,2)
-plot(time_,r_,'k', 'LineWidth',1.5,'DisplayName','System Response') 
-grid minor
+        % Plot the rescaled response and standard second order responses
+        subplot(2,1,2)
+        plot(time_,r_,'k', 'LineWidth',1.5,'DisplayName','System Response') 
+        grid minor
 
-hold all
-for zeta = 0:0.1:1
-% Use a range of Natural frequencies
-OmegaN = (Omeg_d/sqrt(1 - zeta^2));
-y = y_ss*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
-plot(time_,y, 'DisplayName',num2str(zeta));
-end
-legend(gca,'show')
-ylabel('PitchRate (degrees/s)')
-xlabel('Time (s)')
-hold off
+        hold all
+        for zeta = 0:0.1:1
+        % Use a range of Natural frequencies
+        OmegaN = (Omeg_d/sqrt(1 - zeta^2));
+        y = y_ss*(1-exp(-zeta * OmegaN.*time_).*((zeta * (OmegaN/Omeg_d) * sin(Omeg_d.*time_)) + cos(Omeg_d.*time_)));
+        plot(time_,y, 'DisplayName',num2str(zeta));
+        end
+        legend(gca,'show')
+        ylabel('PitchRate (degrees/s)')
+        xlabel('Time (s)')
+        hold off
 
 
-%% Determine the stability Coefficients, zeta and omega from aircraft parameters
+        %% Determine the stability Coefficients, zeta and omega from aircraft parameters
+            case 3
+        load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
+            'm', 'I_z', 'CL_Av', 'EffFac_V', 'EffFac_W', ...
+            'dSigmaBYdBeta', 'K_n', 'K_Rl', 'Sf', 'lf', 'gravity', 'W', 'CL_Aw','tau_r')
 
-load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
-    'm', 'I_z', 'CL_Av', 'EffFac_V', 'EffFac_W', ...
-    'dSigmaBYdBeta', 'K_n', 'K_Rl', 'Sf', 'lf', 'gravity', 'W', 'CL_Aw','tau_r')
+        Rho = Dens_Calc(358,DR_data(1,5),18,1012);
 
-Rho = Dens_Calc(358,DR_data(1,5),18,1012);
+        Q = 0.5 * Rho * (U_0)^2;
 
-Q = 0.5 * Rho * (U_0)^2;
- 
-%% Calculations
+        %% Calculations
 
-C_yr = 2 * CL_Av * EffFac_V *((S_v / S_w) * (l_v / b_w));
+        C_yr = 2 * CL_Av * EffFac_V *((S_v / S_w) * (l_v / b_w));
 
-C_nr = -2 * EffFac_V * V_v * (l_v / b_w) * CL_Av;
+        C_nr = -2 * EffFac_V * V_v * (l_v / b_w) * CL_Av;
 
-C_yBeta = -EffFac_W * (S_v / S_w) * CL_Av * (1 + dSigmaBYdBeta);
+        C_yBeta = -EffFac_W * (S_v / S_w) * CL_Av * (1 + dSigmaBYdBeta);
 
-C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
+        C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
 
-C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
+        C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
-C_yLilDelta_r = (S_v / S_w) * tau_r * CL_Av;
+        C_yLilDelta_r = (S_v / S_w) * tau_r * CL_Av;
 
-C_nLilDelta_r = -(V_v * EffFac_V * tau_r * CL_Av);
+        C_nLilDelta_r = -(V_v * EffFac_V * tau_r * CL_Av);
 
-%% Calculations
-% Nelson p199
+        %% Calculations
+        % Nelson p199
 
-Y_Beta = (Q * S_w * C_yBeta) / m
+        Y_Beta = (Q * S_w * C_yBeta) / m
 
-N_Beta = (C_nBeta * Q * S_w) / I_z
+        N_Beta = (C_nBeta * Q * S_w) / I_z
 
-Y_r = (Q * S_w * b_w * C_yr) / (2 * m * U_0)
+        Y_r = (Q * S_w * b_w * C_yr) / (2 * m * U_0)
 
-N_r = (Q * S_w * (b_w^2) * C_nr) / (2 * I_z * U_0)
+        N_r = (Q * S_w * (b_w^2) * C_nr) / (2 * I_z * U_0)
 
-Y_LilDelta_r = (Q * S_w * C_yLilDelta_r) / m
+        Y_LilDelta_r = (Q * S_w * C_yLilDelta_r) / m
 
-N_LilDelta_r = (Q * S_w * C_nLilDelta_r) / I_z
+        N_LilDelta_r = (Q * S_w * C_nLilDelta_r) / I_z
 
-% Y_Beta = -45.72
-% Y_r = 0
-% N_Beta = 4.49
-% N_r = -0.76
-% U_0 = 176
+        % Y_Beta = -45.72
+        % Y_r = 0
+        % N_Beta = 4.49
+        % N_r = -0.76
+        % U_0 = 176
 
-Omeg_nDR = sqrt(((Y_Beta * N_r) - (N_Beta * Y_r) + (U_0 * N_Beta)) / U_0);
-
-Zeta_DR = -(1 / (2 * Omeg_nDR)) * ((Y_Beta + (U_0 * N_r)) / U_0);
-
+        Omeg_nDR = sqrt(((Y_Beta * N_r) - (N_Beta * Y_r) + (U_0 * N_Beta)) / U_0);
+        Zeta_DR = -(1 / (2 * Omeg_nDR)) * ((Y_Beta + (U_0 * N_r)) / U_0);
+        
+    end
 end

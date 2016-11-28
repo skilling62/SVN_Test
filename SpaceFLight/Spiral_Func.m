@@ -1,4 +1,4 @@
-function [Nv, Lv, Lr, Nr, Yp, Np] = Spiral_Func()
+ function [Nv, Lv, Lr, Nr, Yp, Np] = Spiral_Func()
 
 clc
 
