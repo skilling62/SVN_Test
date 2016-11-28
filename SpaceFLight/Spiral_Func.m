@@ -42,21 +42,25 @@ Nv = NBeta/U_0;
 % Nelson p122 - Used graph to find CL_Beta. L_Beta is the dihedral effect
 CL_Beta = (CL_BetaByGam * Gamma) - 0.0002 
 
-LBeta = (Q * S_w * b_w * CL_Beta) / I_x;
+LBeta = (Q * S_w * b_w * CL_Beta) / I_x
 
 Lv = LBeta/U_0;
 
 C_yBeta = -EffFac_V * (S_v / S_w) * CL_Av * (1 + dSigmaBYdBeta);
 
-CL_r = (CL_0w / 4) - (2 * (l_v/b_w) * (z_u/b_w) * C_yBeta);
+C_yBeta_tail = - (CL_Av * EffFac_V * (S_v / S_w));
 
-% L_r is the roll moment due to yaw rate
+% Calculate Lr (the roll moment due to yaw rate)
+CL_r = (CL_0w / 4) - (2 * (l_v/b_w) * (z_u/b_w) * C_yBeta_tail);
+
 Lr = (Q * S_w * (b_w^2) * CL_r) / (2 * I_x * U_0);
 
+% N_r is the yaw rate damping
 C_nr = -(2 * EffFac_V * V_v * (l_v/b_w) * CL_Av);
 
-% N_r is the yaw rate damping
 Nr = (Q * S_w * (b_w^2) * C_nr) / (2 * I_x * U_0);
+
+% Caclulate Yp
 
 C_yp = CL_0w * ((AR_w + cos(Swept_Angle)) / (AR_w + (4 * cos(Swept_Angle)))) * (tan(Swept_Angle));
 
@@ -65,10 +69,6 @@ Yp = (Q * S_w * b_w * C_yp) / (2 * m * U_0);
 C_np = - (CL_0w / 8);
 
 Np = (Q * S_w * (b_w^2) * C_np) / (2 * I_x * U_0);
-
-C_Lr = (CL_0w / 4) - (2 * (l_v / b_w) * (z_u / b_w) * C_yBeta);
-
-Lr = (Q * S_w * (b_w^2) * C_Lr) / (2 * I_x * U_0);
 
 Spiral = -(((Lr * NBeta) - (LBeta * Nr)) / LBeta);
 
