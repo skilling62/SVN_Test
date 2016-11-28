@@ -107,14 +107,13 @@ hold off
 
 load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
     'm', 'I_z', 'CL_Av', 'EffFac_V', 'EffFac_W', ...
-    'dSigmaBYdBeta', 'K_n', 'K_Rl', 'Sf', 'lf', 'gravity', 'W', 'CL_Aw')
+    'dSigmaBYdBeta', 'K_n', 'K_Rl', 'Sf', 'lf', 'gravity', 'W', 'CL_Aw','tau_r')
 
 Rho = Dens_Calc(358,DR_data(1,5),18,1012);
 
 Q = 0.5 * Rho * (U_0)^2;
  
 %% Calculations
-tau = 0.3010;
 
 C_yr = 2 * CL_Av * EffFac_V *((S_v / S_w) * (l_v / b_w));
 
@@ -126,9 +125,9 @@ C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
 
 C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
-C_yLilDelta_r = (S_v / S_w) * tau * CL_Av;
+C_yLilDelta_r = (S_v / S_w) * tau_r * CL_Av;
 
-C_nLilDelta_r = -(V_v * EffFac_V * tau * CL_Av);
+C_nLilDelta_r = -(V_v * EffFac_V * tau_r * CL_Av);
 
 %% Calculations
 % Nelson p199
