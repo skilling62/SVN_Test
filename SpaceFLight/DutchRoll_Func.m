@@ -14,7 +14,6 @@ r = DR_data(:,4);
 GroupName = DR_data(1,10);
 
 % Plot Roll Rate Response
-subplot(2,1,1)
 plot(time,r,'DisplayName','Yaw Rate (Degrees/s)')
 [pk,locs] = findpeaks(r,time,'MinPeakDistance',2.5);
 [troughs, lc1] = findpeaks(-r,time,'MinPeakDistance',2.5);
@@ -89,7 +88,6 @@ end
         y_ss = r_(length(r_));
 
         % Plot the rescaled response and standard second order responses
-        subplot(2,1,2)
         plot(time_,r_,'k', 'LineWidth',1.5,'DisplayName','System Response') 
         grid minor
 
