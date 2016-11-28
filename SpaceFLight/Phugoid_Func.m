@@ -1,45 +1,47 @@
-
 function [Xu, Zu] = Phugoid_Func(MethodNumber)
-%% Loading Varibles 
-load('JetStream.mat', 'gravity', 'm', 'S_w', 'EffFac_V', 'V_v' , 'l_v' , 'Cbar', 'CL_Av', ...
-        'CM_Af', 'CD_Uw', 'CL_Uw', 'CD_0w', 'CD_Aw', 'CL_0w', 'CL_Aw', 'X_ac', 'CG', 'I_y', ...
-        'dEpsBYdAlpha', 'U_0', 'q', 'Rho', 'CM_Alpha')
-    
-
-%% Calulations
 
 clc
 
 addpath .\Cranfield_Flight_Test_Data;
+
+%% Loading Varibles 
+load('JetStream.mat', 'gravity', 'm', 'S_w', 'eta_h', 'V_h' , 'l_h' , 'Cbar', 'CL_Ah', ...
+        'CM_Alpha', 'CD_Uw', 'CL_Uw', 'CD_0w', 'CD_Aw', 'CL_0w', 'CL_Aw', 'X_ac', 'CG', 'I_y', ...
+        'dEpsBYdAlpha', 'U_0', 'q', 'Rho')
     
-    Q = 0.5 * Rho * (U_0^2);
-    Cz_q = -(2 * CL_Av * EffFac_V * V_v);
-    CM_q = Cz_q * (l_v / Cbar);
-    M_q = ((CM_q) * (Cbar / (2 * U_0)) * Q * S_w * Cbar) / I_y;
-    M_u = 0;
-    % Calculate Mw and Malhpa
-    M_w = (CM_Alpha * Q * S_w * Cbar) / (U_0 * I_y);
-    M_Alpha = M_w * U_0;
 
-    % Calculate Mwdot and Malphadot
-    CZ_AlphaDot = -(2 * CL_Av * EffFac_V * V_v * dEpsBYdAlpha);
-    CM_AlphaDot = CZ_AlphaDot * (l_v / Cbar);
-    M_wDot = (CM_AlphaDot * (Cbar / (2 * U_0)) * Q * S_w * Cbar) / (U_0 * I_y);
-    M_AlphaDot = M_wDot * U_0;
+%% Calulations
+Q = 0.5 * Rho * (U_0^2);
+% Calculate Cmq using Czq (Nelson p125). Mq Needed for Bairstow Phugoid
+% approximation
+Czq = -2 * CL_Ah * eta_h * V_h;
+CMq = Czq * (l_h / Cbar);
+Mq = ((CMq) * (Cbar / (2 * U_0)) * Q * S_w * Cbar) / I_y;
 
-    % Calculate Xu
-    Xu = (-(CD_Uw + (2 * CD_0w)) * Q * S_w) / (U_0 * m);
+Mu = 0;
+% Calculate Mw and Malhpa
+Mw = (CM_Alpha * Q * S_w * Cbar) / (U_0 * I_y);
+MAlpha = Mw * U_0;
 
-    % Calculate Xw and XAlpha
-    Xw = (-(CD_Aw - CL_0w) * Q * S_w) / (U_0 * m);	
-    X_Alpha = Xw * U_0;
+% Calculate Mwdot and Malphadot
+CZ_AlphaDot = -(2 * CL_Ah * eta_h * V_h * dEpsBYdAlpha);
+CM_AlphaDot = CZ_AlphaDot * (l_h / Cbar);
+Mw_dot = (CM_AlphaDot * (Cbar / (2 * U_0)) * Q * S_w * Cbar) / (U_0 * I_y);
+M_AlphaDot = Mw_dot * U_0;
 
-    % Calculate Zu
-    Zu = (-(CL_Uw * (2 * CL_0w)) * Q * S_w) / (U_0 * m);
+% Calculate Xu
+Xu = (-(CD_Uw + (2 * CD_0w)) * Q * S_w) / (U_0 * m);
 
-    % Calculate Zw and Zalpha	
-    Zw = (-(CL_Aw - CL_0w) * Q * S_w) / (U_0 * m);	
-    Z_Alpha = Zw * U_0;
+% Calculate Xw and XAlpha
+Xw = (-(CD_Aw - CL_0w) * Q * S_w) / (U_0 * m);	
+X_Alpha = Xw * U_0;
+
+% Calculate Zu
+Zu = (-(CL_Uw * (2 * CL_0w)) * Q * S_w) / (U_0 * m);
+
+% Calculate Zw and Zalpha	
+Zw = (-(CL_Aw - CL_0w) * Q * S_w) / (U_0 * m);	
+Z_Alpha = Zw * U_0;
     
 %% Import flight test data
 kts2ms = 0.51444;
@@ -70,11 +72,10 @@ t2 = lc1(2);
 t3 = lc(2);
 
 %% Using the logarithmic decrement method provided in Flight Dynamics Notes 
- switch MethodNumber 
+    switch MethodNumber 
     case 1
     % Calulations
-  
-        
+   
     Omeg_d = (2*(pi))/(t3 - t1);
     
     lil_delta = -log(abs((r3-r2)/(r2-r1)));
@@ -92,33 +93,23 @@ t3 = lc(2);
     CX_u = (m * U_0 * Xu) / (Q * S_w);
     
       
-%% Using Bairstow's Phugoid Approximation  from S.Pradeer Paper
+%% Using Bairstow's Phugoid Approximation  from S.Pradeep Paper
     case 2
     % U_0 is the component of steady state velocity along the x axis
     A = U_0;
-    B = -(U_0) * (M_q + M_AlphaDot) - Z_Alpha;
-    C = (M_q * Z_Alpha) - (M_Alpha * U_0);
-    D = Xu * ((M_Alpha * U_0) - (M_q * Z_Alpha))- ((M_u * U_0) * (X_Alpha - gravity));
-    E = gravity * ((M_Alpha * Zu) - (M_u * Z_Alpha));
+    B = -(U_0) * (Mq + M_AlphaDot) - Z_Alpha;
+    C = (Mq * Z_Alpha) - (MAlpha * U_0);
+    D = Xu * ((MAlpha * U_0) - (Mq * Z_Alpha))- ((Mu * U_0) * (X_Alpha - gravity));
+    E = gravity * ((MAlpha * Zu) - (Mu * Z_Alpha));
 
     Omeg_n = sqrt(E/C)
     
-%     Two_Zeta_Omeg_n = (1/(Malpha*U_0 - Mq*Zalpha)) * ((Xu*(-Malpha*U_0+Mq*Zalpha)) ...
-%                                                    + Zu*(-Mq*Xalpha + g*Malpha*U1*Malpha+Mq+Zalpha
+    Two_Zeta_Omeg_n = ((1/(Malpha*U_0 - Mq*Zalpha)) * ((Xu*(-Malpha*U_0+Mq*Zalpha))...
+                                                + Zu*((-Mq*Xalpha) + ((gravity*Malpha*(U1*(Malpha+Mq)+Zalpha)) / (Malpha*U_0 - Mq*Zalpha)))...
+												+ Mu*((U_0*Xalpha) - ((gravity*(Zalpha*(U_0*Malpha+Zalpha)+Malpha*U_0^2)) / (Malpha*U_0-Mq*Zalpha)))))
 
-    Two_Zeta_Omeg_n = (1 / ((M_Alpha * U_0) - (M_q * Z_Alpha))) ...
-    * (((Xu * (-(M_Alpha * U_0) + (M_q * Z_Alpha))) ...
-    + (Zu * (-(M_q * X_Alpha) + (((gravity * M_Alpha) * U_0 ...
-    * (M_AlphaDot + M_q) + Z_Alpha) / ((M_Alpha * U_0) ...
-    - (M_q * Z_Alpha))))) + ((M_u * ((U_0 * X_Alpha) ...
-    - ((gravity * (Z_Alpha * ((U_0 * M_AlphaDot) + Z_Alpha) ...
-    + (M_Alpha * (U_0^2)))) / ((M_Alpha * U_0) - (M_q * Z_Alpha))))))));
-
-    C_0 = (Omeg_n)^2;
-    C_1 = Two_Zeta_Omeg_n;
-
-% Phugoid_Sfunc = S^2 + (C_1 * S) + C_0
-
+    Zeta = Two_Zeta_Omeg_n/(2*Omeg_n);
+    
 %% Using 3-Degrees-of-Freedom Approximation from S.Pradeer Paper
     case 3
     Theta = q;
@@ -126,8 +117,8 @@ t3 = lc(2);
         
     U_Dot = (Xu * U) + (Alpha.*X_Alpha) - (Theta.*gravity);
 
-    Omeg_n = sqrt ((gravity * ((Z_Alpha * M_u) - (Zu * M_Alpha))) /( M_Alpha * U_0));
-    Two_Zeta_Omeg_n =  -(Xu) + ((M_u * (X_Alpha - gravity)) / M_Alpha);
+    Omeg_n = sqrt ((gravity * ((Z_Alpha * Mu) - (Zu * MAlpha))) /( MAlpha * U_0));
+    Two_Zeta_Omeg_n =  -(Xu) + ((Mu * (X_Alpha - gravity)) / MAlpha);
     
     Zeta = Two_Zeta_Omeg_n/(2 * Omeg_n);
     

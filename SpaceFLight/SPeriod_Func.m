@@ -178,7 +178,7 @@ q_Dot = (M_Alpha * Alpa) + (M_AlphaDot * Alpha_Dot) + (M_q * q)
 
 %	Characterisitic Equation
 
-S^2 - (M_q + M_AlphaDot + (Z_Alpha / U_0))S + (((Z_Alpha * M_q) / U_0) - M_Alpha) = 0
+% S^2 - (M_q + M_AlphaDot + (Z_Alpha / U_0))*S + (((Z_Alpha * M_q) / U_0) - M_Alpha) = 0
 
 % Damping & Frequency 
 

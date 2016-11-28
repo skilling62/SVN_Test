@@ -112,7 +112,12 @@ function Aircraft_Data ()
     l_v = 7.12;                             % Distance from CG to vertical Stabiliser MAC
     z_u = 6.134134426;                      % m, Distance from centre of pressure of the vertical tail to the fuselage centreline 
 % -------------------------------------------------------------------------
+ 
+% --------------------------- Horizontal Stabiliser -----------------------
 
+% Assume that the tail and fin are equidisant from the cg
+    l_h = 7.12;
+% -------------------------------------------------------------------------
 
 % ======================== Ratios of Aircraft =============================
 
@@ -130,6 +135,8 @@ function Aircraft_Data ()
     
 % ---------------------------- Horizontal Stabilier -----------------------
     AR_h = (b_h^2) / S_h;                   %  Aspect Ratio for Horizontial Stabiliser
+    V_h = (l_h * S_h)/(S_w * Cbar);
+    eta_h = 1;
 % -------------------------------------------------------------------------
 
 
@@ -217,7 +224,7 @@ function Aircraft_Data ()
 
 % ==================== Coefficients of Aircraft ===========================
 
-% --------------------------- Aircrafte ------------------------------------
+% --------------------------- Aircraft ------------------------------------
     % Approximated from Cooke simulation model p28
     CM_Alpha = -0.3;
 % -------------------------------------------------------------------------
