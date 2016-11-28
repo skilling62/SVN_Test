@@ -40,7 +40,7 @@ NBeta = (Q * S_w * b_w * C_nBeta) / I_z;
 Nv = NBeta/U_0;
 
 % Nelson p122 - Used graph to find CL_Beta. L_Beta is the dihedral effect
-CL_Beta = CL_BetaByGam / Gamma; 
+CL_Beta = (CL_BetaByGam * Gamma) - 0.0002 
 
 LBeta = (Q * S_w * b_w * CL_Beta) / I_x;
 

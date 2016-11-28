@@ -77,7 +77,6 @@ function Aircraft_Data ()
     S_v = 5.639214528;                  % m^2, Vertical Stabiliser area 
     Cr_v = 1.4375;                      % m, Vertical Stabiliser Root Chord
     Cp_v = Cr_v * 0.25;                 % m, Location of the Centre of Pressure for the Vertical Stabiliser
-    Cr = 0.669;
     Cf = 1.910;
     
     % Calculate the Control surface area/lifting surface area Paremeter (Cook p56)
@@ -246,7 +245,8 @@ function Aircraft_Data ()
     CD_Aw = 0.008956;
     CM_Aw = -0.0014;
     
-    CL_BetaByGam = -0.000218; % using graph from Nelson P122 (figure 3.11)
+    % using graph from Nelson P122 (figure 3.11) convert from d^2 to rad^2
+    CL_BetaByGam = -0.000218 *0.0003046; 
 % -------------------------------------------------------------------------
     
 % -------------------------- Vertical Stabiliser --------------------------
