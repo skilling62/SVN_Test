@@ -191,8 +191,8 @@ Ac_Model = ss(A_Lon, B_Lon, C_Lon, D_Lon)
 
 % visualise free response
 
-% disturbance of 10 deg in pitch
-x0_Lon = [8.2 0 0 0];
+% disturbance of 8.2 m/s disturbance in velocity
+x0_Lon = [-10 0 0 0];
 % % [y, t, x] = initial(Ac_Model, x0);
 % % y = transpose(y);
 % % plot(t,y)

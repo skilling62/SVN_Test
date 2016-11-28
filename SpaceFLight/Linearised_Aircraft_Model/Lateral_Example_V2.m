@@ -31,7 +31,7 @@ Table_Density = stdatm(:,4);    % Kg/m^3
 % Constants
 % =========================================================================
 
- u0 = 0.7*ac_coeff.VaBnd( length(ac_coeff.VaBnd) )    % m/s
+%  u0 = 0.7*ac_coeff.VaBnd( length(ac_coeff.VaBnd) )    % m/s
 % u0 = 35;
 % Altitude = 500;
 
@@ -63,8 +63,8 @@ atmos = [g, ac_coeff.m, rho];
 % Atmospheric Values
 % rho = interp1( abs( Altitude - Table_Altitude ) )
 
-rho = interp1(Table_Altitude, Table_Density, Altitude, 'linear', 'extrap');
-Q = 0.5*rho*(u0^2);
+% rho = interp1(Table_Altitude, Table_Density, Altitude, 'linear', 'extrap');
+% Q = 0.5*rho*(u0^2);
 % =========================================================================
 % =========================================================================
 
@@ -74,23 +74,23 @@ Q = 0.5*rho*(u0^2);
 % =========================================================================
 
 % Y derivatives
-YBeta = (Q*ac_coeff.S*ac_coeff.CYbeta)/ac_coeff.m;
-Yv = YBeta/u0;
-Yp = (Q*ac_coeff.S*ac_coeff.b*ac_coeff.CYp)/(2*ac_coeff.m*u0);
-Yr = (Q*ac_coeff.S*ac_coeff.b*ac_coeff.CYr)/(2*ac_coeff.m*u0);
+% YBeta = (Q*ac_coeff.S*ac_coeff.CYbeta)/ac_coeff.m;
+% Yv = YBeta/u0;
+% Yp = (Q*ac_coeff.S*ac_coeff.b*ac_coeff.CYp)/(2*ac_coeff.m*u0);
+% Yr = (Q*ac_coeff.S*ac_coeff.b*ac_coeff.CYr)/(2*ac_coeff.m*u0);
 theta0 = 0;
 
 % L derivatives
-LBeta = (Q*ac_coeff.S*ac_coeff.b*ac_coeff.Clbeta)/ac_coeff.Ix;
-Lv = LBeta/u0;
-Lp = (Q*ac_coeff.S*(ac_coeff.b^2)*ac_coeff.Clp)/(2*ac_coeff.Ix*u0);
-Lr = (Q*ac_coeff.S*(ac_coeff.b^2)*ac_coeff.Clr)/(2*ac_coeff.Ix*u0);
+% LBeta = (Q*ac_coeff.S*ac_coeff.b*ac_coeff.Clbeta)/ac_coeff.Ix;
+% Lv = LBeta/u0;
+% Lp = (Q*ac_coeff.S*(ac_coeff.b^2)*ac_coeff.Clp)/(2*ac_coeff.Ix*u0);
+% Lr = (Q*ac_coeff.S*(ac_coeff.b^2)*ac_coeff.Clr)/(2*ac_coeff.Ix*u0);
 
 % N derivatives
-NBeta = (Q*ac_coeff.S*ac_coeff.b*ac_coeff.Cnbeta)/ac_coeff.Iz;
-Nv = NBeta/u0;
-Np = (Q*ac_coeff.S*(ac_coeff.b^2)*ac_coeff.Cnp)/(2*ac_coeff.Iz*u0);
-Nr = (Q*ac_coeff.S*(ac_coeff.b^2)*ac_coeff.Cnr)/(2*ac_coeff.Iz*u0);
+% NBeta = (Q*ac_coeff.S*ac_coeff.b*ac_coeff.Cnbeta)/ac_coeff.Iz;
+% Nv = NBeta/u0;
+% Np = (Q*ac_coeff.S*(ac_coeff.b^2)*ac_coeff.Cnp)/(2*ac_coeff.Iz*u0);
+% Nr = (Q*ac_coeff.S*(ac_coeff.b^2)*ac_coeff.Cnr)/(2*ac_coeff.Iz*u0);
 
 % =========================================================================
 % Aircraft model
@@ -130,7 +130,7 @@ Ac_Model = ss(A_Lat, B_Lat, C_Lat, D_Lat)
 % visualise free response
 
 % disturbance of 10 deg in bank
-x0_Lat = [0 0 0 0*(pi/180)];
+x0_Lat = [0 0 0 10*(pi/180)];
 
 
 % =========================================================================

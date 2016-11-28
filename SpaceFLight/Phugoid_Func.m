@@ -9,7 +9,6 @@ load('JetStream.mat', 'gravity', 'm', 'S_w', 'eta_h', 'V_h' , 'l_h' , 'Cbar', 'C
         'CM_Alpha', 'CD_Uw', 'CL_Uw', 'CD_0w', 'CD_Aw', 'CL_0w', 'CL_Aw', 'X_ac', 'CG', 'I_y', ...
         'dEpsBYdAlpha', 'U_0', 'q', 'Rho')
     
-
 %% Calulations
 Q = 0.5 * Rho * (U_0^2);
 % Calculate Cmq using Czq (Nelson p125). Mq Needed for Bairstow Phugoid
@@ -46,7 +45,9 @@ Z_Alpha = Zw * U_0;
 %% Import flight test data
 kts2ms = 0.51444;
 Pg_data = xlsread('Phugoid_GpA.xls');
+global time 
 time = Pg_data(:,1);
+global U 
 U = Pg_data(:,4) * kts2ms;
 
 %% Plot the velocity response of the aircraft
