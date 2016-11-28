@@ -1,4 +1,4 @@
-function DutchRoll_Func(MethodNumber)
+function [Yv,Yr,Nr] = DutchRoll_Func(MethodNumber)
  
 clc
 
@@ -35,7 +35,7 @@ if GroupName == 1
     tloga3 = locs (15);
     r1 = pk(14);
     r2 = troughs(14);
-    r3 = pk(15)
+    r3 = pk(15);
     t2 = lc1(14);
     y1 = troughs(13);
 elseif GroupName == 2
@@ -51,12 +51,12 @@ end
 
     switch MethodNumber
         %% Logarithmic Decrement
-            case 1
+        case 1
         % Calculation of the logarithmic decrement
         lil_delta = -log(abs((r3 - r2)/(r2 - r1)));
 
         % Calculation of damping ratio
-        zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)))
+        zeta_ = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
 
         % Calculation of Damped natural frequency
         Omeg_dloga = 2*(pi)/ (tloga3 - tloga1);
@@ -65,7 +65,7 @@ end
         Omeg_nloga = Omeg_dloga / (sqrt(1 - (zeta_^2)));
 
         %% Inspection Method
-            case 2
+        case 2
         % Calculate the time period
         TPeriod = t2-t1;
 
@@ -105,54 +105,46 @@ end
 
 
         %% Determine the stability Coefficients, zeta and omega from aircraft parameters
-            case 3
+        case 3
         load('JetStream' , 'U_0', 'S_v', 'S_w', 'b_w', 'b_v', 'V_v', 'l_v', ...
             'm', 'I_z', 'CL_Av', 'EffFac_V', 'EffFac_W', ...
-            'dSigmaBYdBeta', 'K_n', 'K_Rl', 'Sf', 'lf', 'gravity', 'W', 'CL_Aw','tau_r')
-
-        Rho = Dens_Calc(358,DR_data(1,5),18,1012);
-
+            'dSigmaBYdBeta', 'K_n', 'K_Rl', 'Sf', 'lf', 'gravity', 'W', 'CL_Aw','tau_r','Rho')
+        
         Q = 0.5 * Rho * (U_0)^2;
 
-        %% Calculations
+        %% Calculation of Coefficients as per Nelson p121
 
         C_yr = 2 * CL_Av * EffFac_V *((S_v / S_w) * (l_v / b_w));
 
         C_nr = -2 * EffFac_V * V_v * (l_v / b_w) * CL_Av;
 
         C_yBeta = -EffFac_W * (S_v / S_w) * CL_Av * (1 + dSigmaBYdBeta);
-
-        C_nBeta_wt = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
-
-        C_nBeta = C_nBeta_wt + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
-
-        C_yLilDelta_r = (S_v / S_w) * tau_r * CL_Av;
-
-        C_nLilDelta_r = -(V_v * EffFac_V * tau_r * CL_Av);
-
+        
+        C_nBeta_wf = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
+        
+        C_nBeta = C_nBeta_wf + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
+     
         %% Calculations
         % Nelson p199
 
-        Y_Beta = (Q * S_w * C_yBeta) / m
-
-        N_Beta = (C_nBeta * Q * S_w) / I_z
-
-        Y_r = (Q * S_w * b_w * C_yr) / (2 * m * U_0)
-
-        N_r = (Q * S_w * (b_w^2) * C_nr) / (2 * I_z * U_0)
-
-        Y_LilDelta_r = (Q * S_w * C_yLilDelta_r) / m
-
-        N_LilDelta_r = (Q * S_w * C_nLilDelta_r) / I_z
-
-        % Y_Beta = -45.72
-        % Y_r = 0
-        % N_Beta = 4.49
-        % N_r = -0.76
-        % U_0 = 176
-
-        Omeg_nDR = sqrt(((Y_Beta * N_r) - (N_Beta * Y_r) + (U_0 * N_Beta)) / U_0);
-        Zeta_DR = -(1 / (2 * Omeg_nDR)) * ((Y_Beta + (U_0 * N_r)) / U_0);
+        % Calculate Y_Beta and Yv
+        Y_Beta = (Q * S_w * C_yBeta) / m;
+        Yv = Y_Beta/U_0;
         
+        Yr = (Q * S_w * b_w * C_yr) / (2 * m * U_0);
+
+        Nr = (Q * S_w * (b_w^2) * C_nr) / (2 * I_z * U_0);
+        
+        NBeta = (Q * S_w * b_w * C_nBeta) / I_z;
+        
+        % Calculate Damping and frequency as per Nelson p198
+        Omeg_nDR = sqrt(((Y_Beta * Nr) - (NBeta * Yr) + (U_0 * NBeta)) / U_0);
+        Zeta_DR = -(1 / (2 * Omeg_nDR)) * ((Y_Beta + (U_0 * Nr)) / U_0);
+       
+% Extension works - B matrix coefficients 
+% C_yLilDelta_r = (S_v / S_w) * tau_r * CL_Av;
+% C_nLilDelta_r = -(V_v * EffFac_V * tau_r * CL_Av);
+% Y_LilDelta_r = (Q * S_w * C_yLilDelta_r) / m
+% N_LilDelta_r = (Q * S_w * C_nLilDelta_r) / I_z
     end
 end

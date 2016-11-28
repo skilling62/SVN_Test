@@ -15,10 +15,14 @@ addpath .\Linearised_Aircraft_Model
 %% Calculate Lateral Stability Derivatives
 
 % Generate Derivatives from Roll Response
+% Input '1' = 
 [Lp] = Roll_Func(1);
 
 % Generate Dervivatives from Dutch Roll Response
+[Yv ,Yr, Nr] = DutchRoll_Func(1);
 
+% Generate Derivatives from the Spiral Response
+[Nv, Lv, Lr, Yp, Np] = Spiral_Func();
 
 %% Calculate Longitudinal Stability Derivatives
 
