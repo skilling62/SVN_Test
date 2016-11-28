@@ -130,7 +130,7 @@ Omeg_d = 2*(pi)/ (t3 - t1);
 
 % Calculation of Natural Frequency
 Omeg_n = Omeg_d / (sqrt(1 - (zeta_^2)));
-end
+
 
 %% Calculations
 %% From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
@@ -166,7 +166,29 @@ Mw_dot = Malpha_dot/u0;
 %% From Aircraft Data Calculate Xw
 Xw = -((CD_Aw - CL_0w)*Q*S_w)/(u0*m);
 
+case 2
+    
+    Pradeep Short Period PG 92
+
+%	The Short Period Approximation
+
+W_dot = (Z_Alpha * Alpha) + (U_0 + q)
+Theta_dot = q
+q_Dot = (M_Alpha * Alpa) + (M_AlphaDot * Alpha_Dot) + (M_q * q)
+
+%	Characterisitic Equation
+
+S^2 - (M_q + M_AlphaDot + (Z_Alpha / U_0))S + (((Z_Alpha * M_q) / U_0) - M_Alpha) = 0
+
+% Damping & Frequency 
+
+Omeg_nSP = SQRT(((Z_Alpha * M_q) - (M_Alpha * U_0)) / U_0)
+
+Two_Zeta_Omeg_NSP = -(M_q + M_AlphaDot + (Z_Alpha / U_0))
+
+
 % Determine Cmq from aircraft data
+end
 
 end
 

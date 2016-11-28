@@ -233,7 +233,8 @@ function Aircraft_Data ()
     CM_Ow = -0.059;      % 25% MAC
 
     CL_Uw = ((Mach)^2 / (1 - (Mach)^2)) * CL_0w;
-
+    CD_Uw = 0.1;
+    
     CL_Aw = 4.9733;
     CD_Aw = 0.008956;
     CM_Aw = -0.0014;
