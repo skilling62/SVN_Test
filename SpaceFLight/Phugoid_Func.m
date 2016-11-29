@@ -20,27 +20,27 @@ Mq = ((CMq) * (Cbar / (2 * U_0)) * Q * S_w * Cbar) / I_y;
 Mu = 0;
 % Calculate Mw and Malhpa
 Mw = (CM_Alpha * Q * S_w * Cbar) / (U_0 * I_y);
-MAlpha = Mw * U_0;
+Malpha = Mw * U_0;
 
 % Calculate Mwdot and Malphadot
-CZ_AlphaDot = -(2 * CL_Ah * eta_h * V_h * dEpsBYdAlpha);
-CM_AlphaDot = CZ_AlphaDot * (l_h / Cbar);
-Mw_dot = (CM_AlphaDot * (Cbar / (2 * U_0)) * Q * S_w * Cbar) / (U_0 * I_y);
-M_AlphaDot = Mw_dot * U_0;
+CZalphaDot = -(2 * CL_Ah * eta_h * V_h * dEpsBYdAlpha);
+CmalphaDot = CZalphaDot * (l_h / Cbar);
+Mwdot = (CmalphaDot * (Cbar / (2 * U_0)) * Q * S_w * Cbar) / (U_0 * I_y);
+MalphaDot = Mwdot * U_0;
 
 % Calculate Xu
 Xu = (-(CD_Uw + (2 * CD_0w)) * Q * S_w) / (U_0 * m);
 
 % Calculate Xw and XAlpha
 Xw = (-(CD_Aw - CL_0w) * Q * S_w) / (U_0 * m);	
-X_Alpha = Xw * U_0;
+Xalpha = Xw * U_0;
 
 % Calculate Zu
 Zu = (-(CL_Uw * (2 * CL_0w)) * Q * S_w) / (U_0 * m);
 
 % Calculate Zw and Zalpha	
 Zw = (-(CL_Aw - CL_0w) * Q * S_w) / (U_0 * m);	
-Z_Alpha = Zw * U_0;
+Zalpha = Zw * U_0;
     
 %% Import flight test data
 kts2ms = 0.51444;
@@ -98,30 +98,30 @@ t3 = lc(2);
     case 2
     % U_0 is the component of steady state velocity along the x axis
     A = U_0;
-    B = -(U_0) * (Mq + M_AlphaDot) - Z_Alpha;
-    C = (Mq * Z_Alpha) - (MAlpha * U_0);
-    D = Xu * ((MAlpha * U_0) - (Mq * Z_Alpha))- ((Mu * U_0) * (X_Alpha - gravity));
-    E = gravity * ((MAlpha * Zu) - (Mu * Z_Alpha));
+    B = -(U_0) * (Mq + MalphaDot) - Zalpha;
+    C = (Mq * Zalpha) - (Malpha * U_0);
+    D = Xu * ((Malpha * U_0) - (Mq * Zalpha))- ((Mu * U_0) * (Xalpha - gravity));
+    E = gravity * ((Malpha * Zu) - (Mu * Zalpha));
 
     Omeg_n = sqrt(E/C)
     
     Two_Zeta_Omeg_n = ((1/(Malpha*U_0 - Mq*Zalpha)) * ((Xu*(-Malpha*U_0+Mq*Zalpha))...
-                                                + Zu*((-Mq*Xalpha) + ((gravity*Malpha*(U1*(Malpha+Mq)+Zalpha)) / (Malpha*U_0 - Mq*Zalpha)))...
-												+ Mu*((U_0*Xalpha) - ((gravity*(Zalpha*(U_0*Malpha+Zalpha)+Malpha*U_0^2)) / (Malpha*U_0-Mq*Zalpha)))))
+                                                + Zu*((-Mq*Xalpha) + ((gravity*Malpha*(U_0*(Malpha+Mq)+Zalpha)) / (Malpha*U_0 - Mq*Zalpha)))...
+												+ Mu*((U_0*Xalpha) - ((gravity*(Zalpha*(U_0*Malpha+Zalpha)+Malpha*U_0^2)) / (Malpha*U_0-Mq*Zalpha)))));
 
-    Zeta = Two_Zeta_Omeg_n/(2*Omeg_n);
+    Zeta = Two_Zeta_Omeg_n/(2*Omeg_n)
     
 %% Using 3-Degrees-of-Freedom Approximation from S.Pradeer Paper
     case 3
     Theta = q;
     Alpha = 1;
         
-    U_Dot = (Xu * U) + (Alpha.*X_Alpha) - (Theta.*gravity);
+    U_Dot = (Xu * U) + (Alpha.*Xalpha) - (Theta.*gravity);
 
-    Omeg_n = sqrt ((gravity * ((Z_Alpha * Mu) - (Zu * MAlpha))) /( MAlpha * U_0));
-    Two_Zeta_Omeg_n =  -(Xu) + ((Mu * (X_Alpha - gravity)) / MAlpha);
+    Omeg_n = sqrt ((gravity * ((Zalpha * Mu) - (Zu * Malpha))) /( Malpha * U_0))
+    Two_Zeta_Omeg_n =  -(Xu) + ((Mu * (Xalpha - gravity)) / Malpha);
     
-    Zeta = Two_Zeta_Omeg_n/(2 * Omeg_n);
+    Zeta = Two_Zeta_Omeg_n/(2 * Omeg_n)
     
     end
     

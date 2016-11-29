@@ -161,8 +161,10 @@ Mw_dot = Malpha_dot/U_0;
 Xw = -((CD_Aw - CL_0w)*Q*S_w)/(U_0*m);
 
 case 2
-    
-    Pradeep Short Period PG 92
+
+% From Inspection we need to pull in Zalpha, Malpha, Malpha_dot from the
+% Phugoid Function
+% Pradeep Short Period PG 92
 
 %	The Short Period Approximation
 
