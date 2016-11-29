@@ -6,9 +6,24 @@ addpath .\Cranfield_Flight_Test_Data;
 
 kts2ms = 0.51444;
 
+%% Load all aircraft parameters needed and calculate aircraft paremeters that are
+%% invariant to the user input (determining zeta and omega)
+load('JetStream.mat','Rho','U_0','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CD_Aw',...
+    'CL_0w','CM_Alpha','CL_Ah','eta_h','V_h','dEpsBYdAlpha','l_h')
+
+% Calculate Dynamic Pressure
+Q = 0.5*Rho*(U_0^2);
+
+% Calculate Zw and Zalpha
+Zw = (-(CL_Aw + CD_0w)*Q*S_w)/(U_0*m);
+Zalpha = U_0*Zw;
+
+% Calculate Mw and Malpha
+Mw = (CM_Alpha * Q * S_w * Cbar)/(U_0 * I_y);
+Malpha = U_0*Mw;
+
 %% Import data
 SpData = xlsread('SPPO_GpA.xls');
-load ('JetStream','Rho','U_0');
 
 % Assign variables to columns
 time = SpData(:,1);
@@ -36,10 +51,8 @@ set(legend,'FontSize',14)
 xlabel ('Time (Seconds)','FontSize', 14)
 ylabel('State Variable','FontSize',14)
 
-
-%% Analyse the plot
-
-switch MethodNumber
+%% Switch Case to give three methods of calculating the damping ratio and frequency
+    switch MethodNumber
     case 0
 %% Determine the Damping Ratio and Natural Frequency By Inspection
 % Omit the trough at t = 0 in the group A plot
@@ -128,25 +141,28 @@ Omeg_d = 2*(pi)/ (t3 - t1);
 % Calculation of Natural Frequency
 Omeg_n = Omeg_d / (sqrt(1 - (zeta_^2)));
 
-end
+    case 2
+%% Calculate the damping ratio and short period by the method of Pradeep
+    
+PCzq = -2 * CL_Ah * eta_h * V_h;
+PCMq = PCzq * (l_h / Cbar);
+PMq = ((PCMq) * (Cbar / (2 * U_0)) * Q * S_w * Cbar) / I_y;
 
+PCZalphaDot = -(2 * CL_Ah * eta_h * V_h * dEpsBYdAlpha);
+PCmalphaDot = PCZalphaDot * (l_h / Cbar);
+PMwdot = PCmalphaDot * (Cbar / (2 * U_0)) * ((Q * S_w * Cbar) / (U_0 * I_y));
+PMalphaDot = PMwdot * U_0;
+
+% Calculate the damping ratio and natural frequency
+Omeg_n = sqrt(((Zalpha * PMq) - (Malpha * U_0)) / U_0)
+
+Two_Zeta_Omeg_n = -(PMq + PMalphaDot + (Zalpha / U_0));
+
+zeta_ = Two_Zeta_Omeg_n/ (2*Omeg_n)
+    end
 
 %% Calculations
 %% From the natural frequency, the aim is to calculate Mq, for this Malpha, Z alpha and u0 are needed
-load('JetStream.mat','m','CL_Aw','S_w','Cbar','CD_0w','m','I_y','CD_Aw','CL_0w','CM_Alpha')
-
-% Calculate Dynamic Pressure
-Q = 0.5*Rho*(U_0^2);
-
-% Calculate Zw and Zalpha
-
-Zw = (-(CL_Aw + CD_0w)*Q*S_w)/(U_0*m);
-Zalpha = U_0*Zw;
-
-% Calculate Mw and Malpha
-
-Mw = (CM_Alpha * Q * S_w * Cbar)/(U_0 * I_y);
-Malpha = U_0*Mw;
 
 % Calculate Mq
 Mq = (U_0/Zalpha)*(Omeg_n^2 + Malpha);
@@ -163,30 +179,12 @@ Mw_dot = Malpha_dot/U_0;
 Xw = -((CD_Aw - CL_0w)*Q*S_w)/(U_0*m);
 
 
-% case 2
-
-% From Inspection we need to pull in Zalpha, Malpha, Malpha_dot from the
-% Phugoid Function
-% Pradeep Short Period PG 92
-
-%	The Short Period Approximation
-
-% W_dot = (Z_Alpha * Alpha) + (U_0 + q)
-% Theta_dot = q
-% q_Dot = (M_Alpha * Alpa) + (M_AlphaDot * Alpha_Dot) + (M_q * q)
-% 
-% %	Characterisitic Equation
-% 
-% % S^2 - (M_q + M_AlphaDot + (Z_Alpha / U_0))*S + (((Z_Alpha * M_q) / U_0) - M_Alpha) = 0
-% 
-% % Damping & Frequency 
 % 
 % Omeg_nSP = SQRT(((Z_Alpha * M_q) - (M_Alpha * U_0)) / U_0)
 % 
 % Two_Zeta_Omeg_NSP = -(M_q + M_AlphaDot + (Z_Alpha / U_0))
 
 
-% Determine Cmq from aircraft data
 % end
 
 end
