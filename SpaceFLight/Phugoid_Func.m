@@ -11,7 +11,7 @@ load('JetStream.mat', 'gravity', 'm', 'S_w', 'eta_h', 'V_h' , 'l_h' , 'Cbar', 'C
     
 %% Calulations
 Q = 0.5 * Rho * (U_0^2);
-% Calculate Cmq using Czq (Nelson p125). Mq Needed for Bairstow Phugoid
+% Calculate Cmq using Czq (Nelson p126). Mq Needed for Bairstow Phugoid
 % approximation
 Czq = -2 * CL_Ah * eta_h * V_h;
 CMq = Czq * (l_h / Cbar);
@@ -22,10 +22,10 @@ Mu = 0;
 Mw = (CM_Alpha * Q * S_w * Cbar) / (U_0 * I_y);
 Malpha = Mw * U_0;
 
-% Calculate Mwdot and Malphadot
+% Calculate Mwdot and Malphadot (Procedure Nelson p126)
 CZalphaDot = -(2 * CL_Ah * eta_h * V_h * dEpsBYdAlpha);
 CmalphaDot = CZalphaDot * (l_h / Cbar);
-Mwdot = (CmalphaDot * (Cbar / (2 * U_0)) * Q * S_w * Cbar) / (U_0 * I_y);
+Mwdot = CmalphaDot * (Cbar / (2 * U_0)) * ((Q * S_w * Cbar) / (U_0 * I_y));
 MalphaDot = Mwdot * U_0;
 
 % Calculate Xu
@@ -36,10 +36,10 @@ Xw = (-(CD_Aw - CL_0w) * Q * S_w) / (U_0 * m);
 Xalpha = Xw * U_0;
 
 % Calculate Zu
-Zu = (-(CL_Uw * (2 * CL_0w)) * Q * S_w) / (U_0 * m);
+Zu = (-(CL_Uw + (2 * CL_0w)) * Q * S_w) / (U_0 * m);
 
 % Calculate Zw and Zalpha	
-Zw = (-(CL_Aw - CL_0w) * Q * S_w) / (U_0 * m);	
+Zw = (-(CL_Aw + CD_0w) * Q * S_w) / (U_0 * m);	
 Zalpha = Zw * U_0;
     
 %% Import flight test data
