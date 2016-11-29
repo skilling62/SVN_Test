@@ -102,6 +102,10 @@ end
         ylabel('PitchRate (degrees/s)')
         xlabel('Time (s)')
         hold off
+        
+        % Manually input a value of zeta. This value is read off the plot
+        zeta_ = 0.15;
+        Omeg_n = (Omeg_d/sqrt(1-zeta_^2));
 
 
         %% Determine the stability Coefficients, zeta and omega from aircraft parameters
@@ -129,6 +133,7 @@ end
 
         % Calculate Y_Beta and Yv
         Y_Beta = (Q * S_w * C_yBeta) / m;
+        
         Yv = Y_Beta/U_0;
         
         Yr = (Q * S_w * b_w * C_yr) / (2 * m * U_0);

@@ -154,11 +154,11 @@ PMwdot = PCmalphaDot * (Cbar / (2 * U_0)) * ((Q * S_w * Cbar) / (U_0 * I_y));
 PMalphaDot = PMwdot * U_0;
 
 % Calculate the damping ratio and natural frequency
-Omeg_n = sqrt(((Zalpha * PMq) - (Malpha * U_0)) / U_0)
+Omeg_n = sqrt(((Zalpha * PMq) - (Malpha * U_0)) / U_0);
 
 Two_Zeta_Omeg_n = -(PMq + PMalphaDot + (Zalpha / U_0));
 
-zeta_ = Two_Zeta_Omeg_n/ (2*Omeg_n)
+zeta_ = Two_Zeta_Omeg_n/ (2*Omeg_n);
     end
 
 %% Calculations

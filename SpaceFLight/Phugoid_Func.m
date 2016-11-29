@@ -49,6 +49,7 @@ global time
 time = Pg_data(:,1);
 global U 
 U = Pg_data(:,4) * kts2ms;
+GroupName = Pg_data(1,7);
 
 %% Plot the velocity response of the aircraft
 [pk,lc] = findpeaks(U,time);
@@ -64,14 +65,25 @@ xlabel('Time (Seconds)')
 ylabel ('Aircraft Velocity (m/s)')
 
 %% Determine the amplitude of the response and corresponding times for use in the logarithmic decrement method
-r1 = pk(1);
-r2 = troughs(2);
-r3 = pk(2);
 
-t1 = lc(1);
-t2 = lc1(2); 
-t3 = lc(2);
+if GroupName == 1
+    r1 = pk(1);
+    r2 = troughs(2);
+    r3 = pk(2);
 
+    t1 = lc(1);
+    t2 = lc1(2); 
+    t3 = lc(2);
+    
+elseif GroupName == 2
+    r1 = pk(2);
+    r2 = troughs(2);
+    r3 = pk(3);
+    
+    t1 = lc(2);
+    t2 = lc1(2);
+    t3 = lc(3); 
+end
 %% Using the logarithmic decrement method provided in Flight Dynamics Notes 
     switch MethodNumber 
     case 1
@@ -81,9 +93,9 @@ t3 = lc(2);
     
     lil_delta = -log(abs((r3-r2)/(r2-r1)));
     
-    Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)))
+    Zeta = lil_delta / (sqrt((pi^2) + (lil_delta^2)));
         
-    Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)))
+    Omeg_n = Omeg_d / (sqrt(1 - (Zeta^2)));
 
     Zu = - (U_0 * (Omeg_n^2)) / gravity;
         
