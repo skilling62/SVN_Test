@@ -178,14 +178,5 @@ Mw_dot = Malpha_dot/U_0;
 %% From Aircraft Data Calculate Xw
 Xw = -((CD_Aw - CL_0w)*Q*S_w)/(U_0*m);
 
-
-% 
-% Omeg_nSP = SQRT(((Z_Alpha * M_q) - (M_Alpha * U_0)) / U_0)
-% 
-% Two_Zeta_Omeg_NSP = -(M_q + M_AlphaDot + (Z_Alpha / U_0))
-
-
-% end
-
 end
 

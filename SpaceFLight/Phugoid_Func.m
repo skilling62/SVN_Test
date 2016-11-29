@@ -44,7 +44,7 @@ Zalpha = Zw * U_0;
     
 %% Import flight test data
 kts2ms = 0.51444;
-Pg_data = xlsread('Phugoid_GpA.xls');
+Pg_data = xlsread('Phugoid_GpB.xls');
 global time 
 time = Pg_data(:,1);
 global U 
@@ -103,13 +103,13 @@ t3 = lc(2);
     D = Xu * ((Malpha * U_0) - (Mq * Zalpha))- ((Mu * U_0) * (Xalpha - gravity));
     E = gravity * ((Malpha * Zu) - (Mu * Zalpha));
 
-    Omeg_n = sqrt(E/C)
+    Omeg_n = sqrt(E/C);
     
     Two_Zeta_Omeg_n = ((1/(Malpha*U_0 - Mq*Zalpha)) * ((Xu*(-Malpha*U_0+Mq*Zalpha))...
                                                 + Zu*((-Mq*Xalpha) + ((gravity*Malpha*(U_0*(Malpha+Mq)+Zalpha)) / (Malpha*U_0 - Mq*Zalpha)))...
 												+ Mu*((U_0*Xalpha) - ((gravity*(Zalpha*(U_0*Malpha+Zalpha)+Malpha*U_0^2)) / (Malpha*U_0-Mq*Zalpha)))));
 
-    Zeta = Two_Zeta_Omeg_n/(2*Omeg_n)
+    Zeta = Two_Zeta_Omeg_n/(2*Omeg_n);
     
 %% Using 3-Degrees-of-Freedom Approximation from S.Pradeer Paper
     case 3
@@ -118,10 +118,10 @@ t3 = lc(2);
         
     U_Dot = (Xu * U) + (Alpha.*Xalpha) - (Theta.*gravity);
 
-    Omeg_n = sqrt ((gravity * ((Zalpha * Mu) - (Zu * Malpha))) /( Malpha * U_0))
+    Omeg_n = sqrt ((gravity * ((Zalpha * Mu) - (Zu * Malpha))) /( Malpha * U_0));
     Two_Zeta_Omeg_n =  -(Xu) + ((Mu * (Xalpha - gravity)) / Malpha);
     
-    Zeta = Two_Zeta_Omeg_n/(2 * Omeg_n)
+    Zeta = Two_Zeta_Omeg_n/(2 * Omeg_n);
     
     end
     
