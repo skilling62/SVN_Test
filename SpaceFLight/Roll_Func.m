@@ -20,7 +20,7 @@ addpath .\Cranfield_Flight_Test_Data;
     GroupName = Roll_data(1,8);
 
     % Plot
-    subplot(2,1,1)
+%     subplot(2,1,1)
     plot(time,p,'DisplayName','Roll Rate (Degrees/s)')
     [pk,locs] = findpeaks(p,time,'MinPeakDistance',1.8);
     [troughs, lc1] = findpeaks(-p,time,'MinPeakDistance',1.5);
@@ -76,18 +76,18 @@ addpath .\Cranfield_Flight_Test_Data;
     px_ = time_(k);
 
     % Plot the response
-    subplot(2,1,2)
-    plot(time_,RollRate_,'DisplayName','Roll Rate (Degrees/s)')
-    hold on
-    plot(time_,Vt_ss,'--k', px, py,'ro','HandleVisibility','off')
-    plot(time_,Vp_ss,'DisplayName','Steady State')
-    plot(px_,py_,'ko','HandleVisibility','off')
-    hold off
-    axis tight
-    grid minor
-    xlabel('Time (Seconds)')
-    ylabel('Roll Rate (Degrees/s)')
-    legend(gca,'show')
+%     subplot(2,1,2)
+%     plot(time_,RollRate_,'DisplayName','Roll Rate (Degrees/s)')
+%     hold on
+%     plot(time_,Vt_ss,'--k', px, py,'ro','HandleVisibility','off')
+%     plot(time_,Vp_ss,'DisplayName','Steady State')
+%     plot(px_,py_,'ko','HandleVisibility','off')
+%     hold off
+%     axis tight
+%     grid minor
+%     xlabel('Time (Seconds)')
+%     ylabel('Roll Rate (Degrees/s)')
+%     legend(gca,'show')
 
     % Calculate Time Constant and Lp
     tau = px - px_;

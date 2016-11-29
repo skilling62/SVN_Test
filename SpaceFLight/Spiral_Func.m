@@ -29,12 +29,12 @@ legend(gca,'show')
 Q = 0.5 * Rho * (U_0^2);
 
 % Calculate Wing fuesulage contribution to CnBeta (p75)
-C_nBeta_wf = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w))
+C_nBeta_wf = -(K_n) * K_Rl * ((Sf * lf)/(S_w * b_w));
 
 % Calculate Nbeta abd Nv
 C_nBeta = C_nBeta_wf + (EffFac_V * V_v * CL_Av * (1 + dSigmaBYdBeta));
 
-NBeta = (Q * S_w * b_w * C_nBeta) / I_z
+NBeta = (Q * S_w * b_w * C_nBeta) / I_z;
 
 Nv = NBeta/U_0;
 

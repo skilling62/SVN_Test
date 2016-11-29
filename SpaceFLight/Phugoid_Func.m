@@ -123,7 +123,7 @@ end
 
     Zeta = Two_Zeta_Omeg_n/(2*Omeg_n);
     
-%% Using 3-Degrees-of-Freedom Approximation from S.Pradeer Paper
+%% Using 3-Degrees-of-Freedom Approximation from S.Pradeep Paper
     case 3
     Theta = q;
     Alpha = 1;

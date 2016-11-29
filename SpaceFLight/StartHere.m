@@ -36,7 +36,7 @@ addpath .\Linearised_Aircraft_Model
 [Xu, Zu] = Phugoid_Func(1);
 
 % Generate Dervivates from Short Period. The input to the function is the method 
-% Input '0' = inspection, Input '1' = Logarithmic Decrement
+% Input '0' = inspection, Input '1' = Logarithmic Decrement, 
 [Xw, Zw, Mw, Mw_dot, Mq] = SPeriod_Func(1);
 
 %% Run the Simulink Model

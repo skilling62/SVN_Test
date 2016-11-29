@@ -130,7 +130,7 @@ Ac_Model = ss(A_Lat, B_Lat, C_Lat, D_Lat)
 % visualise free response
 
 % disturbance of 10 deg in bank
-x0_Lat = [0 0 0 10*(pi/180)];
+x0_Lat = [0 0 0 0*(pi/180)];
 
 
 % =========================================================================
