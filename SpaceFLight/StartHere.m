@@ -40,4 +40,4 @@ addpath .\Linearised_Aircraft_Model
 [Xw, Zw, Mw, Mw_dot, Mq] = SPeriod_Func(1);
 
 %% Run the Simulink Model
-Longitudinal_Example_V5
+Longitudinal_Example_V5_2016a
