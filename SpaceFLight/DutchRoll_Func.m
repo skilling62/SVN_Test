@@ -7,7 +7,7 @@ addpath .\Cranfield_Flight_Test_Data;
 %% Determine the Damping Ratio and Natural Frequency from the response
 
 % Import Data
-DR_data = xlsread('Dutch-Roll_GpB.xls');
+DR_data = xlsread('Dutch-Roll_GpA.xls');
 time = DR_data(:,1);
 delta_rudder = DR_data(:,2);
 r = DR_data(:,4);

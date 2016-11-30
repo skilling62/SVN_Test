@@ -191,8 +191,8 @@ Ac_Model = ss(A_Lon, B_Lon, C_Lon, D_Lon)
 
 % visualise free response
 
-% disturbance of 8.2 m/s disturbance in velocity
-x0_Lon = [-11.3 0 0 0];
+% disturbance of 9 m/s disturbance in velocity
+x0_Lon = [-9 0 0 0];
 % % [y, t, x] = initial(Ac_Model, x0);
 % % y = transpose(y);
 % % plot(t,y)

@@ -44,7 +44,7 @@ Zalpha = Zw * U_0;
     
 %% Import flight test data
 kts2ms = 0.51444;
-Pg_data = xlsread('Phugoid_GpB.xls');
+Pg_data = xlsread('Phugoid_GpA.xls');
 global time 
 time = Pg_data(:,1);
 global U 
@@ -63,6 +63,7 @@ ax.XTickLabelMode = 'auto';
 hold off
 xlabel('Time (Seconds)')
 ylabel ('Aircraft Velocity (m/s)')
+axis tight
 
 %% Determine the amplitude of the response and corresponding times for use in the logarithmic decrement method
 
@@ -82,7 +83,11 @@ elseif GroupName == 2
     
     t1 = lc(2);
     t2 = lc1(2);
-    t3 = lc(3); 
+    t3 = lc(3);
+    
+else 
+    msg = 'Group C shall be discarded due to anomolous data';
+    error (msg)
 end
 %% Using the logarithmic decrement method provided in Flight Dynamics Notes 
     switch MethodNumber 
