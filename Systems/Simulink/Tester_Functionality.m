@@ -35,12 +35,16 @@ function [up_down,   ...
 	ev_err    = NoError;
     
     % Some very basic functionality, for initial demo
-    if(time < 60)
-        up_down = On;
+    if (time < 60)
         iv_err  = Error; 
-    else
-        up_down = Off;
-        iv_err  = NoError; 
+    elseif (time <120)
+         iv_err  = NoError;
+    elseif (time <180)
+        iv_err = NoError;
+    elseif (time <240)
+        iv_err= Error;
     end
+
+
 
 end
