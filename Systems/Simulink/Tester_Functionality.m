@@ -37,8 +37,10 @@ function [up_down,   ...
     % Some very basic functionality, for initial demo
     if(time < 60)
         up_down = On;
+        iv_err  = Error; 
     else
         up_down = Off;
+        iv_err  = NoError; 
     end
 
 end

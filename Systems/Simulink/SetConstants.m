@@ -6,3 +6,4 @@ Unknown        = 2;
 
 %% Error definitions
 NoError = 0;
+Error=1; 
