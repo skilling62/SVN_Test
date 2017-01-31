@@ -1,0 +1,53 @@
+%% Tester functionality %%
+if(time<60)
+    sv_err=NoError;
+elseif(time<120)
+    sv_err=Error;
+    elseif(time<180)
+    sv_err=NoError;
+    elseif(time<240)
+    sv_err=Error;
+    elseif(time<300)
+    sv_err=NoError;
+    elseif(time<360)
+    sv_err=Error;
+    elseif(time<420)
+    sv_err=NoError;
+    elseif(time<480)
+    sv_err=Error;
+end
+
+%%LGC Functionality%%
+if(time <60)
+         iv_open = On;
+         sv_down = Off;
+         sv_up= Off;
+    elseif(time <120)
+         iv_open = On;
+          sv_down = Off;
+         sv_up= Off;
+    elseif(time<180)
+         iv_open = On;
+          sv_down = Off;
+         sv_up= On;
+    elseif(time<240)
+         iv_open = On;
+          sv_down = Off;
+         sv_up= On;
+    elseif(time<300)
+         iv_open = On;
+          sv_down = On;
+         sv_up= Off;
+    elseif(time<360)
+         iv_open = On;
+          sv_down = On;
+         sv_up= Off;
+    elseif( time<420)
+         iv_open = On;
+          sv_down = On;
+         sv_up= On;
+    elseif (time<480)
+         iv_open = On;
+          sv_down = On;
+         sv_up= On;
+     end

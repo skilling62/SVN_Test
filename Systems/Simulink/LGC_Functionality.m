@@ -23,5 +23,5 @@ function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos
     elseif (time <240)
             iv_open = Off;
     end
-    
+
 end
