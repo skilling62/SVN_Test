@@ -34,17 +34,8 @@ function [up_down,   ...
 	dusv_err  = NoError;
 	ev_err    = NoError;
     
-    % Some very basic functionality, for initial demo
-    if (time < 60)
-        iv_err  = Error; 
-    elseif (time <120)
-         iv_err  = NoError;
-    elseif (time <180)
-        iv_err = NoError;
-    elseif (time <240)
-        iv_err= Error;
-    end
-
+    % Test Script to Run
+    IsolationValveTesterF;
 
 
 end
