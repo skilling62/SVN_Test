@@ -16,12 +16,15 @@ function [up_down,   ...
     run('SetConstants');
 
     % Instrumentation
-    fprintf('Time[%f] LG[%f] Door[%f]\n',time,lg_pos,door_pos);
+    %fprintf('Time[%f] LG[%f] Door[%f]\n',time,lg_pos,door_pos);
     
     % Commanded LG position - default
 	up_down   = Off;
     
     % Error triggering - default
+    % Variables are local to this function and therefore cannot be modified
+    % by another script
+    
 	iv_err    = NoError;
 	sv_err    = NoError;
 	lga_err   = NoError;
@@ -35,7 +38,7 @@ function [up_down,   ...
 	ev_err    = NoError;
     
     % Test Script to Run
-    IsolationValveTesterF;
+     IsolationValveTesterF;
 
 
 end
