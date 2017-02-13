@@ -11,7 +11,7 @@ function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos
     
     % Display outputs as an array as this will make them easier to analyse
     Out = [time up_down lg_pos door_pos];
-    disp(Out);
+    %disp(Out);
     
     % Set defaults
     % Locally defined so cannot be modified by another script
