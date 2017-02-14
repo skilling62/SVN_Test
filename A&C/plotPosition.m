@@ -1,11 +1,10 @@
-function [M] = plotPosition( filename )
+function plotPosition( filename )
 
+% Function to plot the AR.Drone x,y,z position (in body frame) based on integration of accelerometer readings
 clc
-
-% Function to plot the AR.Drone x,y,z position based on accelerometer readings
-
 %% Create an Array containing the odometry data
-% Import Array
+
+% Import Data
 addpath  .\Odometry_CSVs;
 M = csvread(filename, 1);
 
@@ -19,15 +18,68 @@ for j = 5:-1:2
         index = j;
     end
 end
-M = M(index:size(M,1),:);
 
+M = M(index:size(M,1),:);
 %% Declare Variables
 
 % Time 
 time = M(:,1);
+time = time/1000;
 
-% Position (to be calculated)
-S = [x y z];
+% Body Frame Accelerations
+accX = M(:,8);
+accY = M(:,9);
+accZ = M(:,10);
 
+acc = [accX accY accZ];
+
+% Convert to SI units (m/s^2)
+acc = (acc/1000) * 9.81;
+
+% Body Frame Velocities
+vel = zeros(size(acc));
+
+% Body Frame Position
+pos = zeros(size(vel));
+
+%% Calculate translational velocity
+
+% Remove gravity from the z axis accelerometer reading
+acc(:,3) = acc(:,3) + 9.81;
+
+% Integrate Acceleration to provide body fixed velocity
+for t = 2:length(time)
+  vel(t,:) = vel(t-1,:) + acc(t-1,:) * (time(t)-time(t-1));
 end
 
+%% Calculate position
+for t = 2:length(time)
+    pos(t,:) = pos(t-1,:) + vel(t,:) * (time(t) - time(t-1));
+end
+
+%% Plot translational velocity
+plot(time,vel(:,1))
+hold on
+plot(time,vel(:,2))
+plot(time,vel(:,3))
+grid minor
+xlabel('Time(s)')
+ylabel('Velocity(m/s)')
+legend ('x', 'y', 'z')
+title('Body Frame Velocity Plot')
+hold off
+
+%% Plot position
+figure('Position', [9 39 900 600]);
+hold on
+plot(time, pos(:,1), 'r');
+plot(time, pos(:,2), 'g');
+plot(time, pos(:,3), 'b');
+title('Position');
+xlabel('Time (s)');
+ylabel('Position (m)');
+legend('X', 'Y', 'Z');
+hold off;
+
+%% 3D Position Plot
+scatter3(pos(:,1), pos(:,2), pos(:,3))
