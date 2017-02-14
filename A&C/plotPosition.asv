@@ -1,0 +1,28 @@
+function [M] = plotPosition( filename )
+
+clc
+
+% Function to plot the AR.Drone x,y,z position based on accelerometer readings
+
+%% Create an Array containing the odometry data
+% Import Array
+addpath  .\Odometry_CSVs;
+M = csvread(filename, 1);
+
+% Remove rows where t = 0 (find the index of the starting row)
+time = M(:,1);
+
+for j = 5:-1:2
+    initSum = time(j) + time(j-1);
+    if initSum == 0
+        index = j;
+    end
+end
+
+M'
+
+disp(M)
+%disp(time)
+disp(index)
+end
+

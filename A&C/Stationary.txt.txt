@@ -1,0 +1,45 @@
+% This function loads the relevant odometry csv file and plots the position based on a simple Suvat approach
+
+[] = plotPos (filename)
+
+% Load the csv and assign it to an array. Offset to eliminate delta t of 0? (R1 = 0 and C1 = 0 specify the first value in the file)
+
+M = csvread(filename, R1, C1)
+
+%% Declare variables (all defined in body co ordinate system)
+
+% Time
+T = t;
+
+% Position (to be calculated)
+S = [x y z];
+
+% Velocity (to be initialised at zero and then calculated using v = u + a*(timestep)
+V = [vx vy vz];
+
+% Acceleration
+A = [ax ay az];
+
+% Assign variables to values in the array
+t = M(:,1);
+ax = M(:,8);
+ay = M(:,9);
+az = M(:,10);
+
+%% Update the state at each timestep
+
+% Initialise Velocity
+V(0) = [0 0 0];
+S(0) = [0 0 0];
+
+for i = 1:size(M,1)
+	% Specify time step
+	delta_t = t(i) - t(i-1);
+	% Calculate velocity (v = u + at)
+	V(i) = V(0) + [(ax(i) * delta_t) (ay(i) * delta_t) (az(i) * delta_t)]
+	% Calculate Position (s = (s(t-1)) + ut + 0.5at^2)
+	S(i) = S(0) + (V(i).*delta_t
+
+
+
+%% Plot data
