@@ -21,5 +21,10 @@ function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos
     ev_open   = Off;
     
     % Test script to run
-    IsolationValveLGCF
+    IsolationValveLGCF;
+    EmergencyValveLGCF;
+    
+    
+    
+    
 end

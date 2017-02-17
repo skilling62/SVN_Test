@@ -39,6 +39,7 @@ function [up_down,   ...
     
     % Test Script to Run
      IsolationValveTesterF;
+     EmergencyValveTesterF;
 
 
 end
