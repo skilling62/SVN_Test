@@ -1,5 +1,8 @@
 % The error position is input 2 to the combinational logic block
 % Off
+
+% Run tests in blocks of 15 seconds
+
 if time < 15
     iv_err = NoError;
 % UncommandedOn

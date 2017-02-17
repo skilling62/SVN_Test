@@ -1,5 +1,9 @@
 % The valve position is input 1 to the combinational logic block
 % Off
+
+% iv_open is input 1
+
+% Run tests in blocks of 15 seconds
 if time < 15
     iv_open = Off;
 % UncommandedOn
