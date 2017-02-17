@@ -1,4 +1,7 @@
-% test HydrOut
+% This function evaluates the simulation results acheived from running the 
+% following test scripts: 
+% IsolationValveLGCF.m 
+% IsolationValveTesterF
 
 % preconditions (shared variables)
 A = evalin ('base','HydrOut.time');
@@ -17,7 +20,7 @@ assert(B(index) == 0);
 range = A(A>=15 & A<30);
 midpoint = range(length(range)/2);
 index = find(A == midpoint);
-assert(B(index) == 0,'Valve not passing supply');
+assert(B(index) == 1,'Valve not passing supply');
 
 %% Test 3: Normal Operation On
 range = A(A>=30 & A<45);
@@ -29,4 +32,4 @@ assert(B(index) == 1);
 range = A(A>=45 & A<60);
 midpoint = range(length(range)/2);
 index = find(A == midpoint);
-assert(B(index) == 1);
+assert(B(index) == 0);
