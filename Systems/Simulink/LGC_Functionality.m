@@ -23,6 +23,12 @@ function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos
     % Test script to run
     IsolationValveLGCF;
     EmergencyValveLGCF;
+    LandinggearUplockShuttleValveLGCF;
+    LandinggearUplockLGCF;
+    LandinggearActuatorShuttleValveLGCF;
+    DoorUplockShuttleValveLGCF;
+    DoorUplockLGCF;
+    DoorActuatorShuttleValveLGCF;
     
     
     

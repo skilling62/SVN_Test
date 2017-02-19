@@ -1,14 +1,15 @@
-%% Landing gear Actuator shuttle valve LGCF script
+%% Door uplock shuttle valve LGCF script
 
-% Same inputs as landing gear uplock shuttle valve becuase they are conected 
-% Inputs into the landing gear actuator shuttle valve come from the isolation valve, the emergencey
-% vlave, the selector valve.  
-% The landing gear actuator shuttle valve has an
+% Inputs into the Door uplock shuttle valve come from the isolation valve, the emergencey
+% vlave, the selector valve. 
+% The Door uplock shuttle valve has an
 % OR relationship so the tests bellow have the the normal supply (isolation
 % valve and selector valve) and the emergeney supply (emergency valve) are either one is ON, 
 % both of them are On or both of them are Off.  
-
+% Tests are identical to landing gear uplock shuttle valve becuase they are
+% connected. 
 %%
+
 % Run tests in blocks of 15 seconds
 
 % Normal supply - Off 
