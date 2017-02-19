@@ -58,16 +58,16 @@ for t = 2:length(time)
 end
 
 %% Plot translational velocity
-plot(time,vel(:,1))
-hold on
-plot(time,vel(:,2))
-plot(time,vel(:,3))
-grid minor
-xlabel('Time(s)')
-ylabel('Velocity(m/s)')
-legend ('x', 'y', 'z')
-title('Body Frame Velocity Plot')
-hold off
+% plot(time,vel(:,1))
+% hold on
+% plot(time,vel(:,2))
+% plot(time,vel(:,3))
+% grid minor
+% xlabel('Time(s)')
+% ylabel('Velocity(m/s)')
+% legend ('x', 'y', 'z')
+% title('Body Frame Velocity Plot')
+% hold off
 
 %% Plot position
 figure('Position', [9 39 900 600]);
@@ -75,11 +75,20 @@ hold on
 plot(time, pos(:,1), 'r');
 plot(time, pos(:,2), 'g');
 plot(time, pos(:,3), 'b');
-title('Position');
+title('Position Error over a 20 Second Period');
 xlabel('Time (s)');
 ylabel('Position (m)');
 legend('X', 'Y', 'Z');
+grid minor
 hold off;
 
-%% 3D Position Plot
-scatter3(pos(:,1), pos(:,2), pos(:,3))
+%% 3D Plot
+figure;
+stem3(pos(:,1), pos(:,2), pos(:,3),'Marker','x','MarkerEdgeColor','k');
+xlabel('X Position(m)');
+ylabel('Y Position(m)');
+zlabel('Z Position(m)');
+title('3D Position Plot over a 20 Second Period')
+view(82,30);
+    
+
