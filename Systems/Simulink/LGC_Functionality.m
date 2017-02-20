@@ -20,16 +20,21 @@ function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos
     sv_up     = Off;
     ev_open   = Off;
     
-    % Test script to run
-    IsolationValveLGCF;
-    EmergencyValveLGCF;
-    LandinggearUplockShuttleValveLGCF;
-    LandinggearUplockLGCF;
-    LandinggearActuatorShuttleValveLGCF;
-    DoorUplockShuttleValveLGCF;
-    DoorUplockLGCF;
-    DoorActuatorShuttleValveLGCF;
+    %% Test script to run
     
+    % Error and Isolation Valves
+%     IsolationValveLGCF;
+%     EmergencyValveLGCF;
+    
+    % Shuttle Valves
+        LandinggearUplockShuttleValveLGCF;
+        DoorActuatorShuttleValveLGCF;
+        DoorUplockShuttleValveLGCF;
+        LandinggearActuatorShuttleValveLGCF;
+
+    %   Uplocks
+    %   DoorUplockLGCF;
+    %   LandinggearUplockLGCF;
     
     
     

@@ -10,43 +10,43 @@
 %%
 % Run tests in blocks of 15 seconds
 
-% Normal and emergencey supply - Off 
+% Both Normal and emergencey supply = Off 
 if time < 15
   dusv_err = NoError;
    sv_err = NoError;
    ev_err = NoError;
    iv_err = NoError;
-% Error normal and emergencey supply  - Off 
+% Error and both normal and emergencey supply = Off 
 elseif time >= 15 && time < 30
     dusv_err = Error;
    sv_err = NoError;
    ev_err = NoError;
-   iv_err = NoError;
-% Normal supply - On 
+   iv_err = NoError; 
+% Normal supply = On 
 elseif time >= 30 && time < 45
    dusv_err = NoError;
    sv_err = NoError;
    ev_err = NoError;
    iv_err = NoError;
-% Emergency supply  - On
+% Emergency supply  = On
 elseif time >= 45 && time < 60
    dusv_err = NoError;
    sv_err = NoError;
    ev_err = NoError;
    iv_err = NoError;
-% Normal and Emergency supply - On
+% Normal and Emergency supply = On
 elseif time >= 60 && time < 75
     dusv_err = NoError;
    sv_err = NoError;
    ev_err = NoError;
    iv_err = NoError;   
-% Error normal supply - On
+% Error normal supply = On
 elseif time >= 75 && time < 90
     dusv_err = Error;
    sv_err = NoError;
    ev_err = NoError;
    iv_err = NoError;   
-% Error emergencey supply - On
+% Error emergencey supply = On
 elseif time >= 90 && time < 105
     dusv_err = Error;
    sv_err = NoError;

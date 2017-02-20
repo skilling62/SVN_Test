@@ -40,10 +40,10 @@ function [up_down,   ...
     % Test Script to Run
      IsolationValveTesterF;
      EmergencyValveTesterF;
-     LandinggearUplockShuttleValveTesterF;
-     LandinggearUplockTesterF;
-     LandinggearActuatorShuttleValveTesterF;
-     DoorUplockShuttleValveTesterF;
-     DoorUplockTesterF;
-     DoorActuatorShuttleValveTesterF;
+%      LandinggearUplockShuttleValveTesterF;
+%      LandinggearUplockTesterF;
+%      LandinggearActuatorShuttleValveTesterF;
+%      DoorUplockShuttleValveTesterF;
+%      DoorUplockTesterF;
+%      DoorActuatorShuttleValveTesterF;
 end
