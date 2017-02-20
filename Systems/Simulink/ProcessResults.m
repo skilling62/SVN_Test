@@ -2,7 +2,7 @@
 % A runtests function is called, which outputs the results of the user
 % specified test as a .csv 
 
-result = runtests('analyseTest');
+result = runtests('Results_IsolationValve_Emergency_Valve');
 rt = table(result);
 cd('../Test_Results')
 writetable(rt,'results.csv');
