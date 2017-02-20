@@ -1,4 +1,4 @@
-function [pos] = poseEstimate( filename )
+function poseEstimate( filename )
 
 % Function to plot the AR.Drone 2.0 x,y,z position in inertial frame using 
 % Body velocity measurements
@@ -74,11 +74,34 @@ for t = 2:length(time)
     pos(t,:) = pos(t-1,:) + velin (t-1,:) * (time(t) - time(t-1));
 end
 
-%% 3D Plot
-figure;
-stem3(pos(:,1), pos(:,2), pos(:,3),'Marker','x','MarkerEdgeColor','k');
-xlabel('X Position(m)');
-ylabel('Y Position(m)');
-zlabel('Z Position(m)');
-title('3D Position Plot over a 20 Second Period')
-view(82,30);
+%% Body Orientation Plot
+psi_d = psi*(180/pi);
+theta_d = theta*(180/pi);
+phi_d = phi*(180/pi);
+figure
+hold on
+plot(time,psi_d,'-kx')
+plot(time,theta_d,'-x')
+plot(time,phi_d,'-rx')
+xlabel('Time(s)');
+ylabel('Orientation (degrees)');
+legend('Yaw(deg)', 'Pitch(deg)', 'Roll(deg)')
+grid minor
+title('Orientation Plot')
+hold off
+%%
+% %%  XY pos plot
+% figure;
+% plot(pos(:,2), pos(:,1))
+% xlabel('Y Position(m)');
+% ylabel('X Position(m)');
+
+%%
+% %% 3D Plot
+% figure;
+% stem3(pos(:,1), pos(:,2), pos(:,3),'Marker','x','MarkerEdgeColor','k');
+% xlabel('X Position(m)');
+% ylabel('Y Position(m)');
+% zlabel('Z Position(m)');
+% title('3D Position Plot over a 20 Second Period')
+% view(82,30);
