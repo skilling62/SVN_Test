@@ -43,6 +43,9 @@ u = M(:,5);
 v = M(:,6);
 w = M(:,7);
 
+% Altitude (m)
+alt = M(:,11)/100;
+
 % Write velocities to a vector with three rows
 velb = [u v w]';
 
@@ -80,14 +83,18 @@ theta_d = theta*(180/pi);
 phi_d = phi*(180/pi);
 figure
 hold on
-plot(time,psi_d,'-kx')
-plot(time,theta_d,'-x')
-plot(time,phi_d,'-rx')
-xlabel('Time(s)');
-ylabel('Orientation (degrees)');
-legend('Yaw(deg)', 'Pitch(deg)', 'Roll(deg)')
+yyaxis left
+plot(time,psi_d,'-k')
+plot(time,theta_d,'-')
+plot(time,phi_d,'-g')
+xlabel('Time(s)')
+ylabel('Orientation (degrees)')
+yyaxis right
+plot(time,alt,'-')
+ylabel('Altitude(m)')
+legend('Yaw(deg)', 'Pitch(deg)', 'Roll(deg)', 'Altitude(m)')
 grid minor
-title('Orientation Plot')
+title('Sample State Variables Plot')
 hold off
 %%
 % %%  XY pos plot
