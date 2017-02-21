@@ -1,4 +1,4 @@
-Time(ms),Roll(Rads),Pitch(Rads),Yaw(Rads),VelX(m/s),VelY(m/s),VelZ(m/s),AccX(mm/s^2),AccY(mm/s^2),AccZ(mm/s^2),,,Yaw(degrees),,,Short flight (try to keep constant attitude)
+Time(ms),Roll(Rads),Pitch(Rads),Yaw(Rads),VelX(m/s),VelY(m/s),VelZ(m/s),AccX(mm/s^2),AccY(mm/s^2),AccZ(mm/s^2),,,Yaw(degrees),,,Short flight (try to keep constant attitude) 20/02/2017
 0,0.0543321,0.06024876,0.01033235,0,0,0,-7.727237,45.42241,-981.0996,,,0.592000047,,,
 0,0.0543321,0.06024876,0.01033235,0,0,0,-7.727237,45.42241,-981.0996,,,0.592000047,,,
 69,0.05436701,0.06012659,0.01033235,0,0,0,-7.788332,45.52873,-981.1001,,,0.592000047,,,
