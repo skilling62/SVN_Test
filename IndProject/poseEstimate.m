@@ -88,13 +88,13 @@ plot(time,psi_d,'-k')
 plot(time,theta_d,'-')
 plot(time,phi_d,'-g')
 xlabel('Time(s)')
-ylabel('Orientation (degrees)')
+ylabel('Attitude (degrees)')
 yyaxis right
 plot(time,alt,'-')
 ylabel('Altitude(m)')
 legend('Yaw(deg)', 'Pitch(deg)', 'Roll(deg)', 'Altitude(m)')
 grid minor
-title('Sample State Variables Plot')
+title('Plot of AR.Drone Attitude and Altitude')
 hold off
 %%
 % %%  XY pos plot
