@@ -7,7 +7,9 @@
     % Results_IsolationValve_Emergency_Valve
     % Results_Shuttle_Valves
 
-result = runtests('Results_Shuttle_Valves');
+testname = 'Results_Shuttle_Valves';
+result = runtests(testname);
 rt = table(result);
 cd('../Test_Results')
-writetable(rt,'results.csv');
+testname(length(testname)+1:length(testname)+4) = '.csv';
+writetable(rt,testname);
