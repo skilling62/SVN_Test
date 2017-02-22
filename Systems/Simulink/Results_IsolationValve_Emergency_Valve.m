@@ -8,7 +8,7 @@ A = evalin ('base','HydrOut.time');
 B = evalin ('base', 'HydrOut.signals.values');
 C = evalin ('base','EHydrOut.time');
 D = evalin ('base','EHydrOut.signals.values');
-%% Test 1: Supply = Off, Error = On
+%% Test 1: Supply = Off, Error = Off
 
 % Define time range (15)
 range = A(A<15);

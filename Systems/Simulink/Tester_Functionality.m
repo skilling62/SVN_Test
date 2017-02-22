@@ -37,13 +37,19 @@ function [up_down,   ...
 	dusv_err  = NoError;
 	ev_err    = NoError;
     
-    % Test Script to Run
-     IsolationValveTesterF;
-     EmergencyValveTesterF;
-%      LandinggearUplockShuttleValveTesterF;
+    %% Test Script to Run
+    
+    % Error and Isolation Valves
+%      IsolationValveTesterF;
+%      EmergencyValveTesterF;
+     
+     % Shuttle Valves
+     LandinggearUplockShuttleValveTesterF;
+     LandinggearActuatorShuttleValveTesterF;
+     DoorUplockShuttleValveTesterF;
+     DoorActuatorShuttleValveTesterF;
+     
+     % Uplocks
 %      LandinggearUplockTesterF;
-%      LandinggearActuatorShuttleValveTesterF;
-%      DoorUplockShuttleValveTesterF;
-%      DoorUplockTesterF;
-%      DoorActuatorShuttleValveTesterF;
+%      DoorUplockTesterF;   
 end
