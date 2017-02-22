@@ -1,7 +1,7 @@
 % This function evaluates the simulation results acheived from running the 
 % following test scripts: 
-% IsolationValveLGCF.m 
-% IsolationValveTesterF
+% IsolationValve
+% EmergencyValve
 
 % preconditions (shared variables)
 A = evalin ('base','HydrOut.time');
