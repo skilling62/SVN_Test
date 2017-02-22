@@ -1,9 +1,9 @@
 % This function evaluates the simulation results acheived from running the 
 % following test scripts: 
-% DoorActuatorShuttleValve
-% DoorUplockShuttleValve
-% LandinggearActuatorShuttleValve
-% LandinggearUplockShuttleValve
+% DoorActuatorShuttleValve (LGCF and Tester)
+% DoorUplockShuttleValve (LGCF and Tester)
+% LandinggearActuatorShuttleValve (LGCF and Tester)
+% LandinggearUplockShuttleValve (LGCF and Tester)
 
 % preconditions (shared variables)
 A = evalin ('base','DAHydrOut.time');
