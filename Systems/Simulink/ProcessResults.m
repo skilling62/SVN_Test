@@ -2,7 +2,7 @@
 % A runtests function is called, which outputs the results of the user
 % specified test as a .csv 
 
-% List of tests
+% List of tests (to be assigned to the test name variable
 % Model Verification Tests
     % Results_IsolationValve_Emergency_Valve
     % Results_Shuttle_Valves
