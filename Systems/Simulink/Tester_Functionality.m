@@ -50,6 +50,10 @@ function [up_down,   ...
      DoorActuatorShuttleValveTesterF;
      
      % Uplocks
-%      LandinggearUplockTesterF;
-%      DoorUplockTesterF;   
+     LandinggearUplockTesterF;
+     DoorUplockTesterF;   
+     
+     % Actuators
+
+
 end

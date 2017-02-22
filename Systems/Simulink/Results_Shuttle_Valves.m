@@ -36,7 +36,7 @@ assert(B(index) == 0);
 assert(D(index) == 0);
 assert(F(index) == 0);
 assert(H(index) == 0);
-%% Test 3: Supply = On, Error = Off
+%% Test 3: Normal Supply = On, Error = Off
 range = A(A>=30 & A<45);
 midpoint = range(length(range)/2);
 index = find(A == midpoint);
@@ -45,7 +45,7 @@ assert(B(index) == 1);
 assert(D(index) == 1);
 assert(F(index) == 1);
 assert(H(index) == 1);
-%% Test 4: Supply = On, Error = Off
+%% Test 4: Emergency Supply = On, Error = Off
 range = A(A>=45 & A<60);
 midpoint = range(length(range)/2);
 index = find(A == midpoint);
@@ -63,7 +63,7 @@ assert(B(index) == 1);
 assert(D(index) == 1);
 assert(F(index) == 1);
 assert(H(index) == 1);
-%% Test 6: Supply = On, Error = On
+%% Test 6: Normal Supply = On, Error = On
 range = A(A>=75 & A<90);
 midpoint = range(length(range)/2);
 index = find(A == midpoint);
@@ -72,7 +72,7 @@ assert(B(index) == 0);
 assert(D(index) == 0);
 assert(F(index) == 0);
 assert(H(index) == 0);
-%% Test 7: Supply = On, Error = On
+%% Test 7: Emergency Supply = On, Error = On
 range = A(A>=90 & A<105);
 midpoint = range(length(range)/2);
 index = find(A == midpoint);

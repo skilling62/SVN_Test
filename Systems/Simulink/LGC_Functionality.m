@@ -33,8 +33,10 @@ function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos
     LandinggearActuatorShuttleValveLGCF;
 
 %     Uplocks
-%     DoorUplockLGCF;
-%     LandinggearUplockLGCF;
+    DoorUplockLGCF;
+    LandinggearUplockLGCF;
+    
+    % Actuators
     
     
     
