@@ -1,4 +1,4 @@
-Time(ms),Roll(Rads),Pitch(Rads),Yaw(Rads),VelX(m/s),VelY(m/s),VelZ(m/s),AccX(mm/s^2),AccY(mm/s^2),AccZ(mm/s^2),Altitude(cm),,,Short flight 21/02/2017
+Time(ms),Roll(Rads),Pitch(Rads),Yaw(Rads),VelX(m/s),VelY(m/s),VelZ(m/s),AccX(mm/s^2),AccY(mm/s^2),AccZ(mm/s^2),Altitude(m),,,Short flight 21/02/2017
 0,0.007784169,-0.00965167,0.0599346,0,0,0,-8.049084,37.45188,-993.0366,0,,,
 0,0.007784169,-0.00965167,0.0599346,0,0,0,-8.049084,37.45188,-993.0366,0,,,
 64,0.007801622,-0.00965167,0.05996951,0,0,0,-8.106401,37.40424,-994.5376,0,,,
