@@ -17,7 +17,7 @@ points2 = detectSURFFeatures(greyFrame2);
 %% Display Features
 figure;
 imshow(greyFrame1); hold on; plot(validpts1,'showOrientation',true);
-title('Detected Features');
+title('Detected Features','fontsize',14);
 
 %% Match Features
 % matchFeatures returns indices of the matching features in the two input

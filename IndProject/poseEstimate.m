@@ -1,26 +1,9 @@
-function poseEstimate( filename )
+function poseEstimate( M )
 
 % Function to plot the AR.Drone 2.0 x,y,z position in inertial frame using 
 % Body velocity measurements
 clc
-%% Create an Array containing the odometry data
 
-% Import Data
-addpath  .\Odometry_CSVs;
-M = csvread(filename, 1);
-
-% Adjust array so that there is only one instance of t = 0 (initial
-% conditions). Arbitrary variable rem
-rem = M(:,1);
-
-for j = 5:-1:2
-    initSum = rem(j) + rem(j-1);
-    if initSum == 0
-        index = j;
-    end
-end
-
-M = M(index:size(M,1),:);
 
 %% Declare Variables
 
