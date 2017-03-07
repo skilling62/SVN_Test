@@ -54,8 +54,15 @@ end
 % Transpose to a vector of 3 columns for ease of calculation and formatting
 velin = (velin)';
 
-for t = 2:length(time)
+t = 2;
+while t <=length(time)
     pos(t,:) = pos(t-1,:) + velin (t-1,:) * (time(t) - time(t-1));
+    % Code here to determine whether a video frame has been recieved
+    % Alter groundstation so navdata goes faster
+    if (abs(time(t) - s.timestamp(t-1))) <= 0.0001
+%         extract SURF and return (x,y,z)
+    end
+    t = t + 1;
 end
 
 %% Body Orientation Plot
@@ -77,14 +84,7 @@ legend('Yaw(deg)', 'Pitch(deg)', 'Roll(deg)', 'Altitude(m)')
 grid minor
 title('Plot of AR.Drone Attitude and Altitude')
 hold off
-%%
-% %%  XY pos plot
-% figure;
-% plot(pos(:,2), pos(:,1))
-% xlabel('Y Position(m)');
-% ylabel('X Position(m)');
 
-%
 %% 3D Plot
 figure;
 stem3(pos(:,1), pos(:,2), pos(:,3),'Marker','x','MarkerEdgeColor','k');
