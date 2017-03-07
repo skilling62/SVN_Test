@@ -1,39 +1,3 @@
-close all
-clearvars;
-clc
-
-%% Read Video File and Convert from RGB24 to 8 bit Greyscale
-% Create a VideoReader object to read the input video file
-videoFile = 'video_20170301_141428.mp4';
-vidObj = VideoReader(videoFile);
-
-% Determine the width and height of the frames (1280p by 720p)
-vidWidth = vidObj.Width;
-vidHeight = vidObj.Height;
-
-% Create a MATLAB® movie structure array, s
-% s = struct(field,value). If value is a cell array, s is a structure
-% array with the same dimensions as value. Fields: cdata, colormap,
-% timeStamp
-s = struct('cdata',zeros(vidHeight,vidWidth,3,'uint8'),'colormap',zeros(256,3),'timeStamp',[]);
-
-% hasFrame returns a logical 1(true) if there is a video frame available to
-% read from the file
-k = 1;
-while hasFrame(vidObj)
-    % Convert the current frame to greyscale
-    s(k).cdata = rgb2gray(readFrame(vidObj));
-    s(k).timeStamp = vidObj.CurrentTime;
-    k = k+1;
-end
-
-% Get information about the movie structure array s. size of s indicates
-% number of frames
-whos s
-
-%% Load Camera Intrinsic Parameters
-load ('cameraParams.mat')
-
 %% Feature Detection
 % detectSURFFeatures returns an array with length = number of detected
 % features. points.Location contains [x y] point co-ordinates
@@ -77,4 +41,3 @@ figure;
 showMatchedFeatures(greyFrame1, greyFrame2, inlierPoints1, inlierPoints2,...
     'montage');
 title('RANSAC Filtered Matches');
-%% U
