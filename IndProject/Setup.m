@@ -39,7 +39,7 @@ load ('cameraParams.mat')
 %% Read the Odometry data
 % Import Data
 addpath  .\Odometry_CSVs;
-M = csvread(filename, 1);
+M = csvread('20_26_34.csv', 1);
 
 % Adjust array so that there is only one instance of t = 0 (initial
 % conditions). Arbitrary variable rem

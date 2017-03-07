@@ -17,7 +17,7 @@ points2 = detectSURFFeatures(greyFrame2);
 %% Display Features
 figure;
 imshow(greyFrame1); hold on; plot(validpts1,'showOrientation',true);
-title('Detected Features','fontsize',14);
+title('Detected Features','fontsize',20);
 
 %% Match Features
 % matchFeatures returns indices of the matching features in the two input
@@ -31,7 +31,7 @@ matchedPoints2 = validpts2(indexPairs(:,2),:);
 %% Display Matched Features
 figure;
 showMatchedFeatures(greyFrame1,greyFrame2,matchedPoints1,matchedPoints2,'montage');
-title('Initial Feature Matching Between Frames');
+title('Initial Feature Matching Between Frames','fontsize',20);
 
 %% Filter Out Outliers using RANSAC (Random Sample Consensus)
 % Estimate the geometric transform between the frames
@@ -40,4 +40,4 @@ title('Initial Feature Matching Between Frames');
 figure;
 showMatchedFeatures(greyFrame1, greyFrame2, inlierPoints1, inlierPoints2,...
     'montage');
-title('RANSAC Filtered Matches');
+title('RANSAC Filtered Matches','fontsize',20);

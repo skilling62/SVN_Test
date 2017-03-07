@@ -3,8 +3,6 @@ function poseEstimate( M )
 % Function to plot the AR.Drone 2.0 x,y,z position in inertial frame using 
 % Body velocity measurements
 clc
-
-
 %% Declare Variables
 
 % Time (seconds)    Use stopwatch elapsed time or timestamp?
@@ -86,12 +84,12 @@ hold off
 % xlabel('Y Position(m)');
 % ylabel('X Position(m)');
 
-%%
-% %% 3D Plot
-% figure;
-% stem3(pos(:,1), pos(:,2), pos(:,3),'Marker','x','MarkerEdgeColor','k');
-% xlabel('X Position(m)');
-% ylabel('Y Position(m)');
-% zlabel('Z Position(m)');
-% title('3D Position Plot over a 20 Second Period')
-% view(82,30);
+%
+%% 3D Plot
+figure;
+stem3(pos(:,1), pos(:,2), pos(:,3),'Marker','x','MarkerEdgeColor','k');
+xlabel('X Position(m)');
+ylabel('Y Position(m)');
+zlabel('Z Position(m)');
+title('3D Position Plot')
+view(82,30);
