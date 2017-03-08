@@ -4,8 +4,8 @@ clc
 
 %% Read the desired video file and output the struct to the workspace
 % Create a VideoReader object to read the input video file
-addpath .\ComputerVision
-videoFile = 'video_20170301_141428.mp4';
+addpath .\Computer_Vision
+videoFile = 'video_00005.mp4';
 vidObj = VideoReader(videoFile);
 
 % Determine the width and height of the frames (1280p by 720p)
@@ -39,7 +39,7 @@ load ('cameraParams.mat')
 %% Read the Odometry data
 % Import Data
 addpath  .\Odometry_CSVs;
-M = csvread('20_26_34.csv', 1);
+M = csvread('11_46_14.csv', 1);
 
 % Adjust array so that there is only one instance of t = 0 (initial
 % conditions). Arbitrary variable rem

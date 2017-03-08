@@ -59,12 +59,29 @@ while t <=length(time)
     pos(t,:) = pos(t-1,:) + velin (t-1,:) * (time(t) - time(t-1));
     % Code here to determine whether a video frame has been recieved
     % Alter groundstation so navdata goes faster
-    if (abs(time(t) - s.timestamp(t-1))) <= 0.0001
 %         extract SURF and return (x,y,z)
-    end
+
     t = t + 1;
 end
 
+%% Testing Section
+i = 2:40;
+deltaT = zeros(length(i),1);
+frame = 1;
+tolerance = 0.005;
+
+for k = i
+    deltaT(k-1) = abs(time(k) - s(frame).timestamp);
+    if abs(deltaT(k-1))<=tolerance
+        frame = frame + 1;
+    end
+end
+
+figure
+plot(i,deltaT)
+hold on
+toleranceVector = linspace(tolerance, tolerance, length(i));
+plot(i,toleranceVector,'k')
 %% Body Orientation Plot
 psi_d = psi*(180/pi);
 theta_d = theta*(180/pi);
