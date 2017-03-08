@@ -53,22 +53,23 @@ end
 
 % Transpose to a vector of 3 columns for ease of calculation and formatting
 velin = (velin)';
-
+tolerance = 0.005;
+frame = 1;
 t = 2;
 while t <=length(time)
     pos(t,:) = pos(t-1,:) + velin (t-1,:) * (time(t) - time(t-1));
     % Code here to determine whether a video frame has been recieved
     % Alter groundstation so navdata goes faster
-%         extract SURF and return (x,y,z)
-
+    if abs(time(t) - s(frame).timestamp) <= tolerance
+        % pos(t,:) = mapSURF(pos(t,:),psi(t),theta(t),phi(t))
+        frame = frame + 1;
+    end
     t = t + 1;
 end
 
 %% Testing Section
 i = 2:40;
 deltaT = zeros(length(i),1);
-frame = 1;
-tolerance = 0.005;
 
 for k = i
     deltaT(k-1) = abs(time(k) - s(frame).timestamp);
@@ -82,6 +83,8 @@ plot(i,deltaT)
 hold on
 toleranceVector = linspace(tolerance, tolerance, length(i));
 plot(i,toleranceVector,'k')
+grid minor
+hold off
 %% Body Orientation Plot
 psi_d = psi*(180/pi);
 theta_d = theta*(180/pi);
