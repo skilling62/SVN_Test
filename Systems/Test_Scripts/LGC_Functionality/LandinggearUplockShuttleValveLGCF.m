@@ -1,10 +1,10 @@
 %% Landing gear up lock shuttle valve LGCF script
 
 % Inputs into the landing gear uplock shuttle valve come from the isolation valve, the emergencey
-% vlave, the selector valve. 
+% valve, the selector valve. 
 % The landing gear uplock shuttle valve has an
 % OR relationship so the tests bellow have the the normal supply (isolation
-% valve and selector valve) and the emergeney supply (emergency valve) are either one is ON, 
+% valve and selector valve) and the emergency supply (emergency valve) are either one is ON, 
 % both of them are On or both of them are Off.  
 %%
 
@@ -16,7 +16,7 @@ if time < 15
    sv_down = Off;
    sv_up = Off;
    ev_open = Off;
-% Error normal and emergencey supply  - Off 
+% Error normal and emergency supply  - Off 
 elseif time >= 15 && time < 30
    iv_open = Off;
    sv_down = Off;

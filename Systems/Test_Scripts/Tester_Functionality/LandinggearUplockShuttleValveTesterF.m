@@ -1,24 +1,24 @@
 %% Landing gear uplock shuttle valve tester script
 
 % Inputs into the landing gear uplock shuttle valve come from the isolation valve, the emergencey
-% vlave, the selector valve.  
+% valve, the selector valve.  
 % The landing gear uplock shuttle valve has an
-% OR relationship so the tests bellow have the the normal supply (isolation
-% valve and selector valve) and the emergeney supply (emergency valve) are either one is ON, 
+% OR relationship so the tests below have the the normal supply (isolation
+% valve and selector valve) and the emergency supply (emergency valve) are either one is ON, 
 % both of them are On or both of them are Off.  
 
 %%
 % Run tests in blocks of 15 seconds
 
-% Normal and emergencey supply - Off 
+% Normal and emergency supply - Off 
 if time < 15
    lgusv_err = NoError;
    sv_err = NoError;
    ev_err = NoError;
    iv_err = NoError;
-% Error normal and emergencey supply  - Off 
+% Error normal and emergency supply  - Off 
 elseif time >= 15 && time < 30
-    lgusv_err = Error;
+   lgusv_err = Error;
    sv_err = NoError;
    ev_err = NoError;
    iv_err = NoError;
@@ -46,13 +46,13 @@ elseif time >= 75 && time < 90
    sv_err = NoError;
    ev_err = NoError;
    iv_err = NoError;   
-% Error emergencey supply - On
+% Error emergency supply - On
 elseif time >= 90 && time < 105
     lgusv_err = Error;
    sv_err = NoError;
    ev_err = NoError;
    iv_err = NoError;
-% Error emergencey and normal supply - On
+% Error emergency and normal supply - On
 elseif time >= 105 && time < 120
    lgusv_err = Error;
    sv_err = NoError;
