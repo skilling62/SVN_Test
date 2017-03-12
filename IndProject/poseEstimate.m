@@ -25,7 +25,7 @@ v = M(:,6);
 w = M(:,7);
 
 % Altitude (m)
-alt = M(:,11)/100;
+alt = M(:,11);
 
 % Write velocities to a vector with three rows
 velb = [u v w]';
@@ -84,6 +84,7 @@ toleranceVector = linspace(tolerance, tolerance, length(i));
 plot(i,toleranceVector,'k')
 grid minor
 hold off
+
 %% Body Orientation Plot
 psi_d = psi*(180/pi);
 theta_d = theta*(180/pi);
@@ -94,14 +95,14 @@ yyaxis left
 plot(time,psi_d,'-k')
 plot(time,theta_d,'-')
 plot(time,phi_d,'-g')
-xlabel('Time(s)')
-ylabel('Attitude (degrees)')
+xlabel('Time(s)','FontSize',20)
+ylabel('Attitude (degrees)','FontSize',20)
 yyaxis right
 plot(time,alt,'-')
-ylabel('Altitude(m)')
-legend('Yaw(deg)', 'Pitch(deg)', 'Roll(deg)', 'Altitude(m)')
+ylabel('Altitude(m)','FontSize',20)
+legend({'Yaw(deg)', 'Pitch(deg)', 'Roll(deg)', 'Altitude(m)'},'FontSize',20)
 grid minor
-title('Plot of AR.Drone Attitude and Altitude')
+title('Drone Attitude and Altitude Over a Short Flight','FontSize',20)
 hold off
 
 %% 3D Plot
