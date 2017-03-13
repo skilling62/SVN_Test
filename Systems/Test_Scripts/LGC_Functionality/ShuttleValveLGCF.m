@@ -1,13 +1,12 @@
-%% Landing gear Uplock shuttle valve LGCF script
+%% Landing Gear and Door Uplock Shuttle Valve LGCF Script
 % Test ID:
 % Test chart (I/O):
 % The inputs to the uplock shuttle valves:
-% Input 1: Normal hydraulic supply (down)
-% Input 2: Emergency hydraulic supply
-% Input 3: Shuttle Valve Error Injection
+% Input: Normal hydraulic supply (down)
+% Input: Emergency hydraulic supply
+% Input: Shuttle Valve Error Injection
 % To control the shuttle valve, the isolation and selector valves must be
 % manipulated, as well as the emergency valve
-  
 %%
 % Run tests in blocks of 15 seconds
 % Test 1: Emergency Supply with no errors
