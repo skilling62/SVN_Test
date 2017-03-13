@@ -38,8 +38,7 @@ function [up_down,   ...
 	du_err    = NoError;
 	dusv_err  = NoError;
 	ev_err    = NoError;
-    hyd_norm  = On;
-    hyd_emerg = On;
+
     
     %% Test Script to Run
     
