@@ -30,13 +30,13 @@ function [up_down,   ...
 	iv_err    = NoError;
 	sv_err    = NoError;
 	lga_err   = NoError;
-	lgasv_err = NoError;
+	lgasv_err = double(Errors.NoError);
 	lgu_err   = NoError;
-	lgusv_err = NoError;
+	lgusv_err = double(Errors.NoError);
 	da_err    = NoError;
-	dasv_err  = NoError;
+	dasv_err  = double(Errors.NoError);
 	du_err    = NoError;
-	dusv_err  = NoError;
+	dusv_err  = double(Errors.NoError);
 	ev_err    = NoError;
 
     
@@ -47,10 +47,10 @@ function [up_down,   ...
 %      EmergencyValveTesterF;
      
      % Shuttle Valves
-     LandinggearUplockShuttleValveTesterF;
-     LandinggearActuatorShuttleValveTesterF;
-     DoorUplockShuttleValveTesterF;
-     DoorActuatorShuttleValveTesterF;
+%      LandinggearUplockShuttleValveTesterF;
+%      LandinggearActuatorShuttleValveTesterF;
+%      DoorUplockShuttleValveTesterF;
+%      DoorActuatorShuttleValveTesterF;
      
      % Uplocks
 %      LandinggearUplockTesterF;
