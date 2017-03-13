@@ -1,60 +1,67 @@
-%% Landing gear up lock shuttle valve LGCF script
-
-% Inputs into the landing gear uplock shuttle valve come from the isolation valve, the emergencey
-% valve, the selector valve. 
-% The landing gear uplock shuttle valve has an
-% OR relationship so the tests bellow have the the normal supply (isolation
-% valve and selector valve) and the emergency supply (emergency valve) are either one is ON, 
-% both of them are On or both of them are Off.  
+%% Landing gear Uplock shuttle valve LGCF script
+% Test ID:
+% Test chart (I/O):
+% The inputs to the uplock shuttle valves:
+% Input 1: Normal hydraulic supply (down)
+% Input 2: Emergency hydraulic supply
+% Input 3: Shuttle Valve Error Injection
+% To control the shuttle valve, the isolation and selector valves must be
+% manipulated, as well as the emergency valve
+  
 %%
-
 % Run tests in blocks of 15 seconds
-
-% Normal supply - Off 
+% Test 1: Emergency Supply with no errors
 if time < 15
    iv_open = Off;
    sv_down = Off;
    sv_up = Off;
-   ev_open = Off;
-% Error normal and emergency supply  - Off 
+   ev_open = On;
+% Test 2: Emergency Supply - Jammed Centre
 elseif time >= 15 && time < 30
    iv_open = Off;
    sv_down = Off;
    sv_up = Off;
-   ev_open = Off;
-% Normal supply - On 
-elseif time >= 30 && time < 45
-  iv_open = On;
-   sv_down = On;
-   sv_up = Off;
-   ev_open = Off;
-% Emergency supply  - On
-elseif time >= 45 && time < 60
-   iv_open = Off;
-   sv_down = Off;
    ev_open = On;
-% Normal and Emergency supply - On
-elseif time >= 60 && time < 75
-   iv_open = On;
-   sv_down = On;
+% Test 3: Emergency Supply - Jammed Normal
+elseif time >= 30 && time < 45
+  iv_open = Off;
+   sv_down = Off;
    sv_up = Off;
-   ev_open = On;   
-% Error normal supply - On
-elseif time >= 75 && time < 90
+   ev_open = On;
+% Test 4: Normal Supply with no errors
+elseif time >= 45 && time < 60
    iv_open = On;
    sv_down = On;
    sv_up = Off;
    ev_open = Off;   
-% Error emergencey supply - On
+% Test 5: Normal Supply - Jammed Centre
+elseif time >= 60 && time < 75
+   iv_open = On;
+   sv_down = On;
+   sv_up = Off;
+   ev_open = Off;   
+% Test 6: Normal Supply - Jammed Normal
+elseif time >= 75 && time < 90
+   iv_open = On;
+   sv_down = On;
+   sv_up = Off;
+   ev_open = Off;
+% Test 7: Emergency and Normal with no errors
 elseif time >= 90 && time < 105
-   iv_open = Off;
-   sv_down = Off;
+   iv_open = On;
+   sv_down = On;
    sv_up = Off;
    ev_open = On;
-% Error emergencey and normal supply - On
+% Test 8: Emergency and Normal Jammed Centre
 elseif time >= 105 && time < 120
    iv_open = On;
    sv_down = On;
    sv_up = Off;
-   ev_open = On;   
+   ev_open = On;
+% Test 9: Emergency and Normal Jammed Normal
+elseif time >= 120 && time < 135
+   iv_open = On;
+   sv_down = On;
+   sv_up = Off;
+   ev_open = On;
 end 

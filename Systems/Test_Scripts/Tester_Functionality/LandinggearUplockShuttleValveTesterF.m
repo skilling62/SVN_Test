@@ -1,61 +1,41 @@
-%% Landing gear uplock shuttle valve tester script
-
-% Inputs into the landing gear uplock shuttle valve come from the isolation valve, the emergencey
-% valve, the selector valve.  
-% The landing gear uplock shuttle valve has an
-% OR relationship so the tests below have the the normal supply (isolation
-% valve and selector valve) and the emergency supply (emergency valve) are either one is ON, 
-% both of them are On or both of them are Off.  
-
+%% Landing gear Uplock shuttle valve Tester script
+% Test ID:
+% Test chart (I/O):
+% The inputs to the uplock shuttle valves:
+% Input 1: Normal hydraulic supply (down)
+% Input 2: Emergency hydraulic supply
+% Input 3: Shuttle Valve Error Injection
+% To control the shuttle valve, the isolation and selector valves must be
+% manipulated, as well as the emergency valve
 %%
 % Run tests in blocks of 15 seconds
 
-% Normal and emergency supply - Off 
+% Test 1: Emergency Supply with no errors
 if time < 15
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;
-% Error normal and emergency supply  - Off 
+   lgusv_err = double(Errors.NoError);
+% Test 2: Emergency Supply - Jammed Centre
 elseif time >= 15 && time < 30
-   lgusv_err = Error;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;
-% Normal supply - On 
+   lgusv_err = double(Errors.JammedCentre);
+% Test 3: Emergency Supply - Jammed Normal
 elseif time >= 30 && time < 45
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;
-% Emergency supply  - On
+   lgusv_err = double(Errors.JammedNormal);
+% Test 4: Normal Supply with no errors
 elseif time >= 45 && time < 60
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;
-% Normal and Emergency supply - On
+   lgusv_err = double(Errors.NoError);
+% Test 5: Normal Supply - Jammed Centre
 elseif time >= 60 && time < 75
-    lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;   
-% Error normal supply - On
+   lgusv_err = double(Errors.JammedCentre);  
+% Test 6: Normal Supply - Jammed Normal
 elseif time >= 75 && time < 90
-    lgusv_err = Error;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;   
-% Error emergency supply - On
+   lgusv_err = double(Errors.JammedNormal);
+% Test 7: Emergency and Normal with no errors
 elseif time >= 90 && time < 105
-    lgusv_err = Error;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;
-% Error emergency and normal supply - On
+   lgusv_err = double(Errors.NoError);
+% Test 8: Emergency and Normal Jammed Centre
 elseif time >= 105 && time < 120
-   lgusv_err = Error;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;  
+   lgusv_err = double(Errors.JammedCentre);
+% Test 9: Emergency and Normal Jammed Normal
+elseif time >= 120 && time < 135
+   lgusv_err = double(Errors.JammedNormal);
 end 
+
