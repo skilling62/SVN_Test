@@ -47,14 +47,11 @@ function [up_down,   ...
 %      EmergencyValveTesterF;
      
      % Shuttle Valves
-%      LandinggearUplockShuttleValveTesterF;
-%      LandinggearActuatorShuttleValveTesterF;
-%      DoorUplockShuttleValveTesterF;
-%      DoorActuatorShuttleValveTesterF;
-     
+%       ShuttleValveTesterF;
+
      % Uplocks
-%      LandinggearUplockTesterF;
-%      DoorUplockTesterF;   
+%       LandinggearUplockTesterF;
+%       DoorUplockTesterF;   
      
      % Actuators
 
