@@ -44,7 +44,6 @@ function [up_down,   ...
     
     % Error and Isolation Valves
 %      IsolationValveTesterF;
-%      EmergencyValveTesterF;
      
      % Shuttle Valves
 %       ShuttleValveTesterF;
