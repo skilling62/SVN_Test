@@ -2,6 +2,8 @@
 % A runtests function is called, which outputs the results of the user
 % specified test as a .csv 
 
+addpath Model_PostProcessing_Scripts
+
 % List of tests (to be assigned to the test name variable
 % Model Verification Tests
     % Results_IsolationValve_Emergency_Valve
