@@ -46,10 +46,10 @@ function [up_down,   ...
 %       IsolationValveEmergencyValveTesterF
 
     % Selector Valve
-        SelectorValveTesterF
+%         SelectorValveTesterF
      
      % Shuttle Valves
-%       ShuttleValveTesterF;
+      ShuttleValveTesterF;
 
      % Uplocks
 %       LGUplockDoorUplockTesterF 

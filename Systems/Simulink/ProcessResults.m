@@ -15,7 +15,7 @@ addpath Model_Post_Processing_Scripts
 %% System Verification
     
 %% Run test and export results to .csv 
-testname = 'Results_Selector_Valve';
+testname = 'Results_Shuttle_Valves';
 result = runtests(testname);
 rt = table(result);
 cd('../Test_Results')

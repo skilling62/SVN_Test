@@ -1,0 +1,10 @@
+Name,Passed,Failed,Incomplete,Duration,Details
+Results_Shuttle_Valves/Test1_EmergencySupplyWithNoErrors,1,0,0,0.00848783476647146,
+Results_Shuttle_Valves/Test2_EmergencySupply_JammedCentre,1,0,0,0.00473200236744475,
+Results_Shuttle_Valves/Test3_EmergencySupply_JammedNormal,1,0,0,0.00595967324129812,
+Results_Shuttle_Valves/Test4_NormalSupplyWithNoErrors,1,0,0,0.00423317085219991,
+Results_Shuttle_Valves/Test5_NormalSupply_JammedCentre,1,0,0,0.00395247787738369,
+Results_Shuttle_Valves/Test6_NormalSupply_JammedNormal,1,0,0,0.00397300856354167,
+Results_Shuttle_Valves/Test7_EmergencyAndNormalWithNoErrors,1,0,0,0.00400669172051962,
+Results_Shuttle_Valves/Test8_EmergencyAndNormalJammedCentre,1,0,0,0.0041568223630499,
+Results_Shuttle_Valves/Test9_EmergencyAndNormalJammedNormal,1,0,0,0.00396627193214608,

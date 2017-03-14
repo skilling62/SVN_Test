@@ -1,0 +1,5 @@
+Name,Passed,Failed,Incomplete,Duration,Details
+Results_Uplocks/Test1_Supply_Off_Error_Off_RegularOperationOff_,1,0,0,0.0100263530604356,
+Results_Uplocks/Test2_Supply_Off_Error_On_LockUnlocks_,1,0,0,0.00539251303618373,
+Results_Uplocks/Test3_Supply_On_Error_Off_RegularOperationOn_,1,0,0,0.00713826294355505,
+Results_Uplocks/Test4_Supply_On_Error_On_FailsToUnlock_MajorLeakage_,1,0,0,0.00677256009636591,

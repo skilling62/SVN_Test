@@ -26,10 +26,10 @@ function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos
 %        IsolationValveEmergencyValveLGCF
 
     % Selector Valve
-        SelectorValveLGCF
+%         SelectorValveLGCF
 
     % Shuttle Valves
-%     ShuttleValveLGCF;
+    ShuttleValveLGCF;
 
 %     Uplocks
 %       LGUplockDoorUplockLGCF
