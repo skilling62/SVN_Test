@@ -43,7 +43,10 @@ function [up_down,   ...
     %% Test Script to Run
     
     % Error and Isolation Valves
-%      IsolationValveEmergencyValveTesterF
+%       IsolationValveEmergencyValveTesterF
+
+    % Selector Valve
+        SelectorValveTesterF
      
      % Shuttle Valves
 %       ShuttleValveTesterF;

@@ -23,7 +23,10 @@ function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos
     %% Test script to run
     
     % Error and Isolation Valves
-%       IsolationValveEmergencyValveLGCF
+%        IsolationValveEmergencyValveLGCF
+
+    % Selector Valve
+        SelectorValveLGCF
 
     % Shuttle Valves
 %     ShuttleValveLGCF;
