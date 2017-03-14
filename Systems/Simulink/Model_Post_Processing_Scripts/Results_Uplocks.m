@@ -33,10 +33,10 @@ index = find(A == midpoint);
 
 assert(B(index) == 1);
 assert(D(index) == 1);
-%% Test 4: Supply = On, Error = On (Fails to Unlock)
+%% Test 4: Supply = On, Error = On (Fails to Unlock/Major Leakage)
 range = A(A>=45 & A<60);
 midpoint = range(length(range)/2);
 index = find(A == midpoint);
 
-assert(B(index) == 1);
-assert(D(index) == 1);
+assert(B(index) == 0);
+assert(D(index) == 0);

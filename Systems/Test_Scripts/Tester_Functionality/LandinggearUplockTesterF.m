@@ -1,38 +1,29 @@
-%% Landing gear uplock tester script
-
-% Inputs into the landing gear uplock come from the isolation valve, the emergencey
-% vlave, the selector valve and the landing gear uplock shuttle valve. 
-
+%% Landing Gear and Door Uplock Shuttle Valve LGCF Script
+% Test ID:
+% Test chart (I/O):
+% The inputs to the Landing Gear Uplock:
+% Input: Hydraulic Supply (normal or emergency)
+% Input: Uplock Error injection
+% To control the Uplock, the isolation and selector valves must be 
+% configured to control the hyrdraulic suppy. If no commands are sent to 
+% the shuttle valve, it will default to no error
 %%
 % Run tests in blocks of 15 seconds
 
-% Normal supply - Off 
+% Test 1: Supply = Off, Error = Off (Regular Operation Off) 
 if time < 15
    lgu_err = NoError;
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;
-% Error normal  supply  - Off 
+   du_err = NoError;
+% Test 2: Supply = Off, Error = On (Lock Unlocks) 
 elseif time >= 15 && time < 30
    lgu_err = Error;
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;
-% Normal supply - On 
+   du_err = Error;
+% Test 3: Supply = On, Error = Off (Regular Operation On)
 elseif time >= 30 && time < 45
    lgu_err = NoError;
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;
-
-% Error normal supply - On
+   du_err = NoError;
+% Test 4: Supply = On, Error = On (Fails to Unlock/Major Leakage)
 elseif time >= 45 && time < 60
    lgu_err = Error;
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;   
+   du_err = Error;
 end 
