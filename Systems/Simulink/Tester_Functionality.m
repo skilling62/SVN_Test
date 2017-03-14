@@ -43,14 +43,13 @@ function [up_down,   ...
     %% Test Script to Run
     
     % Error and Isolation Valves
-%      IsolationValveTesterF;
+%      IsolationValveEmergencyValveTesterF
      
      % Shuttle Valves
 %       ShuttleValveTesterF;
 
      % Uplocks
-%       LandinggearUplockTesterF;
-%       DoorUplockTesterF;   
+%       LGUplockDoorUplockTesterF 
      
      % Actuators
 

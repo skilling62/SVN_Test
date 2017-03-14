@@ -1,7 +1,6 @@
 % This function evaluates the simulation results acheived from running the 
 % following test scripts: 
-% DoorUplock (LGCF and Tester)
-% LandinggearUplock (LGCF and Tester)
+% LGUplockDoorUplock(LGCF and Tester)
 
 % preconditions (shared variables)
 A = evalin ('base','DUPos.time');
