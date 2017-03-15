@@ -7,77 +7,71 @@
 
 %%
 % Run tests in blocks of 15 seconds
-
-% Extened and retract Off Error Off 
+iv_err = NoError;
+sv_err = NoError; 
+% Actuator supply =Off
 if time < 15
-   lga_err = NoError;
-   lgasv_err = NoError;
-   lgu_err = NoError; 
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;  
-% extened and retract Off Error On
+lga_err  = NoError; 
+lgu_err  = NoError; 
+% Actuator supply =Off Error =ON
 elseif time >= 15 && time < 30
-   lga_err = Error;
-   lgasv_err = NoError;
-   lgu_err = NoError; 
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError; 
-%  Extened off Retract On Error Off 
+lga_err  = Error; 
+lgu_err  = NoError; 
+% Actuator Extend = On Error = Off (normal operation)
 elseif time >= 30 && time < 45
-   lga_err = NoError;
-   lgasv_err = NoError;
-   lgu_err = NoError; 
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError; 
-% Extened Off Retract On Error On
+lga_err  = NoError; 
+lgu_err  = NoError; 
+% Actuator Retract=On Error ON  (major leakage)
 elseif time >= 45 && time < 60
-   lga_err = Error;
-   lgasv_err = NoError;
-   lgu_err = NoError; 
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError; 
-% extened On Retract Off Error Off
+lga_err  = Error; 
+lgu_err  = NoError; 
+% Actuator Retract = ON Error =On (up lock failiure & actuator major leakge )
 elseif time >= 60 && time < 75
-   lga_err = NoError;
-   lgasv_err = NoError;
-   lgu_err = NoError; 
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError; 
-% Extened On Retract Off Error On
-elseif time >= 75 && time < 90
-   lga_err = Error;
-   lgasv_err = NoError;
-   lgu_err = NoError; 
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError;   
-% Extend On  Retract On Error Off
-elseif time >= 90 && time < 105
-   lga_err = NoError;
-   lgasv_err = NoError;
-   lgu_err = NoError; 
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError; 
-% Extened On Retract On Error On 
-elseif time >= 105 && time < 120
-   lga_err = Error;
-   lgasv_err = NoError;
-   lgu_err = NoError; 
-   lgusv_err = NoError;
-   sv_err = NoError;
-   ev_err = NoError;
-   iv_err = NoError; 
+lga_err  = Error; 
+lgu_err  = Error; 
+% Actuator Retract=On Error Off 
+elseif time >= 75 && time < 175
+lga_err  = NoError; 
+lgu_err  = NoError; 
+% Actuator Extend = On error =Off (uplock fault)
+elseif time >= 175 && time < 190
+lga_err  = NoError; 
+lgu_err  = Error; 
+% Actuator supply =Off Error =On (uplock failiure & Actuator jammed)
+elseif time >= 190 && time < 205
+lga_err  = Error; 
+lgu_err  = Error; 
+% Actuator Extend = On error =ON (uplock error and jamed actuator )
+elseif time >= 205 && time < 220
+lga_err  = Error; 
+lgu_err  = Error; 
+% Actuator Extend and Retract = On Error =Off (conflicted)
+elseif time >= 220 && time < 235
+lga_err  = NoError; 
+lgu_err  = NoError; 
+% Actuator Extend and Retract = On Error =On (conflicted)
+elseif time >= 235 && time < 250
+lga_err  = Error; 
+lgu_err  = NoError;     
+
+ % Actuator Extend =On Error =On (Actuator jammed) 
+elseif time >= 250 && time < 265
+lga_err  = Error; 
+lgu_err  = NoError; 
+ % Actuator Retract =On Error = Off (uplock error) 
+elseif time >= 265 && time < 280
+lga_err  = NoError; 
+lgu_err  = Error; 
+ % Actuator Supply = Off Error = Off (uplock error)
+elseif time >= 280 && time < 295
+lga_err  = NoError; 
+lgu_err  = Error; 
+  % Actuator Extend and Retract = On Error =Off (conflicted) 
+elseif time >= 295 && time < 310
+ lga_err  = NoError; 
+lgu_err  = Error; 
+ % Actuator Extend and Retract = On Error =ON (conflicted)
+elseif time >= 310 && time < 325
+lga_err  = Error; 
+lgu_err  = Error; 
 end 

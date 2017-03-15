@@ -49,12 +49,12 @@ function [up_down,   ...
 %         SelectorValveTesterF
      
      % Shuttle Valves
-      ShuttleValveTesterF;
+      %ShuttleValveTesterF;
 
      % Uplocks
 %       LGUplockDoorUplockTesterF 
      
      % Actuators
-
-
+LandingGearActuatorTesterF
+DoorActuatorTesterF
 end
