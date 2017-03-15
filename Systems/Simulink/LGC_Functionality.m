@@ -35,7 +35,30 @@ function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos
 %       LGUplockDoorUplockLGCF
     
     % Actuators
-    LandingGearActuatorLGCF
-    DoorActuatorLGCF
+   % LandingGearActuatorLGCF
+    %DoorActuatorLGCF
     
+    %% System testing
+%     Test1LGCF
+ %   Test2LGCF
+%    Test3LGCF
+%     Test4LGCF
+%     Test5LGCF
+%     Test6LGCF
+%     Test7LGCF
+%     Test8LGCF
+%     Test9LGCF
+%     Test10LGCF
+%     Test11LGCF
+%     Test12LGCF
+%     Test13LGCF
+%     Test14LGCF
+%     Test15LGCF
+%     Test16LGCF
+%     Test17LGCF
+%     Test18LGCF
+%     Test19LGCF
+%     Test20LGCF
+%     Test21LGCF
+     Test22LGCF
 end
