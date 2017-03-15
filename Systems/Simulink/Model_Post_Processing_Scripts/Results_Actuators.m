@@ -43,10 +43,10 @@ assert(B(index) == 100);
 assert(D(index) == 100);
 %% Test 6: Actuator Retract=On Error Off 
 range = A(A>=75 & A<175);
-f = range(length(range));
+f = range(length(range))+0.1;
 index = find(A == f);
-assert(B(index) == 100);
-assert(D(index) == 100);
+assert(B(index + 10) == 0);
+assert(D(index + 10) == 0);
 %% Test 7: Actuator Extend = On error =Off (uplock fault)
 range = A(A>=175 & A<190);
 midpoint = range(length(range)/2);

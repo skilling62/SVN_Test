@@ -11,11 +11,12 @@ addpath Model_Post_Processing_Scripts
 %     Results_Selector_Valve
 %     Results_Uplocks
 %     Results_Shuttle_Valves
+%     Results_Actuators
     
 %% System Verification
     
 %% Run test and export results to .csv 
-testname = 'Results_Shuttle_Valves';
+testname = 'Results_Actuators';
 result = runtests(testname);
 rt = table(result);
 cd('../Test_Results')
