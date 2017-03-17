@@ -6,7 +6,7 @@ end
 function setup(block)
 
     % Register number of ports
-    block.NumInputPorts  = 5;
+    block.NumInputPorts  = 6;
     block.NumOutputPorts = 4;
 
     % Setup port properties to be inherited or dynamic
@@ -48,7 +48,8 @@ function Outputs(block)
                          block.InputPort(2).Data, ...
                          block.InputPort(3).Data, ...
                          block.InputPort(4).Data, ...
-                         block.InputPort(5).Data);
+                         block.InputPort(5).Data, ...
+                         block.InputPort(6).Data);
 
 end
 

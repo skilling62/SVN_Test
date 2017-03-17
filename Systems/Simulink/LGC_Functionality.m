@@ -1,7 +1,7 @@
 % This function is called from the S_Fun block. Therefore it is sampled
 % throughout the simulation of the model
 
-function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos,door_pos,hydraulic_press)
+function [iv_open,sv_down,sv_up,ev_open] = LGC_Functionality(time,up_down,lg_pos,door_pos,hydraulic_press, sv_fail)
 
     % Get definitions of shared constants
     run('SetConstants');
