@@ -39,10 +39,10 @@ addpath Model_Post_Processing_Scripts
 
 
 %% Run test and export results to .csv 
-testname = 'Results_test22';
-result = runtests(testname);
-rt = table(result);
-cd('../Test_Results')
-testname(length(testname)+1:length(testname)+20) = StampTime;
-testname(length(testname)+1:length(testname)+4) = '.csv';
-writetable(rt,testname);
+% testname = 'Results_test22';
+% result = runtests(testname);
+% rt = table(result);
+% cd('../Test_Results')
+% testname(length(testname)+1:length(testname)+20) = StampTime;
+% testname(length(testname)+1:length(testname)+4) = '.csv';
+% writetable(rt,testname);
