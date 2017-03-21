@@ -56,16 +56,30 @@ showMatchedFeatures(greyFrame1, greyFrame2, inlierpoints1, inlierpoints2,...
 title('RANSAC Filtered Matches','fontsize',20);
 
 %% Estimate the essential matrix from corresponding points in a pair of images
+% For the essential matrix, both non zero singular values are identical
+% The essential matrix is of rank 2
+% The essential matrix is homogeneus and |E| = 0
 [E,inliersIndex] = estimateEssentialMatrix(inlierpoints1,inlierpoints2,cameraParams);
 computedInliers = length(inliersIndex(inliersIndex==1));
 
 %% Corresponding Points Test
-xPixPrime = inlierpoints1(1).Location';
+% Normalize the points (between -1 and 1)
+xPixPrime = inlierpoints1(5).Location';
 xPixPrime(3) = 1;
-xPixPPrime = inlierpoints2(1).Location';
+xPixPPrime = inlierpoints2(5).Location';
 xPixPPrime(3) = 1;
 c = cameraParams.IntrinsicMatrix;
 
+% Calculate the direction in the camera frame of two corresponding points
 direction1 = (inv(c))*xPixPrime;
 direction2 = (inv(c))*xPixPPrime;
-% Calculate the direction in the camera frame of two corresponding points
+quiver3(0,0,0,direction1(1), direction1(2), direction1(3))
+hold on
+quiver3(0,0,0,direction2(1), direction2(2), direction2(3))
+hold off
+% direction1' * (E * xPixPPrime)
+(direction2' * E) * direction1
+
+%% Tester from "SFM From Multiple Views" - the Mathworks
+[relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
+        inlierpoints1, inlierpoints2, cameraParams)
