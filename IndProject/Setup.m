@@ -5,13 +5,14 @@ clc
 %% Read the desired video file and output the struct to the workspace
 % Create a VideoReader object to read the input video file
 addpath .\Computer_Vision
-videoFile = 'video_00005.mp4';
+videoFile = 'down_03_18.mp4';
 vidObj = VideoReader(videoFile);
 
-% Determine the width and height of the frames (1280p by 720p)
+% Determine the width and height of the frames (640p by 360p)
 vidWidth = vidObj.Width;
 vidHeight = vidObj.Height;
 vidDuration = vidObj.Duration;
+vidFrameRate = vidObj.FrameRate;
 
 % Create a MATLAB® movie structure array, s
 % s = struct(field,value). If value is a cell array, s is a structure
