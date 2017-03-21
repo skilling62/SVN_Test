@@ -59,4 +59,13 @@ title('RANSAC Filtered Matches','fontsize',20);
 [E,inliersIndex] = estimateEssentialMatrix(inlierpoints1,inlierpoints2,cameraParams);
 computedInliers = length(inliersIndex(inliersIndex==1));
 
+%% Corresponding Points Test
+xPixPrime = inlierpoints1(1).Location';
+xPixPrime(3) = 1;
+xPixPPrime = inlierpoints2(1).Location';
+xPixPPrime(3) = 1;
+c = cameraParams.IntrinsicMatrix;
 
+direction1 = (inv(c))*xPixPrime;
+direction2 = (inv(c))*xPixPPrime;
+% Calculate the direction in the camera frame of two corresponding points

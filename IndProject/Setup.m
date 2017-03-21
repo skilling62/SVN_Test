@@ -30,12 +30,12 @@ while hasFrame(vidObj)
     k = k+1;
 end
 
-% Get information about the movie structure array s. size of s indicates
-% number of frames
-whos s
-
-% Load Camera Parameters
+% Load Camera Parameters and transpose intrinsic matrix
 load ('cameraParams.mat')
+cameraStruct = toStruct(cameraParams);
+cameraStruct.IntrinsicMatrix = cameraStruct.IntrinsicMatrix';
+cameraStruct.IntrinsicMatrix = [686.994766, 0, 329.323208; 0, 688.195055, 159.323007; 0, 0, 1];
+cameraParams = cameraParameters(cameraStruct);
 
 %% Read the Odometry data
 % Import Data
