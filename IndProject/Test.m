@@ -1,8 +1,8 @@
 clc
 %% Initialise visual odometry by extracting features in the first frame
 % Need to review when the first frame should be taken
-prevPoints = detectSURFFeatures(s(150).cdata);
-prevFeatures = extractFeatures(s(150).cdata,prevPoints);
+prevPoints = detectSURFFeatures(s(1).cdata);
+prevFeatures = extractFeatures(s(1).cdata,prevPoints);
 
 % Initialise a viewset object
 vSet = viewSet;
@@ -14,11 +14,11 @@ vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
 
 %% Display Features
 figure;
-imshow(s(150).cdata); hold on; plot(prevPoints,'showOrientation',true);
+imshow(s(1).cdata); hold on; plot(prevPoints,'showOrientation',true);
 title('Detected Features','fontsize',20);
 
 %%
-for i = 151
+for i = 2:k
     currPoints = detectSURFFeatures(s(i).cdata);
     currFeatures = extractFeatures(s(i).cdata,currPoints);
     indexPairs = matchFeatures(prevFeatures,currFeatures);
@@ -26,18 +26,18 @@ for i = 151
     matchedPoints2 = currPoints(indexPairs(:,2),:);
     
     %% Display Matched Features
-    figure;
-    showMatchedFeatures(s(i-1).cdata,s(i).cdata,matchedPoints1,matchedPoints2,'montage');
-    title('Initial Feature Matching Between Frames','fontsize',20);
+%     figure;
+%     showMatchedFeatures(s(i-1).cdata,s(i).cdata,matchedPoints1,matchedPoints2,'montage');
+%     title('Initial Feature Matching Between Frames','fontsize',20);
     
     %% Filter Out Outliers using RANSAC (Random Sample Consensus)
     % Estimate the geometric transform between the frames
     [tform, inlierPoints1, inlierPoints2] = estimateGeometricTransform...
     (matchedPoints1, matchedPoints2, 'affine');
-    figure;
-    showMatchedFeatures(s(i-1).cdata, s(i).cdata, inlierPoints1, inlierPoints2,...
-    'montage');
-    title('RANSAC Filtered Matches','fontsize',20);
+%     figure;
+%     showMatchedFeatures(s(i-1).cdata, s(i).cdata, inlierPoints1, inlierPoints2,...
+%     'montage');
+%     title('RANSAC Filtered Matches','fontsize',20);
     %% Select 5 Inliers
     iteration = floor((size(inlierPoints1,1))/5);
     spacing = 1:iteration:iteration*5;
@@ -50,14 +50,18 @@ for i = 151
     inlierpoints2 = inlierPoints2(1:5);
     
     %% Plot 5 Inliers
-    showMatchedFeatures(s(i-1).cdata, s(i).cdata, inlierpoints1, inlierpoints2,...
-    'montage');
-    title('5 RANSAC Filtered Matches','fontsize',20);
-    
+%     showMatchedFeatures(s(i-1).cdata, s(i).cdata, inlierpoints1, inlierpoints2,...
+%     'montage');
+%     title('5 RANSAC Filtered Matches','fontsize',20);
+%     
     %% Calculate the Essential Matrix
     % Use this to determine the relative orientation of the two images
-    [relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
+    try
+        [relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
         matchedPoints1, matchedPoints2, cameraParams);
+    catch
+        'Unable to compute the Essential matrix';
+    end
     
     %% Populate the viewset object
     % Add current view to the view set

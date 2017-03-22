@@ -3,36 +3,27 @@ function poseEstimate( M )
 % Function to plot the AR.Drone 2.0 x,y,z position in inertial frame using 
 % Body velocity measurements
 clc
-%% Declare Variables
 
+%% Declare Variables
 % Time (seconds)    Use stopwatch elapsed time or timestamp?
 time = (M(:,1))/1000;
-
 % Yaw Angle (Radians)
 psi = M(:,4);
-
 % Pitch Angle (Radians)
 theta = M(:,3);
-
 % Roll Angle (Radians)
 phi = M(:,2);
-
 eul = [psi theta phi];
-
 % Body Frame Velocities (m/s)
 u = M(:,5);
 v = M(:,6);
 w = M(:,7);
-
 % Altitude (m)
 alt = M(:,11);
-
 % Write velocities to a vector with three rows
 velb = [u v w]';
-
 % Position in inertial frame
 pos = zeros(size(eul));
-
 % Velocity in inertial frame (vector with three rows)
 velin = zeros(size(eul))';
 
@@ -50,7 +41,6 @@ for t = 1:length(time)
 end
 
 %% Position Calculation
-
 % Transpose to a vector of 3 columns for ease of calculation and formatting
 velin = (velin)';
 tolerance = 0.005;
@@ -67,7 +57,7 @@ while t <=length(time)
 end
 
 %% Testing Section
-i = 2:40;
+i = 2:200;
 deltaT = zeros(length(i),1);
 
 for k = i
