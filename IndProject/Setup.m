@@ -57,5 +57,5 @@ end
 load ('cameraParams.mat')
 cameraStruct = toStruct(cameraParams);
 %cameraStruct.IntrinsicMatrix = cameraStruct.IntrinsicMatrix';
-%cameraStruct.IntrinsicMatrix = [686.994766, 0, 329.323208; 0, 688.195055, 159.323007; 0, 0, 1];
+cameraStruct.IntrinsicMatrix = [686.994766, 0, 329.323208; 0, 688.195055, 159.323007; 0, 0, 1]';
 cameraParams = cameraParameters(cameraStruct);

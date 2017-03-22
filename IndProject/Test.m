@@ -21,7 +21,7 @@ imshow(s(1).cdata); hold on; plot(prevPoints,'showOrientation',true);
 title('Detected Features','fontsize',20);
 
 %%
-for i = 2:12
+for i = 2:20
     currPoints = detectSURFFeatures(s(i).cdata);
     currFeatures = extractFeatures(s(i).cdata,currPoints);
     indexPairs = matchFeatures(prevFeatures,currFeatures);
@@ -61,7 +61,7 @@ for i = 2:12
     % Use this to determine the relative orientation of the two images
 
         [relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
-        matchedPoints1, matchedPoints2, cameraParams);
+        inlierpoints1, inlierpoints2, cameraParams);
     
     %% Populate the viewset object
     % Add current view to the view set
