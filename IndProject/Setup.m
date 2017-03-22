@@ -40,7 +40,8 @@ vidFrameRate = vidObj.FrameRate;
 % s = struct(field,value). If value is a cell array, s is a structure
 % array with the same dimensions as value. Fields: cdata, colormap,
 % timeStamp
-s = struct('cdata',zeros(vidHeight,vidWidth,3,'uint8'),'timeStamp',[]);
+s = struct('cdata',zeros(vidHeight,vidWidth,3,'uint8'),'timeStamp',[],...
+    'colormap',[]);
 
 % hasFrame returns a logical 1(true) if there is a video frame available to
 % read from the file

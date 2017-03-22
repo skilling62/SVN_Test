@@ -1,4 +1,5 @@
 clc
+
 %% Initialise visual odometry by extracting features in the first frame
 % Need to review when the first frame should be taken
 prevPoints = detectSURFFeatures(s(1).cdata);
@@ -8,8 +9,10 @@ prevFeatures = extractFeatures(s(1).cdata,prevPoints);
 vSet = viewSet;
 viewId = 1;
 
+% Original View
+view0 = [1 0 0;0 0 -1;0 1 0];
 vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
-    eye(3, 'like', prevPoints.Location), 'Location', ...
+    eye(3,'like',prevPoints.Orientation), 'Location', ...
     zeros(1, 3, 'like', prevPoints.Location));
 
 %% Display Features
@@ -18,7 +21,7 @@ imshow(s(1).cdata); hold on; plot(prevPoints,'showOrientation',true);
 title('Detected Features','fontsize',20);
 
 %%
-for i = 2:k
+for i = 2:12
     currPoints = detectSURFFeatures(s(i).cdata);
     currFeatures = extractFeatures(s(i).cdata,currPoints);
     indexPairs = matchFeatures(prevFeatures,currFeatures);
@@ -56,12 +59,9 @@ for i = 2:k
 %     
     %% Calculate the Essential Matrix
     % Use this to determine the relative orientation of the two images
-    try
+
         [relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
         matchedPoints1, matchedPoints2, cameraParams);
-    catch
-        'Unable to compute the Essential matrix';
-    end
     
     %% Populate the viewset object
     % Add current view to the view set
@@ -108,7 +108,7 @@ end
 % Display camera poses.
 camPoses = poses(vSet);
 figure;
-plotCamera(camPoses, 'Size', 0.2);
+plotCamera(camPoses, 'Size', 0.2, 'Opacity', 0);
 hold on
 
 % Exclude noisy 3-D points.
@@ -119,13 +119,18 @@ xyzPoints = xyzPoints(goodIdx, :);
 pcshow(xyzPoints, 'VerticalAxis', 'y', 'VerticalAxisDir', 'down', ...
     'MarkerSize', 45);
 grid on
-hold off
 
 % Specify the viewing volume.
 loc1 = camPoses.Location{1};
-xlim([loc1(1)-5, loc1(1)+4]);
-ylim([loc1(2)-5, loc1(2)+4]);
-zlim([loc1(3)-1, loc1(3)+20]);
-camorbit(0, -30);
+xlim([loc1(1)-10, loc1(1)+10]);
+ylim([loc1(2)-10, loc1(2)+10]);
+zlim([loc1(3)-10, loc1(3)+10]);
 
+% Set up the axis convention
+set(gca,'YDir','reverse','ZDir','reverse')
+view(-60,30)
+xlabel('X')
+ylabel('Y')
+zlabel('Z')
 title('Refined Camera Poses');
+
