@@ -36,13 +36,18 @@ addpath Model_Post_Processing_Scripts
 %    Results_test20
 %    Results_test21
 %    Results_test22
-
+%%
+%Improved system test 
+%Results_test8_Improved_system
+%Results_test9_Improved_system
+%Results_test17_Improved_system
+%Results_test22_Improved_system
 
 %% Run test and export results to .csv 
-% testname = 'Results_test22';
-% result = runtests(testname);
-% rt = table(result);
-% cd('../Test_Results')
-% testname(length(testname)+1:length(testname)+20) = StampTime;
-% testname(length(testname)+1:length(testname)+4) = '.csv';
-% writetable(rt,testname);
+testname = 'Results_test22_Improved_system';
+result = runtests(testname);
+rt = table(result);
+cd('../Test_Results')
+testname(length(testname)+1:length(testname)+20) = StampTime;
+testname(length(testname)+1:length(testname)+4) = '.csv';
+writetable(rt,testname);

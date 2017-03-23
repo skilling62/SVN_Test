@@ -10,8 +10,7 @@ function [up_down,   ...
           dasv_err,  ...
           du_err,    ...
           dusv_err,  ...
-          ev_err,    ...
-          gravity_ext] = Tester_Functionality(time,lg_pos,door_pos)
+          ev_err ] = Tester_Functionality(time,lg_pos,door_pos)
       
     % Get definitions of shared constants
     run('SetConstants');
@@ -37,7 +36,7 @@ function [up_down,   ...
 	du_err    = NoError;
 	dusv_err  = double(Errors.NoError);
 	ev_err    = NoError;
-    gravity_ext = Off;
+%     gravity_ext = Off;
 
     
     %% Test Script to Run
@@ -80,5 +79,11 @@ function [up_down,   ...
 % Test19TesterF
 % Test20TesterF
 % Test21TesterF
- Test22TesterF
+% Test22TesterF
+%%
+%improved system testing 
+%Test8_Improved_system_TesterF
+%Test9_Improved_system_TesterF
+%Test17_Improved_system_TesterF
+Test22_Improved_system_TesterF
 end
