@@ -4,8 +4,8 @@ clc
 
 %% Read the Odometry data
 % Import Data
-addpath  .\Odometry_CSVs;
-M = csvread('12_58_15.csv', 1);
+addpath(genpath('Odometry_CSVs'));
+M = csvread('15_4_35.csv', 1);
 
 % Adjust array so that there is only one instance of t = 0 (initial
 % conditions). Arbitrary variable rem
@@ -21,13 +21,14 @@ end
 M = M(index:size(M,1),:);
 
 %% Read from video file only once established in the hover
-k = find(M(:,11)>=0.7,1);
+k = find(M(:,11)>=0.68,1);
 t0Vid = (M(k,1))/1000;
+t0Vid = 8.3;
 
 %% Read the desired video file and output the struct to the workspace
 % Create a VideoReader object to read the input video file
 addpath .\Computer_Vision
-videoFile = 'down_03_18.mp4';
+videoFile = 'flight_03_25.avi';
 vidObj = VideoReader(videoFile, 'CurrentTime', t0Vid);
 
 % Determine the width and height of the frames (640p by 360p)
