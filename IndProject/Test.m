@@ -1,3 +1,12 @@
+%% Load random Poses from mathworks tutorial
+load(fullfile(toolboxdir('vision'), 'visiondata', ...
+    'visualOdometryGroundTruth.mat'));
+for z = 1:150
+    groundTruthPoses.Location{z} = [0 0 0];
+    groundTruthPoses.Orientation{z} = eye(3);
+end
+    
+
 %% Initialise visual odometry by extracting features in the first frame
 % Need to review when the first frame should be taken
 prevPoints = detectSURFFeatures(s(1).cdata);
@@ -16,8 +25,7 @@ R = Rx*Ry*Rz;
 
 % Original View - Camera Faces the down the positive z axis
 vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
-    eye(3,'like',prevPoints.Orientation)*R, 'Location', ...
-    zeros(1, 3, 'like', prevPoints.Location));
+    eye(3), 'Location', zeros(1,3));
 
 %% Plot the Initial Camera Pose
 % Setup the axes
@@ -31,20 +39,19 @@ zlabel('Z')
 grid on
 hold on
 
-% Plot Initial Camera Pose (Observation)
+% Plot Initial Camera Poses
 camObs = plotCamera('Location', vSet.Views.Location{1}, 'Orientation',...
     vSet.Views.Orientation{1},...
     'Color', 'g', 'Opacity', 0);
 
-camNav = plotCamera('Location',zeros(1,3),'Orientation',eye(3), 'Color',...
-    'b', 'Opacity', 0);
-
-% Plot the Initial Camera Pose (Onboard Sensing)
+camNav = plotCamera('Location', groundTruthPoses.Location{1}, 'Orientation', ...
+    groundTruthPoses.Orientation{1}, 'Color', 'b', 'Opacity', 0);
 
 % Initialise Camera Trajectories
 trajectoryObs = plot3(0,0,0, 'g-');
+trajectoryNav = plot3(0,0,0,'b-');
 
-legend('Observed Trajectory')
+legend('Observed Trajectory','Navdata Trajectory')
 
 %% Display Features
 figure;
@@ -83,6 +90,7 @@ inlierpoints1 = inlierPoints1(1:5);
 inlierpoints2 = inlierPoints2(1:5);
 
 %% Plot 5 Inliers
+figure;
 showMatchedFeatures(s(i-1).cdata, s(i).cdata, inlierpoints1, inlierpoints2,...
 'montage');
 title('5 RANSAC Filtered Matches','fontsize',20);
@@ -100,81 +108,97 @@ vSet = addView(vSet, i, 'Points', currPoints, 'Orientation', relativeOrient, ...
 vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs);
 
 %% Update camera trajectory plot
+camNav.Location = groundTruthPoses.Location{i};
+camNav.Orientation = groundTruthPoses.Orientation{i};
+camObs.Location = vSet.Views.Location{i};
+camObs.Orientation = vSet.Views.Orientation{i};
 
+helperUpdateCameraTrajectories(i,trajectoryObs, trajectoryNav, poses(vSet),...
+    groundTruthPoses);
 
+prevFeatures = currFeatures;
+prevPoints   = currPoints;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%
-for i = 2:10
+%% Bootstrap Estimating Camera Trajectory Using Global Bundle Adjustment
+for i = 3:15
+    
+%     [currPoints, currFeatures, indexPairs] = helperDetectAndMatchFeatures(...
+%         prevFeatures, s(i).cdata);
+    
+    % Match features between the previous and the current image.
     currPoints = detectSURFFeatures(s(i).cdata);
+    currPoints   = selectUniform(currPoints, 50, size(s(i).cdata));
     currFeatures = extractFeatures(s(i).cdata,currPoints);
-    indexPairs = matchFeatures(prevFeatures,currFeatures);
-    matchedPoints1 = prevPoints(indexPairs(:,1),:);
-    matchedPoints2 = currPoints(indexPairs(:,2),:);
+    indexPairs = matchFeatures(prevFeatures,currFeatures,'Unique',true);
     
+    % Eliminate outliers from feature matches.
+    inlierIdx = helperFindEpipolarInliers(prevPoints(indexPairs(:,1)),...
+        currPoints(indexPairs(:, 2)), cameraParams);
+    
+    %%
+    indexPairs = indexPairs(inlierIdx, :);
+    
+    %% Triangulate points from the previous two views, and find the
+    % corresponding points in the current view.
+    [worldPoints, imagePoints] = helperFind3Dto2DCorrespondences(vSet,...
+        cameraParams, indexPairs, currPoints);
+    
+    warningstate = warning('off','vision:ransac:maxTrialsReached');
+    
+    %% Estimate the world camera pose for the current view.
+    % 99.9 and 0.8
+    [orient, loc] = estimateWorldCameraPose(imagePoints, worldPoints, ...
+        cameraParams, 'Confidence', 99.9, 'MaxReprojectionError', 0.8);
+    
+    % Restore the original warning state
+    warning(warningstate)
+    
+    %% Add current view to the view set
+    vSet = addView(vSet,i, 'Points', currPoints, 'Orientation', ...
+        orient, 'Location', loc);
+    
+    % Store the point matches between the previous and the current views.
+    vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs);
+    
+    tracks = findTracks(vSet);
+    
+    camPoses = poses(vSet);
+    
+    % Triangulate initial locations for the 3-D world points.
+    xyzPoints = triangulateMultiview(tracks, camPoses, cameraParams);
+    
+    % Refine camera poses using bundle adjustment.
+    [~, camPoses] = bundleAdjustment(xyzPoints, tracks, camPoses, ...
+        cameraParams, 'PointsUndistorted', true, 'AbsoluteTolerance', 1e-9,...
+        'RelativeTolerance', 1e-9, 'MaxIterations', 300);
+    
+    % Update the view set
+    vSet = updateView(vSet, camPoses);
+    
+    % Update camera trajectory plot
+    camNav.Location = groundTruthPoses.Location{i};
+    camNav.Orientation = groundTruthPoses.Orientation{i};
+    camObs.Location = vSet.Views.Location{i};
+    camObs.Orientation = vSet.Views.Orientation{i};
+    
+    helperUpdateCameraTrajectories(i,trajectoryObs, trajectoryNav, poses(vSet),...
+    groundTruthPoses);
 
+    prevFeatures = currFeatures;
+    prevPoints = currPoints;
     
-    %% Filter Out Outliers using RANSAC (Random Sample Consensus)
-    % Estimate the geometric transform between the frames
-    [tform, inlierPoints1, inlierPoints2] = estimateGeometricTransform...
-    (matchedPoints1, matchedPoints2, 'affine');
-%     figure;
-%     showMatchedFeatures(s(i-1).cdata, s(i).cdata, inlierPoints1, inlierPoints2,...
-%     'montage');
-%     title('RANSAC Filtered Matches','fontsize',20);
-
-    %% Select 5 Inliers
-    iteration = floor((size(inlierPoints1,1))/5);
-    spacing = 1:iteration:iteration*5;
-
-    for j = 1:length(spacing)
-        inlierPoints1(j) = inlierPoints1(spacing(j));
-        inlierPoints2(j) = inlierPoints2(spacing(j));
-    end
-    inlierpoints1 = inlierPoints1(1:5);
-    inlierpoints2 = inlierPoints2(1:5);
+end
     
-
-    %% Calculate the Essential Matrix
-    % Use this to determine the relative orientation of the two images
-
-        [relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
-        inlierpoints1, inlierpoints2, cameraParams);
     
-    %% Populate the viewset object
-    % Add current view to the view set
-    vSet = addView(vSet,i, 'Points', currPoints);
+ %%
     
-    % Store the point matches between the previous and the current view
-    % (review this line)
-    vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs(inlierIdx,:));
     
-    % Get the table containing the previous camera pose (link to odometry)
-    prevPose = poses(vSet, i-1);
-    prevOrientation = prevPose.Orientation{1};
-    prevLocation    = prevPose.Location{1};
     
-    % Compute the current camera pose in the global coordinate system
-    % relative to the first view.
-    orientation = relativeOrient * prevOrientation;
-    location    = prevLocation + relativeLoc * prevOrientation;
-    vSet = updateView(vSet, i, 'Orientation', orientation, ...
-        'Location', location);
+    
+    
+    
+    
+    
     
     % Find point tracks across all views.
     tracks = findTracks(vSet);
@@ -182,7 +206,7 @@ for i = 2:10
     % Get the table containing camera poses for all views.
     camPoses = poses(vSet);
     
-     % Triangulate initial locations for the 3-D world points.
+    % Triangulate initial locations for the 3-D world points.
     xyzPoints = triangulateMultiview(tracks, camPoses, cameraParams);
 
     % Refine the 3-D world points and camera poses.
@@ -195,7 +219,6 @@ for i = 2:10
 
     prevFeatures = currFeatures;
     prevPoints   = currPoints;
-end
 
 %%
 % Display camera poses.

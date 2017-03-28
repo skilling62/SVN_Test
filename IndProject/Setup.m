@@ -25,6 +25,14 @@ k = find(M(:,11)>=0.68,1);
 t0Vid = (M(k,1))/1000;
 t0Vid = 8.3;
 
+%% Load Camera Parameters and transpose intrinsic matrix
+load ('cameraParams.mat')
+cameraStruct = toStruct(cameraParams);
+%cameraStruct.IntrinsicMatrix = cameraStruct.IntrinsicMatrix';
+%cameraStruct.IntrinsicMatrix = [686.994766, 0, 329.323208; 0, 688.195055, 159.323007; 0, 0, 1]';
+cameraStruct.IntrinsicMatrix = [561.999146, 0, 307.433982; 0, 561.782697, 190.144373; 0, 0, 1]';
+cameraParams = cameraParameters(cameraStruct);
+
 %% Read the desired video file and output the struct to the workspace
 % Create a VideoReader object to read the input video file
 addpath .\Computer_Vision
@@ -48,15 +56,8 @@ s = struct('cdata',zeros(vidHeight,vidWidth,3,'uint8'),'timeStamp',[],...
 % read from the file
 k = 1;
 while hasFrame(vidObj)
-    % Each frame is (720x1280x3 uint8)
-    s(k).cdata = rgb2gray(readFrame(vidObj));
-    s(k).timestamp = vidObj.CurrentTime;
-    k = k+1;
+        frame = rgb2gray(readFrame(vidObj));
+        s(k).cdata = undistortImage(frame, cameraParams);
+        s(k).timestamp = vidObj.CurrentTime;
+        k = k+1;
 end
-
-% Load Camera Parameters and transpose intrinsic matrix
-load ('cameraParams.mat')
-cameraStruct = toStruct(cameraParams);
-%cameraStruct.IntrinsicMatrix = cameraStruct.IntrinsicMatrix';
-cameraStruct.IntrinsicMatrix = [686.994766, 0, 329.323208; 0, 688.195055, 159.323007; 0, 0, 1]';
-cameraParams = cameraParameters(cameraStruct);
