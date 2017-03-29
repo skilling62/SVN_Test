@@ -2,7 +2,9 @@ close all
 clearvars;
 clc
 
-%% Read the Odometry data
+%% ------------------------------------------------------------------------
+% Read Odometry Data
+%  ------------------------------------------------------------------------
 % Import Data
 addpath(genpath('Odometry_CSVs'));
 M = csvread('15_4_35.csv', 1);
@@ -20,12 +22,7 @@ end
 
 M = M(index:size(M,1),:);
 
-%% Read from video file only once established in the hover
-k = find(M(:,11)>=0.68,1);
-t0Vid = (M(k,1))/1000;
-t0Vid = 8.3;
-
-%% Load Camera Parameters and transpose intrinsic matrix
+%% Load Camera Parameters
 load ('cameraParams.mat')
 cameraStruct = toStruct(cameraParams);
 %cameraStruct.IntrinsicMatrix = cameraStruct.IntrinsicMatrix';
@@ -33,10 +30,18 @@ cameraStruct = toStruct(cameraParams);
 cameraStruct.IntrinsicMatrix = [561.999146, 0, 307.433982; 0, 561.782697, 190.144373; 0, 0, 1]';
 cameraParams = cameraParameters(cameraStruct);
 
-%% Read the desired video file and output the struct to the workspace
+%% ------------------------------------------------------------------------
+%  Read Video File
+%  ------------------------------------------------------------------------
+% Read from video file only once established in the hover
+k = find(M(:,11)>=0.68,1);
+t0Vid = (M(k,1))/1000;
+t0Vid = 0.0;
+
+% Read the desired video file and output the struct to the workspace
 % Create a VideoReader object to read the input video file
 addpath .\Computer_Vision
-videoFile = 'flight_03_25.avi';
+videoFile = 'lightTest.avi';
 vidObj = VideoReader(videoFile, 'CurrentTime', t0Vid);
 
 % Determine the width and height of the frames (640p by 360p)
@@ -61,3 +66,18 @@ while hasFrame(vidObj)
         s(k).timestamp = vidObj.CurrentTime;
         k = k+1;
 end
+
+%% ------------------------------------------------------------------------
+%  Optional
+%  ------------------------------------------------------------------------
+% Limit number of views to encourage camera transformation between views
+s = s([1:6:length(s)]);
+
+% Extract Images 
+% cd ('C:\Users\James\Documents\Uni_3rd_Year\Individual_Project\Video_Feed\RelativePoseImages')
+% view1 = 1;
+% view2 = 44;
+% filename = (['Frame ' num2str(view1) '.png']);
+% imwrite(s(view1).cdata, filename);
+% filename = (['Frame ' num2str(view2) '.png']);
+% imwrite(s(view2).cdata, filename);
