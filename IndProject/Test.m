@@ -6,7 +6,6 @@ for z = 1:150
     groundTruthPoses.Orientation{z} = eye(3);
 end
     
-
 %% Initialise visual odometry by extracting features in the first frame
 % Need to review when the first frame should be taken
 prevPoints = detectSURFFeatures(s(1).cdata);
@@ -61,7 +60,10 @@ figure;
 imshow(undistortImage((s(1).cdata),cameraParams)); hold on; plot(prevPoints,'showOrientation',true);
 title('Undistorted Image','fontsize',20);
 
-%% Estimate the pose of the second view
+%% ------------------------------------------------------------------------
+% Estimate the pose of the second view
+% -------------------------------------------------------------------------
+
 % ViewId = 2
 i = 2;
 
@@ -121,9 +123,6 @@ prevPoints   = currPoints;
 
 %% Bootstrap Estimating Camera Trajectory Using Global Bundle Adjustment
 for i = 3:15
-    
-%     [currPoints, currFeatures, indexPairs] = helperDetectAndMatchFeatures(...
-%         prevFeatures, s(i).cdata);
     
     % Match features between the previous and the current image.
     currPoints = detectSURFFeatures(s(i).cdata);
