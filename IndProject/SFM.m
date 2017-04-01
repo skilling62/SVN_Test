@@ -14,8 +14,8 @@ viewId = 1;
 vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
     eye(3, 'like', prevPoints.Location), 'Location', ...
     zeros(1, 3, 'like', prevPoints.Location));
-%% 
-for i = 2:44
+%%  0 
+for i = 2:112
     % Detect, extract and match features.
     currPoints   = detectSURFFeatures(s(i).cdata);
     currFeatures = extractFeatures(s(i).cdata, currPoints, 'upright', true);
@@ -106,84 +106,7 @@ hold off
 loc1 = camPoses.Location{1};
 xlim([loc1(1)-2, loc1(1)+15]);
 ylim([loc1(2)-10, loc1(2)+10]);
-zlim([loc1(3)-2, loc1(3)+15]);
+zlim([loc1(3)-2, loc1(3)+20]);
 camorbit(0, -30);
 
 title('Refined Camera Poses');
-
-%% Compute Dense Reconstruction
-% Go through the images again. This time detect a dense set of corners,
-% and track them across all views using |vision.PointTracker|.
-
-% Detect corners in the first image.
-prevPoints = detectMinEigenFeatures(s(1).cdata, 'MinQuality', 0.001);
-
-% Create the point tracker object to track the points across views.
-tracker = vision.PointTracker('MaxBidirectionalError', 1, 'NumPyramidLevels', 6);
-
-% Initialize the point tracker.
-prevPoints = prevPoints.Location;
-initialize(tracker, prevPoints, s(1).cdata);
-
-% Store the dense points in the view set.
-vSet = updateConnection(vSet, 1, 2, 'Matches', zeros(0, 2));
-vSet = updateView(vSet, 1, 'Points', prevPoints);
-
-% Track the points across all views.
-for i = 2:4
-    
-    % Track the points.
-    [currPoints, validIdx] = step(tracker, s(i).cdata);
-    
-    % Clear the old matches between the points.
-    if i < 44
-        vSet = updateConnection(vSet, i, i+1, 'Matches', zeros(0, 2));
-    end
-    vSet = updateView(vSet, i, 'Points', currPoints);
-    
-    % Store the point matches in the view set.
-    matches = repmat((1:size(prevPoints, 1))', [1, 2]);
-    matches = matches(validIdx, :);        
-    vSet = updateConnection(vSet, i-1, i, 'Matches', matches);
-end
-
-% Find point tracks across all views.
-tracks = findTracks(vSet);
-
-% Find point tracks across all views.
-camPoses = poses(vSet);
-
-% Triangulate initial locations for the 3-D world points.
-xyzPoints = triangulateMultiview(tracks, camPoses,...
-    cameraParams);
-
-% Refine the 3-D world points and camera poses.
-[xyzPoints, camPoses, reprojectionErrors] = bundleAdjustment(...
-    xyzPoints, tracks, camPoses, cameraParams, 'FixedViewId', 1, ...
-    'PointsUndistorted', true);
-
-%% Display Dense Reconstruction
-% Display the camera poses and the dense point cloud.
-
-% Display the refined camera poses.
-figure;
-plotCamera(camPoses, 'Size', 0.2);
-hold on
-
-% Exclude noisy 3-D world points.
-goodIdx = (reprojectionErrors < 5);
-
-% Display the dense 3-D world points.
-pcshow(xyzPoints(goodIdx, :), 'VerticalAxis', 'y', 'VerticalAxisDir', 'down', ...
-    'MarkerSize', 45);
-grid on
-hold off
-
-% Specify the viewing volume.
-loc1 = camPoses.Location{1};
-xlim([loc1(1)-2, loc1(1)+8]);
-ylim([loc1(2)-10, loc1(2)+10]);
-zlim([loc1(3)-2, loc1(3)+12]);
-camorbit(0, -30);
-
-title('Dense Reconstruction');
