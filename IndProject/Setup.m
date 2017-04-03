@@ -7,7 +7,7 @@ clc
 %  ------------------------------------------------------------------------
 % Import Data
 addpath(genpath('Odometry_CSVs'));
-M = csvread('15_4_35.csv', 1);
+M = csvread('flight11.csv', 1);
 
 % Adjust array so that there is only one instance of t = 0 (initial
 % conditions). Arbitrary variable rem
@@ -40,7 +40,7 @@ t0Vid = 0.0;
 % Read the desired video file and output the struct to the workspace
 % Create a VideoReader object to read the input video file
 addpath .\Computer_Vision
-videoFile = 'flight4.avi';
+videoFile = 'flight11.avi';
 vidObj = VideoReader(videoFile, 'CurrentTime', t0Vid);
 
 % Determine the width and height of the frames (640p by 360p)
@@ -89,7 +89,7 @@ s = s(keepFrame);
 %  Optional
 %  ------------------------------------------------------------------------
 % Limit number of views to encourage camera transformation between views
-s = s([175:6:length(s)]);
+s = s(145:8:length(s));
 
 % Extract Images 
 % cd ('C:\Users\James\Documents\Uni_3rd_Year\Individual_Project\Video_Feed\RelativePoseImages')

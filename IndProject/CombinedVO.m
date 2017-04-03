@@ -1,3 +1,20 @@
+%%
+
+% Read the timestamp of the first frame in the sequence
+find(time>s(1).timestamp,1);
+Location = cell(length(pos),1);
+
+% Get pose data in the axis system used by plot camera
+posInCam = zeros(size(pos));
+posInCam(:,1) = pos(:,2);
+posInCam(:,2) = pos(:,3)*-1;
+posInCam(:,3) = pos(:,1);
+
+for i = 1:length(pos)
+    Location{i} = posInCam(i,:);
+end
+
+groundTruth = table(Location);
 %% Initialise visual odometry by extracting features in the first frame
 % Need to review when the first frame should be taken
 
@@ -10,22 +27,61 @@ viewId = 1;
 
 % Original View - Camera Faces the down the positive z axis
 vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
-    eye(3, 'like', prevPoints.Location), 'Location', ...
-    zeros(1, 3, 'like', prevPoints.Location));
-%%  0 
-for i = 2:70
-    % Detect, extract and match features.
-    currPoints   = detectSURFFeatures(s(i).cdata);
-    currFeatures = extractFeatures(s(i).cdata, currPoints);
-    indexPairs = matchFeatures(prevFeatures, currFeatures, 'Unique', true);
+    eye(3), 'Location', zeros(1, 3));
+
+%% Plot Initial Camera Pose
+figure
+axis([-5, 5, -5, 5, -5, 5]);
+
+% Set Y-axis to be vertical pointing down.
+view(gca, 3);
+set(gca, 'CameraUpVector', [0, -1, 0]);
+camorbit(gca, -120, 0, 'data', [0, 1, 0]);
+
+grid on
+xlabel('X (m)');
+ylabel('Y (m)');
+zlabel('Z (m)');
+hold on
+
+% Plot camera from observations
+camObs =  plotCamera('Size', 0.1, 'Location',...
+    vSet.Views.Location{1}, 'Orientation', vSet.Views.Orientation{1},...
+    'Color', 'g', 'Opacity', 0);
+
+% Plot camera from observations
+camNav = plotCamera('Size', 0.1, 'Location', posInCam(1,:), 'Orientation', ...
+    eye(3), 'Color', 'b', 'Opacity', 0);
+
+% Initialize camera trajectories.
+trajectoryObs = plot3(0, 0, 0, 'g-');
+trajectoryNav = plot3(0, 0, 0, 'b-');
+
+legend('Estimated Trajectory', 'Actual Trajectory');
+title('Camera Trajectory');
+
+%% 
+i = 2;
+  
+% Match features between the previous and the current image.
+[currPoints, currFeatures, indexPairs] = helperDetectAndMatchFeatures(...
+prevFeatures, s(i).cdata);
+
+% Estimate the pose of the current view relative to the previous view.
+[orient, loc, inlierIdx] = helperEstimateRelativePose(...
+prevPoints(indexPairs(:,1)), currPoints(indexPairs(:,2)), cameraParams);
+  
+% Exclude epipolar outliers.
+indexPairs = indexPairs(inlierIdx, :);
+
+% Add the current view to the view set.
+vSet = addView(vSet, viewId, 'Points', currPoints, 'Orientation', orient, ...
+    'Location', loc);
+
+% Store the point matches between the previous and the current views.
+vSet = addConnection(vSet, viewId-1, viewId, 'Matches', indexPairs);
     
-    % Select matched points.
-    matchedPoints1 = prevPoints(indexPairs(:, 1));
-    matchedPoints2 = currPoints(indexPairs(:, 2));
-    
-%         if length(matchedPoints2) <5
-%             continue
-%         end
+    %%
 
     warningstate = warning('off', 'vision:ransac:maxTrialsReached');
     
@@ -73,49 +129,19 @@ for i = 2:70
     prevFeatures = currFeatures;
     prevPoints   = currPoints;
     
-end
 
-%% For the i'th view display matches
-figure;
-showMatchedFeatures(s(i-1).cdata,s(i).cdata,matchedPoints1,matchedPoints2,'montage');
-title('Feature Matching Between Frames','fontsize',20)
 
-%% Display camera poses.
+%%
 camPoses = poses(vSet);
-figure;
-plotCamera('Size', 0.3,'Location',vSet.Views.Location{1},'Orientation',vSet.Views.Orientation{1});
-hold on
-
-% Plot the estimated trajectory.
-trajectoryObs = plot3(0,0,0, 'g-','LineWidth',1.5);
 locations = cat(1, camPoses.Location{:});
 set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
     locations(:,2), 'ZData', locations(:,3));
 
-plotCamera('Size', 0.3,'Location',vSet.Views.Location{i},'Orientation',vSet.Views.Orientation{i});
+camObs.Location = vSet.Views.Location{i};
+camObs.Orientation = vSet.Views.Orientation{i};
 
-% Exclude noisy 3-D points.
-goodIdx = (reprojectionErrors < 5);
-xyzPoints = xyzPoints(goodIdx, :);
+set(trajectoryNav, 'XData', posInCam(:,1), 'YData', posInCam(:,2),...
+    'ZData', posInCam(:,3));
 
-% Display the 3-D points.
-pcshow(xyzPoints, 'VerticalAxis', 'y', 'VerticalAxisDir', 'down', ...
-    'MarkerSize', 45);
-grid on
 
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
-hold off
-
-% set(gca,'CameraUpVector',[0, 0, -1]);
-% camorbit(gca, -70, 180)
-
-% Specify the viewing volume.
-loc1 = camPoses.Location{1};
-xlim([loc1(1)-10, loc1(1)+15]);
-ylim([loc1(2)-10, loc1(2)+10]);
-zlim([loc1(3)-10, loc1(3)+20]);
-camorbit(0, -30);
-
-title('Refined Camera Poses');
+   

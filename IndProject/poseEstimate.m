@@ -47,12 +47,12 @@ tolerance = 0.005;
 frame = 1;
 t = 2;
 while t <=length(time)
-    pos(t,:) = pos(t-1,:) + velin (t-1,:) * (time(t) - time(t-1));
-    
-    if abs(time(t) - s(frame).timestamp) <= tolerance
-        % pos(t,:) = mapSURF(pos(t,:),psi(t),theta(t),phi(t))
-        frame = frame + 1;
-    end
+    pos(t,1:2) = pos(t-1,1:2) + velin (t,1:2) * (time(t) - time(t-1));
+    pos(t,3) = M(t,11);
+%     if abs(time(t) - s(frame).timestamp) <= tolerance
+%         % pos(t,:) = mapSURF(pos(t,:),psi(t),theta(t),phi(t))
+%         frame = frame + 1;
+%     end
     t = t + 1;
 end
 
@@ -96,10 +96,12 @@ title('Drone Attitude and Altitude Over a Short Flight','FontSize',20)
 hold off
 
 %% 3D Plot
+% Skip entries in the pos array for ease of visualisation
+pos_ = pos(1:25:length(pos),:);
 figure;
-stem3(pos(:,1), pos(:,2), pos(:,3),'Marker','x','MarkerEdgeColor','k');
+stem3(pos_(:,1), pos_(:,2), pos_(:,3),'Marker','x','MarkerEdgeColor','k');
 xlabel('X Position(m)');
 ylabel('Y Position(m)');
 zlabel('Z Position(m)');
 title('3D Position Plot')
-view(82,30);
+set(gca,'YDir','Reverse')
