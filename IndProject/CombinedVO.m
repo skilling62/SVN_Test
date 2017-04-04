@@ -2,7 +2,6 @@
 
 % Read the timestamp of the first frame in the sequence
 find(time>s(1).timestamp,1);
-Location = cell(length(pos),1);
 
 % Get pose data in the axis system used by plot camera
 posInCam = zeros(size(pos));
@@ -10,11 +9,15 @@ posInCam(:,1) = pos(:,2);
 posInCam(:,2) = pos(:,3)*-1;
 posInCam(:,3) = pos(:,1);
 
-for i = 1:length(pos)
+posInCam = posInCam(1:64:length(posInCam),:);
+Location = cell(length(posInCam),1);
+
+for i = 1:length(posInCam)
     Location{i} = posInCam(i,:);
 end
 
 groundTruth = table(Location);
+
 %% Initialise visual odometry by extracting features in the first frame
 % Need to review when the first frame should be taken
 
@@ -75,11 +78,11 @@ prevPoints(indexPairs(:,1)), currPoints(indexPairs(:,2)), cameraParams);
 indexPairs = indexPairs(inlierIdx, :);
 
 % Add the current view to the view set.
-vSet = addView(vSet, viewId, 'Points', currPoints, 'Orientation', orient, ...
+vSet = addView(vSet, i, 'Points', currPoints, 'Orientation', orient, ...
     'Location', loc);
 
 % Store the point matches between the previous and the current views.
-vSet = addConnection(vSet, viewId-1, viewId, 'Matches', indexPairs);
+vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs);
     
     %%
 
@@ -140,8 +143,7 @@ set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
 camObs.Location = vSet.Views.Location{i};
 camObs.Orientation = vSet.Views.Orientation{i};
 
-set(trajectoryNav, 'XData', posInCam(:,1), 'YData', posInCam(:,2),...
-    'ZData', posInCam(:,3));
+locationsNav = cat(1, groundTruth.Location{:});
+set(trajectoryNav, 'XData', locationsNav(:,1), 'YData', locationsNav(:,2),...
+    'ZData', locationsNav(:,3));
 
-
-   

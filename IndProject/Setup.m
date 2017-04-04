@@ -25,8 +25,8 @@ M = M(index:size(M,1),:);
 %% Load Camera Parameters
 load ('cameraParams.mat')
 cameraStruct = toStruct(cameraParams);
-%cameraStruct.IntrinsicMatrix = [686.994766, 0, 329.323208; 0, 688.195055, 159.323007; 0, 0, 1]';
-cameraStruct.IntrinsicMatrix = [561.999146, 0, 307.433982; 0, 561.782697, 190.144373; 0, 0, 1]';
+cameraStruct.IntrinsicMatrix = [686.994766, 0, 329.323208; 0, 688.195055, 159.323007; 0, 0, 1]';
+%cameraStruct.IntrinsicMatrix = [561.999146, 0, 307.433982; 0, 561.782697, 190.144373; 0, 0, 1]';
 cameraParams = cameraParameters(cameraStruct);
 
 %% ------------------------------------------------------------------------
@@ -89,7 +89,10 @@ s = s(keepFrame);
 %  Optional
 %  ------------------------------------------------------------------------
 % Limit number of views to encourage camera transformation between views
-s = s(145:8:length(s));
+numSkippedFrames = 8;
+s = s(145:numSkippedFrames:length(s));
+frameRate = vidFrameRate/numSkippedFrames;
+
 
 % Extract Images 
 % cd ('C:\Users\James\Documents\Uni_3rd_Year\Individual_Project\Video_Feed\RelativePoseImages')
