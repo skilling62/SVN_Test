@@ -18,7 +18,7 @@ posInCam(:,1) = pos(index:length(pos),2);
 posInCam(:,2) = pos(index:length(pos),3)*-1;
 posInCam(:,3) = pos(index:length(pos),1);
 
-% Place the first view in the origin of the camera coordinate system 
+% Place the first navdata view in the origin of the camera coordinate system 
 offset = zeros(1,3) - posInCam(1,:);
 posInCam = posInCam(1:(200/frameRate):length(posInCam),:)+offset;
 Location = cell(length(posInCam),1);
@@ -27,7 +27,7 @@ for i = 1:length(posInCam)
     Location{i} = posInCam(i,:);
 end
 
-% Position estimate from navdata in the camera axis system 
+% Position estimate from navdata in the camera axis system (table format)
 groundTruth = table(Location);
 
 %% Initialise visual odometry by extracting features in the first frame
@@ -111,14 +111,18 @@ prevPoints   = currPoints;
 prevFeatures = currFeatures;
 
 %% Plot Second View
+
+% Plot camera trajectory (VO)
 camPoses = poses(vSet);
 locations = cat(1, camPoses.Location{i});
 set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
     locations(:,2), 'ZData', locations(:,3));
 
+% Plot camera view (VO)
 camObs.Location = vSet.Views.Location{i};
 camObs.Orientation = vSet.Views.Orientation{i};
 
+% Plot camera trajectory (navdata)
 locationsNav = cat(1, groundTruth.Location{1:i});
 set(trajectoryNav, 'XData', locationsNav(:,1), 'YData', locationsNav(:,2),...
     'ZData', locationsNav(:,3));
@@ -184,14 +188,18 @@ showMatchedFeatures(s(i-1).cdata,s(i).cdata,matchedPoints1,matchedPoints2,'monta
 title('Feature Matching Between Frames','fontsize',20)
 
 %% Plot Final View
+
+% Plot camera trajectory (VO)
 camPoses = poses(vSet);
 locations = cat(1, camPoses.Location{:});
 set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
     locations(:,2), 'ZData', locations(:,3));
 
+% Plot final camera view (VO)
 camObs.Location = vSet.Views.Location{i};
 camObs.Orientation = vSet.Views.Orientation{i};
 
+% Plot camera trajectory (navdata)
 locationsNav = cat(1, groundTruth.Location{:});
 set(trajectoryNav, 'XData', locationsNav(:,1), 'YData', locationsNav(:,2),...
     'ZData', locationsNav(:,3));
