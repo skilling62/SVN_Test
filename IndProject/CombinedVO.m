@@ -2,6 +2,8 @@
 % poseEstimate.m should be run before runnng this file
 % Plot the position estimate from both VO.m and pose Estimate.m
 % Use the estimate from drone navdata to estimate the scale of the scene
+% https://uk.mathworks.com/help/vision/examples/structure-from-motion-from-multiple-views.html
+% https://uk.mathworks.com/help/vision/examples/monocular-visual-odometry.html
 % -------------------------------------------------------------------------
 
 %% Create a table of camera poses that is aligned with each camera view
