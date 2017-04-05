@@ -1,15 +1,25 @@
-%%
+% -------------------------------------------------------------------------
+% poseEstimate.m should be run before runnng this file
+
+% -------------------------------------------------------------------------
+
+%% Create a table of camera poses that is aligned with each camera view
+% Camera poses come from poseEstimate
 
 % Read the timestamp of the first frame in the sequence
-find(time>s(1).timestamp,1);
+index = find(time>s(1).timestamp,1);
+newLength = size(pos,1) - index +1;
 
-% Get pose data in the axis system used by plot camera
-posInCam = zeros(size(pos));
-posInCam(:,1) = pos(:,2);
-posInCam(:,2) = pos(:,3)*-1;
-posInCam(:,3) = pos(:,1);
+% Get pose data in the axis system used by plot camera function (x axis
+% becomes z axis, y axis becomes x axis, z becomes y
+posInCam = zeros(newLength,size(pos,2));
+posInCam(:,1) = pos(index:length(pos),2);
+posInCam(:,2) = pos(index:length(pos),3)*-1;
+posInCam(:,3) = pos(index:length(pos),1);
 
-posInCam = posInCam(1:64:length(posInCam),:);
+% Place the first view in the origin of the camera coordinate system 
+offset = zeros(1,3) - posInCam(1,:);
+posInCam = posInCam(1:(200/frameRate):length(posInCam),:)+offset;
 Location = cell(length(posInCam),1);
 
 for i = 1:length(posInCam)
@@ -30,11 +40,13 @@ viewId = 1;
 
 % Original View - Camera Faces the down the positive z axis
 vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
-    eye(3), 'Location', zeros(1, 3));
+    eye(3), 'Location', zeros(1,3));
 
 %% Plot Initial Camera Pose
+
+% Setup axis
 figure
-axis([-5, 5, -5, 5, -5, 5]);
+axis([-4, 4, -2, 5, -2, 2]);
 
 % Set Y-axis to be vertical pointing down.
 view(gca, 3);
@@ -52,7 +64,7 @@ camObs =  plotCamera('Size', 0.1, 'Location',...
     vSet.Views.Location{1}, 'Orientation', vSet.Views.Orientation{1},...
     'Color', 'g', 'Opacity', 0);
 
-% Plot camera from observations
+% Plot camera from Navdata
 camNav = plotCamera('Size', 0.1, 'Location', posInCam(1,:), 'Orientation', ...
     eye(3), 'Color', 'b', 'Opacity', 0);
 
@@ -60,57 +72,90 @@ camNav = plotCamera('Size', 0.1, 'Location', posInCam(1,:), 'Orientation', ...
 trajectoryObs = plot3(0, 0, 0, 'g-');
 trajectoryNav = plot3(0, 0, 0, 'b-');
 
-legend('Estimated Trajectory', 'Actual Trajectory');
+legend('VO Trajectory', 'INS Trajectory');
 title('Camera Trajectory');
 
-%% 
+%%  Seond View
 i = 2;
   
 % Match features between the previous and the current image.
-[currPoints, currFeatures, indexPairs] = helperDetectAndMatchFeatures(...
-prevFeatures, s(i).cdata);
+currPoints   = detectSURFFeatures(s(i).cdata);
+currFeatures = extractFeatures(s(i).cdata, currPoints);
+indexPairs = matchFeatures(prevFeatures, currFeatures, 'Unique', true);
 
+matchedPoints1 = prevPoints(indexPairs(:, 1));
+matchedPoints2 = currPoints(indexPairs(:, 2));
+    
 % Estimate the pose of the current view relative to the previous view.
-[orient, loc, inlierIdx] = helperEstimateRelativePose(...
-prevPoints(indexPairs(:,1)), currPoints(indexPairs(:,2)), cameraParams);
-  
-% Exclude epipolar outliers.
-indexPairs = indexPairs(inlierIdx, :);
+[relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
+matchedPoints1, matchedPoints2, cameraParams);
 
-% Add the current view to the view set.
-vSet = addView(vSet, i, 'Points', currPoints, 'Orientation', orient, ...
-    'Location', loc);
+% Get the table containing the previous camera pose.
+prevPose = poses(vSet, i-1);
+prevOrientation = prevPose.Orientation{1};
+prevLocation    = prevPose.Location{1};
+
+% Compute the current camera pose in the global coordinate system
+% relative to the first view.
+orientation = relativeOrient * prevOrientation;
+location    = prevLocation + relativeLoc * prevOrientation;
+
+vSet = addView(vSet, i, 'Points', currPoints, 'Orientation', orientation, ...
+        'Location', location);
 
 % Store the point matches between the previous and the current views.
-vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs);
+vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs(inlierIdx,:));
+
+% Compute scale factor
+vSet = helperNormalizeViewSet(vSet, groundTruth);
+
+prevPoints   = currPoints;
+prevFeatures = currFeatures;
+
+%% Plot Second View
+camPoses = poses(vSet);
+locations = cat(1, camPoses.Location{i});
+set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
+    locations(:,2), 'ZData', locations(:,3));
+
+camObs.Location = vSet.Views.Location{i};
+camObs.Orientation = vSet.Views.Orientation{i};
+
+locationsNav = cat(1, groundTruth.Location{1:i});
+set(trajectoryNav, 'XData', locationsNav(:,1), 'YData', locationsNav(:,2),...
+    'ZData', locationsNav(:,3));
+
+%% Global Bundle Adjustment
+for i = 3:56
+
+    currPoints   = detectSURFFeatures(s(i).cdata);
+    currFeatures = extractFeatures(s(i).cdata, currPoints);
+    indexPairs = matchFeatures(prevFeatures, currFeatures, 'Unique', true);
     
-    %%
+    matchedPoints1 = prevPoints(indexPairs(:, 1));
+    matchedPoints2 = currPoints(indexPairs(:, 2));
 
     warningstate = warning('off', 'vision:ransac:maxTrialsReached');
-    
+
     [relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
     matchedPoints1, matchedPoints2, cameraParams);
-    
+
     warning(warningstate)
-
-    % Add the current view to the view set.
-    vSet = addView(vSet, i, 'Points', currPoints);
-
-    % Store the point matches between the previous and the current views.
-    vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs(inlierIdx,:));
     
     % Get the table containing the previous camera pose.
     prevPose = poses(vSet, i-1);
     prevOrientation = prevPose.Orientation{1};
     prevLocation    = prevPose.Location{1};
-    
+
     % Compute the current camera pose in the global coordinate system
     % relative to the first view.
     orientation = relativeOrient * prevOrientation;
     location    = prevLocation + relativeLoc * prevOrientation;
-    
-    vSet = updateView(vSet, i, 'Orientation', orientation, ...
+
+    vSet = addView(vSet, i, 'Points', currPoints, 'Orientation', orientation, ...
         'Location', location);
+    
+    vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs(inlierIdx,:));
     
     % Find point tracks across all views.
     tracks = findTracks(vSet);
@@ -121,20 +166,25 @@ vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs);
     % Triangulate initial locations for the 3-D world points.
     xyzPoints = triangulateMultiview(tracks, camPoses, cameraParams);
     
-    % Refine the 3-D world points and camera poses.
-    [xyzPoints, camPoses, reprojectionErrors] = bundleAdjustment(xyzPoints, ...
+    [~, camPoses, reprojectionErrors] = bundleAdjustment(xyzPoints, ...
         tracks, camPoses, cameraParams, 'FixedViewId', 1, ...
         'PointsUndistorted', true);
     
-    % Store the refined camera poses.
     vSet = updateView(vSet, camPoses);
-
-    prevFeatures = currFeatures;
-    prevPoints   = currPoints;
     
+    vSet = helperNormalizeViewSet(vSet, groundTruth);
+    
+    prevFeatures = currFeatures;
+    prevPoints = currPoints;
+    
+end
+    
+%% Display matched features between last and second to last views
+figure;
+showMatchedFeatures(s(i-1).cdata,s(i).cdata,matchedPoints1,matchedPoints2,'montage');
+title('Feature Matching Between Frames','fontsize',20)
 
-
-%%
+%% Plot Final View
 camPoses = poses(vSet);
 locations = cat(1, camPoses.Location{:});
 set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
@@ -147,3 +197,19 @@ locationsNav = cat(1, groundTruth.Location{:});
 set(trajectoryNav, 'XData', locationsNav(:,1), 'YData', locationsNav(:,2),...
     'ZData', locationsNav(:,3));
 
+%% Calculate the magnitudes of the distance between navdata and VO positions
+distance = zeros(vSet.NumViews,1);
+axisx = zeros(vSet.NumViews,1);
+for i = 1:vSet.NumViews
+distance(i,1) = sqrt((vSet.Views.Location{i}(1) - groundTruth.Location{i}(1))^2 ...
+    + (vSet.Views.Location{i}(2) - groundTruth.Location{i}(2))^2 ...
+    + (vSet.Views.Location{i}(3) - groundTruth.Location{i}(3))^2);
+axisx(i,1) = s(i).timestamp - s(1).timestamp;
+end
+
+figure
+plot(axisx,distance)
+title('Position Estimation Delta Between VO and INS')
+xlabel('Time(s)')
+ylabel('Distance(m)')
+grid minor

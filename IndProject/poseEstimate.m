@@ -43,37 +43,12 @@ end
 %% Position Calculation
 % Transpose to a vector of 3 columns for ease of calculation and formatting
 velin = (velin)';
-tolerance = 0.005;
-frame = 1;
 t = 2;
 while t <=length(time)
     pos(t,1:2) = pos(t-1,1:2) + velin (t,1:2) * (time(t) - time(t-1));
     pos(t,3) = M(t,11);
-%     if abs(time(t) - s(frame).timestamp) <= tolerance
-%         % pos(t,:) = mapSURF(pos(t,:),psi(t),theta(t),phi(t))
-%         frame = frame + 1;
-%     end
     t = t + 1;
 end
-
-%% Testing Section
-i = 2:200;
-deltaT = zeros(length(i),1);
-
-for k = i
-    deltaT(k-1) = abs(time(k) - s(frame).timestamp);
-    if abs(deltaT(k-1))<=tolerance
-        frame = frame + 1;
-    end
-end
-
-figure
-plot(i,deltaT)
-hold on
-toleranceVector = linspace(tolerance, tolerance, length(i));
-plot(i,toleranceVector,'k')
-grid minor
-hold off
 
 %% Body Orientation Plot
 psi_d = psi*(180/pi);

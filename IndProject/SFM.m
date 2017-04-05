@@ -12,8 +12,9 @@ viewId = 1;
 vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
     eye(3, 'like', prevPoints.Location), 'Location', ...
     zeros(1, 3, 'like', prevPoints.Location));
+
 %%  0 
-for i = 2:70
+for i = 2:56
     % Detect, extract and match features.
     currPoints   = detectSURFFeatures(s(i).cdata);
     currFeatures = extractFeatures(s(i).cdata, currPoints);
@@ -113,9 +114,9 @@ hold off
 
 % Specify the viewing volume.
 loc1 = camPoses.Location{1};
-xlim([loc1(1)-10, loc1(1)+15]);
+xlim([loc1(1)-10, loc1(1)+10]);
 ylim([loc1(2)-10, loc1(2)+10]);
-zlim([loc1(3)-10, loc1(3)+20]);
+zlim([loc1(3)-10, loc1(3)+10]);
 camorbit(0, -30);
 
 title('Refined Camera Poses');

@@ -1,11 +1,27 @@
-%% Load random Poses from mathworks tutorial
-load(fullfile(toolboxdir('vision'), 'visiondata', ...
-    'visualOdometryGroundTruth.mat'));
-for z = 1:150
-    groundTruthPoses.Location{z} = [0 0 0];
-    groundTruthPoses.Orientation{z} = eye(3);
+%% Create a table of camera poses that is aligned with each camera view
+% Camera poses come from poseEstimate
+
+% Read the timestamp of the first frame in the sequence
+index = find(time>s(1).timestamp,1);
+newLength = size(pos,1) - index +1;
+
+% Get pose data in the axis system used by plot camera function (x axis
+% becomes z axis, y axis becomes x axis, z becomes y
+posInCam = zeros(newLength,size(pos,2));
+posInCam(:,1) = pos(index:length(pos),2);
+posInCam(:,2) = pos(index:length(pos),3)*-1;
+posInCam(:,3) = pos(index:length(pos),1);
+
+% Place the first view in the origin of the camera coordinate system 
+offset = zeros(1,3) - posInCam(1,:);
+posInCam = posInCam(1:(200/frameRate):length(posInCam),:)+offset;
+Location = cell(length(posInCam),1);
+
+for i = 1:length(posInCam)
+    Location{i} = posInCam(i,:);
 end
-    
+
+groundTruth = table(Location);
 %% Initialise visual odometry by extracting features in the first frame
 % Need to review when the first frame should be taken
 prevPoints = detectSURFFeatures(s(1).cdata);
@@ -14,51 +30,42 @@ prevFeatures = extractFeatures(s(1).cdata,prevPoints);
 % Initialise a viewset object
 vSet = viewSet;
 viewId = 1;
-omega = 0;
-phi = 0;
-kappa = 0;
-Rx = [1 0 0; 0 cos(omega) -sin(omega); 0 sin(omega) cos(omega)];
-Ry = [cos(phi) 0 sin(phi); 0 1 0; -sin(phi) 0 cos(phi)];
-Rz = [cos(kappa) -sin(kappa) 0; sin(kappa) cos(kappa) 0; 0 0 1];
-R = Rx*Ry*Rz;
 
 % Original View - Camera Faces the down the positive z axis
 vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
     eye(3), 'Location', zeros(1,3));
 
-%% Plot the Initial Camera Pose
-% Setup the axes
-axis([-5, 5, -5, 5, -5, 5]);
-view(gca,3)
+%% Plot Initial Camera Pose
+% Setup axis
+figure
+axis([-10, 10, -10, 10, -10, 10]);
+
+% Set Y-axis to be vertical pointing down.
+view(gca, 3);
 set(gca, 'CameraUpVector', [0, -1, 0]);
 camorbit(gca, -120, 0, 'data', [0, 1, 0]);
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
+
 grid on
+xlabel('X (m)');
+ylabel('Y (m)');
+zlabel('Z (m)');
 hold on
 
-% Plot Initial Camera Poses
-camObs = plotCamera('Location', vSet.Views.Location{1}, 'Orientation',...
-    vSet.Views.Orientation{1},...
+% Plot camera from observations
+camObs =  plotCamera('Size', 0.1, 'Location',...
+    vSet.Views.Location{1}, 'Orientation', vSet.Views.Orientation{1},...
     'Color', 'g', 'Opacity', 0);
 
-camNav = plotCamera('Location', groundTruthPoses.Location{1}, 'Orientation', ...
-    groundTruthPoses.Orientation{1}, 'Color', 'b', 'Opacity', 0);
+% Plot camera from Navdata
+camNav = plotCamera('Size', 0.1, 'Location', posInCam(1,:), 'Orientation', ...
+    eye(3), 'Color', 'b', 'Opacity', 0);
 
-% Initialise Camera Trajectories
-trajectoryObs = plot3(0,0,0, 'g-');
-trajectoryNav = plot3(0,0,0,'b-');
+% Initialize camera trajectories.
+trajectoryObs = plot3(0, 0, 0, 'g-');
+trajectoryNav = plot3(0, 0, 0, 'b-');
 
-legend('Observed Trajectory','Navdata Trajectory')
-
-%% Display Features
-figure;
-imshow(s(1).cdata); hold on; plot(prevPoints,'showOrientation',true);
-title('Detected Features','fontsize',20);
-figure;
-imshow(undistortImage((s(1).cdata),cameraParams)); hold on; plot(prevPoints,'showOrientation',true);
-title('Undistorted Image','fontsize',20);
+legend('Estimated Trajectory', 'Actual Trajectory');
+title('Camera Trajectory');
 
 %% ------------------------------------------------------------------------
 % Estimate the pose of the second view
@@ -68,76 +75,61 @@ title('Undistorted Image','fontsize',20);
 i = 2;
 
 % Match features between the previous and the current image.
-currPoints = detectSURFFeatures(s(i).cdata);
-currFeatures = extractFeatures(s(i).cdata,currPoints);
-indexPairs = matchFeatures(prevFeatures,currFeatures);
-matchedPoints1 = prevPoints(indexPairs(:,1),:);
-matchedPoints2 = currPoints(indexPairs(:,2),:);
+currPoints   = detectSURFFeatures(s(i).cdata);
+currFeatures = extractFeatures(s(i).cdata, currPoints);
+indexPairs = matchFeatures(prevFeatures, currFeatures, 'Unique',true);
 
-%% Plot Matched Features
-figure;
-showMatchedFeatures(s(i-1).cdata,s(i).cdata,matchedPoints1,matchedPoints2,'montage');
-title('Initial Feature Matching Between Frames','fontsize',20)
-
-%% Generated 5 RANSAC Filtered Matches
-[tform, inlierPoints1, inlierPoints2] = estimateGeometricTransform...
-(matchedPoints1, matchedPoints2, 'affine');
-iteration = floor((size(inlierPoints1,1))/5);
-spacing = 1:iteration:iteration*5;
-for j = 1:length(spacing)
-     inlierPoints1(j) = inlierPoints1(spacing(j));
-     inlierPoints2(j) = inlierPoints2(spacing(j));
-end
-inlierpoints1 = inlierPoints1(1:5);
-inlierpoints2 = inlierPoints2(1:5);
-
-%% Plot 5 Inliers
-figure;
-showMatchedFeatures(s(i-1).cdata, s(i).cdata, inlierpoints1, inlierpoints2,...
-'montage');
-title('5 RANSAC Filtered Matches','fontsize',20);
-
-%% Estimate the relative orientation of the second view
+matchedPoints1 = prevPoints(indexPairs(:, 1));
+matchedPoints2 = currPoints(indexPairs(:, 2));
+    
 % Estimate the pose of the current view relative to the previous view.
-[relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
-        inlierpoints1, inlierpoints2, cameraParams);
+[orient, loc, inlierIdx] = helperEstimateRelativePose(...
+matchedPoints1, matchedPoints2, cameraParams);
+
+indexPairs = indexPairs(inlierIdx,:);
+
 
 % Add the current view to the view set.
-vSet = addView(vSet, i, 'Points', currPoints, 'Orientation', relativeOrient, ...
-    'Location', relativeLoc);
+vSet = addView(vSet, i, 'Points', currPoints, 'Orientation', orient, ...
+    'Location', loc);
 
 % Store the point matches between the previous and the current views.
 vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs);
 
-%% Update camera trajectory plot
-camNav.Location = groundTruthPoses.Location{i};
-camNav.Orientation = groundTruthPoses.Orientation{i};
+% Compute scale factor
+vSet = helperNormalizeViewSet(vSet, groundTruth);
+
+prevPoints   = currPoints;
+prevFeatures = currFeatures;
+
+%% Plot Second View
+camPoses = poses(vSet);
+locations = cat(1, camPoses.Location{i});
+set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
+    locations(:,2), 'ZData', locations(:,3));
+
 camObs.Location = vSet.Views.Location{i};
 camObs.Orientation = vSet.Views.Orientation{i};
 
-helperUpdateCameraTrajectories(i,trajectoryObs, trajectoryNav, poses(vSet),...
-    groundTruthPoses);
-
-prevFeatures = currFeatures;
-prevPoints   = currPoints;
+locationsNav = cat(1, groundTruth.Location{1:i});
+set(trajectoryNav, 'XData', locationsNav(:,1), 'YData', locationsNav(:,2),...
+    'ZData', locationsNav(:,3));
 
 %% Bootstrap Estimating Camera Trajectory Using Global Bundle Adjustment
-for i = 3:15
+for i = 3:10
     
     % Match features between the previous and the current image.
     currPoints = detectSURFFeatures(s(i).cdata);
-    currPoints   = selectUniform(currPoints, 50, size(s(i).cdata));
     currFeatures = extractFeatures(s(i).cdata,currPoints);
-    indexPairs = matchFeatures(prevFeatures,currFeatures,'Unique',true);
+    indexPairs = matchFeatures(prevFeatures,currFeatures,'unique',true);
     
     % Eliminate outliers from feature matches.
     inlierIdx = helperFindEpipolarInliers(prevPoints(indexPairs(:,1)),...
-        currPoints(indexPairs(:, 2)), cameraParams);
-    
-    %%
+        currPoints(indexPairs(:,2)), cameraParams);
+
     indexPairs = indexPairs(inlierIdx, :);
     
-    %% Triangulate points from the previous two views, and find the
+    % Triangulate points from the previous two views, and find the
     % corresponding points in the current view.
     [worldPoints, imagePoints] = helperFind3Dto2DCorrespondences(vSet,...
         cameraParams, indexPairs, currPoints);
@@ -147,7 +139,7 @@ for i = 3:15
     %% Estimate the world camera pose for the current view.
     % 99.9 and 0.8
     [orient, loc] = estimateWorldCameraPose(imagePoints, worldPoints, ...
-        cameraParams, 'Confidence', 99.9, 'MaxReprojectionError', 0.8);
+        cameraParams, 'Confidence', 99.0, 'MaxReprojectionError', 0.9);
     
     % Restore the original warning state
     warning(warningstate)
@@ -174,56 +166,104 @@ for i = 3:15
     % Update the view set
     vSet = updateView(vSet, camPoses);
     
-    % Update camera trajectory plot
-    camNav.Location = groundTruthPoses.Location{i};
-    camNav.Orientation = groundTruthPoses.Orientation{i};
-    camObs.Location = vSet.Views.Location{i};
-    camObs.Orientation = vSet.Views.Orientation{i};
+    vSet = helperNormalizeViewSet(vSet, groundTruth);
     
-    helperUpdateCameraTrajectories(i,trajectoryObs, trajectoryNav, poses(vSet),...
-    groundTruthPoses);
-
     prevFeatures = currFeatures;
     prevPoints = currPoints;
     
 end
-    
-    
- %%
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    % Find point tracks across all views.
-    tracks = findTracks(vSet);
 
-    % Get the table containing camera poses for all views.
-    camPoses = poses(vSet);
-    
-    % Triangulate initial locations for the 3-D world points.
-    xyzPoints = triangulateMultiview(tracks, camPoses, cameraParams);
+%% Display matched features
+figure;
+showMatchedFeatures(s(i-1).cdata,s(i).cdata,matchedPoints1,matchedPoints2,'montage');
+title('Feature Matching Between Frames','fontsize',20)
 
-    % Refine the 3-D world points and camera poses.
-    [xyzPoints, camPoses, reprojectionErrors] = bundleAdjustment(xyzPoints, ...
-        tracks, camPoses, cameraParams, 'FixedViewId', 1, ...
-        'PointsUndistorted', true);
-
-    % Store the refined camera poses.
-    vSet = updateView(vSet, camPoses);
-
-    prevFeatures = currFeatures;
-    prevPoints   = currPoints;
-
-%%
-% Display camera poses.
+%% Plot View
 camPoses = poses(vSet);
-plotCamera(camPoses, 'Size', 0.2, 'Opacity', 0);
+locations = cat(1, camPoses.Location{:});
+set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
+    locations(:,2), 'ZData', locations(:,3));
 
-% Exclude noisy 3-D points.
-goodIdx = (reprojectionErrors < 5);
-xyzPoints = xyzPoints(goodIdx, :);
+camObs.Location = vSet.Views.Location{i};
+camObs.Orientation = vSet.Views.Orientation{i};
+
+locationsNav = cat(1, groundTruth.Location{:});
+set(trajectoryNav, 'XData', locationsNav(:,1), 'YData', locationsNav(:,2),...
+    'ZData', locationsNav(:,3));
+
+%% 
+for i = 11:145
+    
+    % Match features between the previous and the current image.
+    currPoints = detectSURFFeatures(s(i).cdata);
+    currFeatures = extractFeatures(s(i).cdata,currPoints);
+    indexPairs = matchFeatures(prevFeatures,currFeatures,'unique',true);
+    
+    % Eliminate outliers from feature matches.
+    inlierIdx = helperFindEpipolarInliers(prevPoints(indexPairs(:,1)),...
+        currPoints(indexPairs(:,2)), cameraParams);
+
+    indexPairs = indexPairs(inlierIdx, :);
+    
+    % Triangulate points from the previous two views, and find the
+    % corresponding points in the current view.
+    [worldPoints, imagePoints] = helperFind3Dto2DCorrespondences(vSet,...
+        cameraParams, indexPairs, currPoints);
+    
+    % Estimate the world camera pose for the current view.
+    
+    warningstate = warning('off','vision:ransac:maxTrialsReached');
+    
+    [orient, loc] = estimateWorldCameraPose(imagePoints, worldPoints, ...
+        cameraParams, 'Confidence', 99.99, 'MaxReprojectionError', 0.9,...
+        'MaxNumTrials',5000);
+    
+    % Restore the original warning state
+    warning(warningstate)
+    
+    % Add current view to the view set
+    vSet = addView(vSet,i, 'Points', currPoints, 'Orientation', ...
+        orient, 'Location', loc);
+    
+    % Store the point matches between the previous and the current views.
+    vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs);
+    
+    % Refine estimated camera poses using windowed bundle adjustment. Run
+    % the optimization every 7th view.
+    if mod(i, 7) == 0
+        % Find point tracks in the last 15 views and triangulate.
+        windowSize = 15;
+        startFrame = max(1, i - windowSize);
+        tracks = findTracks(vSet, startFrame:viewId);
+        camPoses = poses(vSet, startFrame:viewId);
+        [xyzPoints, reprojErrors] = triangulateMultiview(tracks, camPoses, ...
+            cameraParams);
+        
+        % Hold the first two poses fixed, to keep the same scale.
+        fixedIds = [startFrame, startFrame+1];
+        
+        % Exclude points and tracks with high reprojection errors.
+        idx = reprojErrors < 2;
+
+        [~, camPoses] = bundleAdjustment(xyzPoints(idx, :), tracks(idx), ...
+            camPoses, cameraParams, 'FixedViewIDs', fixedIds, ...
+            'PointsUndistorted', true, 'AbsoluteTolerance', 1e-9,...
+            'RelativeTolerance', 1e-9, 'MaxIterations', 300);
+
+         vSet = updateView(vSet, camPoses);
+         
+    prevFeatures = currFeatures;
+    prevPoints = currPoints;
+    
+    end
+    
+end
+
+%% Plot final
+camPoses = poses(vSet);
+locations = cat(1, camPoses.Location{:});
+set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
+    locations(:,2), 'ZData', locations(:,3));
+
+camObs.Location = vSet.Views.Location{i};
+camObs.Orientation = vSet.Views.Orientation{i};
