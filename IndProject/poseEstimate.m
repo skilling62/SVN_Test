@@ -1,13 +1,11 @@
-
 % -------------------------------------------------------------------------
 % Plot the AR.Drone 2.0 x,y,z position in inertial frame using 
 % body frame velocity measurements
 % -------------------------------------------------------------------------
-
 clc
 
 %% Declare Variables
-% Time (seconds)    Use stopwatch elapsed time or timestamp?
+% Time (seconds)   
 time = (M(:,1))/1000;
 % Yaw Angle (Radians)
 psi = M(:,4);

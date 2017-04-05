@@ -1,12 +1,13 @@
 % -------------------------------------------------------------------------
 % poseEstimate.m should be run before runnng this file
-
+% Plot the position estimate from both VO.m and pose Estimate.m
+% Use the estimate from drone navdata to estimate the scale of the scene
 % -------------------------------------------------------------------------
 
 %% Create a table of camera poses that is aligned with each camera view
-% Camera poses come from poseEstimate
 
-% Read the timestamp of the first frame in the sequence
+% Read the timestamp of the first frame in the sequence. Use this timestamp
+% to find the corresponding navdata pose estimate
 index = find(time>s(1).timestamp,1);
 newLength = size(pos,1) - index +1;
 
@@ -26,11 +27,10 @@ for i = 1:length(posInCam)
     Location{i} = posInCam(i,:);
 end
 
+% Position estimate from navdata in the camera axis system 
 groundTruth = table(Location);
 
 %% Initialise visual odometry by extracting features in the first frame
-% Need to review when the first frame should be taken
-
 prevPoints = detectSURFFeatures(s(1).cdata);
 prevFeatures = extractFeatures(s(1).cdata,prevPoints);
 
@@ -43,8 +43,6 @@ vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
     eye(3), 'Location', zeros(1,3));
 
 %% Plot Initial Camera Pose
-
-% Setup axis
 figure
 axis([-4, 4, -2, 5, -2, 2]);
 
@@ -59,12 +57,12 @@ ylabel('Y (m)');
 zlabel('Z (m)');
 hold on
 
-% Plot camera from observations
+% Plot camera from VO
 camObs =  plotCamera('Size', 0.1, 'Location',...
     vSet.Views.Location{1}, 'Orientation', vSet.Views.Orientation{1},...
     'Color', 'g', 'Opacity', 0);
 
-% Plot camera from Navdata
+% Plot camera from navdata
 camNav = plotCamera('Size', 0.1, 'Location', posInCam(1,:), 'Orientation', ...
     eye(3), 'Color', 'b', 'Opacity', 0);
 
@@ -75,7 +73,7 @@ trajectoryNav = plot3(0, 0, 0, 'b-');
 legend('VO Trajectory', 'INS Trajectory');
 title('Camera Trajectory');
 
-%%  Seond View
+%%  Plot the second view
 i = 2;
   
 % Match features between the previous and the current image.
@@ -106,7 +104,7 @@ vSet = addView(vSet, i, 'Points', currPoints, 'Orientation', orientation, ...
 % Store the point matches between the previous and the current views.
 vSet = addConnection(vSet, i-1, i, 'Matches', indexPairs(inlierIdx,:));
 
-% Compute scale factor
+% Compute scale factor using estimated positions from the navdata
 vSet = helperNormalizeViewSet(vSet, groundTruth);
 
 prevPoints   = currPoints;
@@ -125,7 +123,7 @@ locationsNav = cat(1, groundTruth.Location{1:i});
 set(trajectoryNav, 'XData', locationsNav(:,1), 'YData', locationsNav(:,2),...
     'ZData', locationsNav(:,3));
 
-%% Global Bundle Adjustment
+%% Plot the remaining views
 for i = 3:56
 
     currPoints   = detectSURFFeatures(s(i).cdata);
@@ -172,6 +170,7 @@ for i = 3:56
     
     vSet = updateView(vSet, camPoses);
     
+    % Compute scale factor using estimated positions from the navdata
     vSet = helperNormalizeViewSet(vSet, groundTruth);
     
     prevFeatures = currFeatures;

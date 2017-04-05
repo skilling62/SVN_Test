@@ -1,20 +1,26 @@
+% -------------------------------------------------------------------------
+% Compute camera path up to an unkown scale factor using Visual Odometry
+% https://uk.mathworks.com/help/vision/examples/structure-from-motion-from-multiple-views.html
+% -------------------------------------------------------------------------
+
 %% Initialise visual odometry by extracting features in the first frame
 % Need to review when the first frame should be taken
 
 prevPoints = detectSURFFeatures(s(1).cdata);
 prevFeatures = extractFeatures(s(1).cdata,prevPoints);
 
-% Initialise a viewset object
+% Initialise a viewset object to store the camera views
 vSet = viewSet;
 viewId = 1;
 
-% Original View - Camera Faces the down the positive z axis
+% Add original view - camera at origin + faces the down the positive z axis
 vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', ...
     eye(3, 'like', prevPoints.Location), 'Location', ...
     zeros(1, 3, 'like', prevPoints.Location));
 
-%%  0 
+%%  Estimate remaining views
 for i = 2:56
+    
     % Detect, extract and match features.
     currPoints   = detectSURFFeatures(s(i).cdata);
     currFeatures = extractFeatures(s(i).cdata, currPoints);
@@ -24,18 +30,17 @@ for i = 2:56
     matchedPoints1 = prevPoints(indexPairs(:, 1));
     matchedPoints2 = currPoints(indexPairs(:, 2));
     
-%         if length(matchedPoints2) <5
-%             continue
-%         end
-
+    % Disable RANSAC warning
     warningstate = warning('off', 'vision:ransac:maxTrialsReached');
     
+    % Calculate pose of current view with respect to previous view
     [relativeOrient, relativeLoc, inlierIdx] = helperEstimateRelativePose(...
     matchedPoints1, matchedPoints2, cameraParams);
-    
+
+    % Re enable RANSAC warning
     warning(warningstate)
 
-    % Add the current view to the view set.
+    % Add the current view to the view set
     vSet = addView(vSet, i, 'Points', currPoints);
 
     % Store the point matches between the previous and the current views.
@@ -50,6 +55,8 @@ for i = 2:56
     % relative to the first view.
     orientation = relativeOrient * prevOrientation;
     location    = prevLocation + relativeLoc * prevOrientation;
+    
+    % Update viewset with current location and orientation
     
     vSet = updateView(vSet, i, 'Orientation', orientation, ...
         'Location', location);
@@ -93,6 +100,7 @@ locations = cat(1, camPoses.Location{:});
 set(trajectoryObs, 'XData', locations(:,1), 'YData', ...
     locations(:,2), 'ZData', locations(:,3));
 
+% Plot the final camera orientation
 plotCamera('Size', 0.3,'Location',vSet.Views.Location{i},'Orientation',vSet.Views.Orientation{i});
 
 % Exclude noisy 3-D points.
@@ -108,9 +116,6 @@ xlabel('X')
 ylabel('Y')
 zlabel('Z')
 hold off
-
-% set(gca,'CameraUpVector',[0, 0, -1]);
-% camorbit(gca, -70, 180)
 
 % Specify the viewing volume.
 loc1 = camPoses.Location{1};
